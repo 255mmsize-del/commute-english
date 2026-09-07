@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>__PAGE_TITLE__ · 커뮤트 잉글리시</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap" />
+<style>
+  :root {
+    --bg: #f2f4f6;
+    --surface: #ffffff;
+    --surface-2: #e7ebee;
+    --border: #d7dde2;
+    --text: #1b2430;
+    --text-muted: #5b6773;
+    --accent: #c9631d;
+    --accent-ink: #ffffff;
+    --mike: #b45a12;
+    --sarah: #1f8a7d;
+    --mike-soft: #f6e6d6;
+    --sarah-soft: #d9f0ec;
+    --current-bg: #fdeee0;
+    --shadow: 0 1px 2px rgba(20, 26, 33, 0.06), 0 8px 24px rgba(20, 26, 33, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121820;
+      --surface: #1a2229;
+      --surface-2: #212a33;
+      --border: #2c3742;
+      --text: #edf1f4;
+      --text-muted: #93a1ac;
+      --accent: #ff9c4a;
+      --accent-ink: #1b1206;
+      --mike: #ffb066;
+      --sarah: #63d9c8;
+      --mike-soft: #3a2a17;
+      --sarah-soft: #163530;
+      --current-bg: #33240f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #121820;
+    --surface: #1a2229;
+    --surface-2: #212a33;
+    --border: #2c3742;
+    --text: #edf1f4;
+    --text-muted: #93a1ac;
+    --accent: #ff9c4a;
+    --accent-ink: #1b1206;
+    --mike: #ffb066;
+    --sarah: #63d9c8;
+    --mike-soft: #3a2a17;
+    --sarah-soft: #163530;
+    --current-bg: #33240f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { background: var(--bg); }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Sora", "Noto Sans KR", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 18px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  header.masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  h1 {
+    font-family: "Sora", sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .subline {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 12px;
+    z-index: 5;
+  }
+
+  .episode-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .episode-title {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .episode-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .scrubber {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    cursor: pointer;
+    accent-color: var(--accent);
+  }
+
+  .scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  .icon-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+    transition: transform 0.12s ease, background 0.12s ease;
+  }
+
+  .icon-btn:hover { background: var(--current-bg); }
+  .icon-btn:active { transform: scale(0.94); }
+
+  .icon-btn.play {
+    width: 60px;
+    height: 60px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    font-size: 20px;
+  }
+
+  .icon-btn:focus-visible,
+  .rate-btn:focus-visible,
+  .line:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .rate-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .rate-btn {
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-family: "Sora", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rate-btn[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: transparent;
+  }
+
+  .transcript-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .transcript-heading h2 {
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .legend {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.mike { background: var(--mike); }
+  .dot.sarah { background: var(--sarah); }
+
+  .transcript {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .line {
+    display: grid;
+    grid-template-columns: 74px 1fr auto;
+    align-items: start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    background: transparent;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .line:hover { background: var(--surface-2); }
+
+  .line.current {
+    background: var(--current-bg);
+    border-color: var(--accent);
+  }
+
+  .speaker {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding-top: 3px;
+  }
+
+  .speaker.mike { color: var(--mike); }
+  .speaker.sarah { color: var(--sarah); }
+
+  .text-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+
+  .en {
+    font-family: "Literata", "Noto Serif KR", serif;
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+
+  .ko {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  .replay-btn {
+    align-self: center;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    opacity: 0.55;
+  }
+
+  .line:hover .replay-btn,
+  .line.current .replay-btn { opacity: 1; color: var(--accent); }
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  .nav-row a {
+    color: var(--text-muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+
+  .nav-row a:hover { color: var(--accent); border-color: var(--accent); }
+
+  footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    padding-top: 8px;
+  }
+
+  @media (max-width: 420px) {
+    .line { grid-template-columns: 56px 1fr auto; }
+    .speaker { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">__EYEBROW__</div>
+    <h1>__H1__</h1>
+    <p class="subline">__SUBLINE__</p>
+  </header>
+
+  <div class="player">
+    <audio id="audio" preload="auto" src="__AUDIO_DATA_URI__"></audio>
+
+    <div class="episode-row">
+      <span class="episode-title">__EPISODE_TITLE__</span>
+      <span class="episode-meta"><span id="curTime">0:00</span> / <span id="durTime">--:--</span></span>
+    </div>
+
+    <input type="range" class="scrubber" id="scrubber" min="0" max="1000" value="0" aria-label="재생 위치" />
+
+    <div class="controls-row">
+      <button class="icon-btn" id="restartBtn" title="처음부터" aria-label="처음부터 다시 듣기">⏮</button>
+      <button class="icon-btn" id="rewindBtn" title="10초 뒤로" aria-label="10초 뒤로">⟲10</button>
+      <button class="icon-btn play" id="playBtn" aria-label="재생">▶</button>
+      <button class="icon-btn" id="forwardBtn" title="10초 앞으로" aria-label="10초 앞으로">10⟳</button>
+    </div>
+
+    <div class="rate-row" role="group" aria-label="재생 속도">
+      <button class="rate-btn" data-rate="0.75" aria-pressed="false">0.75×</button>
+      <button class="rate-btn" data-rate="1" aria-pressed="true">1.0×</button>
+      <button class="rate-btn" data-rate="1.25" aria-pressed="false">1.25×</button>
+      <button class="rate-btn" data-rate="1.5" aria-pressed="false">1.5×</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="transcript-heading">
+      <h2>대본 &amp; 해석</h2>
+      <div class="legend">
+        <span><i class="dot mike"></i>Mike</span>
+        <span><i class="dot sarah"></i>Sarah</span>
+      </div>
+    </div>
+    <div class="transcript" id="transcript"></div>
+  </section>
+
+  <nav class="nav-row">
+    __PREV_LINK__
+    __NEXT_LINK__
+  </nav>
+
+  <footer>문장을 탭하면 그 지점부터 다시 재생됩니다 · __DURATION_NOTE__ · 2~3회 반복 추천</footer>
+</div>
+
+<script>
+  const TRANSCRIPT = __TRANSCRIPT_JSON__;
+
+  const audio = document.getElementById("audio");
+  const playBtn = document.getElementById("playBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const rewindBtn = document.getElementById("rewindBtn");
+  const forwardBtn = document.getElementById("forwardBtn");
+  const scrubber = document.getElementById("scrubber");
+  const curTimeEl = document.getElementById("curTime");
+  const durTimeEl = document.getElementById("durTime");
+  const transcriptEl = document.getElementById("transcript");
+  const rateBtns = Array.from(document.querySelectorAll(".rate-btn"));
+
+  function fmt(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  const rowEls = TRANSCRIPT.map((row) => {
+    const btn = document.createElement("button");
+    btn.className = "line";
+    btn.dataset.start = row.start_ms / 1000;
+    btn.innerHTML = `
+      <span class="speaker ${row.speaker.toLowerCase()}">${row.speaker}</span>
+      <span class="text-col">
+        <span class="en">${row.en}</span>
+        <span class="ko">${row.ko}</span>
+      </span>
+      <span class="replay-btn" aria-hidden="true">↻</span>
+    `;
+    btn.addEventListener("click", () => {
+      audio.currentTime = row.start_ms / 1000;
+      audio.play();
+    });
+    transcriptEl.appendChild(btn);
+    return btn;
+  });
+
+  let currentIndex = -1;
+  let userSeeking = false;
+
+  audio.addEventListener("loadedmetadata", () => {
+    durTimeEl.textContent = fmt(audio.duration);
+  });
+
+  audio.addEventListener("timeupdate", () => {
+    curTimeEl.textContent = fmt(audio.currentTime);
+    if (!userSeeking && audio.duration) {
+      scrubber.value = String((audio.currentTime / audio.duration) * 1000);
+    }
+
+    const ms = audio.currentTime * 1000;
+    let idx = TRANSCRIPT.findIndex((r) => ms >= r.start_ms && ms < r.end_ms);
+    if (idx === -1 && TRANSCRIPT.length) {
+      idx = ms >= TRANSCRIPT[TRANSCRIPT.length - 1].end_ms ? TRANSCRIPT.length - 1 : currentIndex;
+    }
+    if (idx !== currentIndex && idx >= 0) {
+      if (currentIndex >= 0) rowEls[currentIndex].classList.remove("current");
+      rowEls[idx].classList.add("current");
+      rowEls[idx].scrollIntoView({ behavior: "smooth", block: "center" });
+      currentIndex = idx;
+    }
+  });
+
+  audio.addEventListener("play", () => { playBtn.textContent = "⏸"; playBtn.setAttribute("aria-label", "일시정지"); });
+  audio.addEventListener("pause", () => { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "재생"); });
+  audio.addEventListener("ended", () => { playBtn.textContent = "▶"; });
+
+  playBtn.addEventListener("click", () => {
+    if (audio.paused) audio.play(); else audio.pause();
+  });
+
+  restartBtn.addEventListener("click", () => {
+    audio.currentTime = 0;
+    audio.play();
+  });
+
+  rewindBtn.addEventListener("click", () => {
+    audio.currentTime = Math.max(0, audio.currentTime - 10);
+  });
+
+  forwardBtn.addEventListener("click", () => {
+    audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10);
+  });
+
+  scrubber.addEventListener("input", () => {
+    userSeeking = true;
+    if (audio.duration) {
+      const t = (Number(scrubber.value) / 1000) * audio.duration;
+      curTimeEl.textContent = fmt(t);
+    }
+  });
+
+  scrubber.addEventListener("change", () => {
+    if (audio.duration) {
+      audio.currentTime = (Number(scrubber.value) / 1000) * audio.duration;
+    }
+    userSeeking = false;
+  });
+
+  rateBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const rate = Number(btn.dataset.rate);
+      audio.playbackRate = rate;
+      rateBtns.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    });
+  });
+</script>
+</body>
+</html>
