@@ -41,6 +41,9 @@ PAUSE_AFTER_TARGET_MS = 2200  # 따라 말할 시간
 PAUSE_SHORT_MS = 400
 PAUSE_BETWEEN_ITEMS_MS = 900
 
+TARGET_DURATION_MS = 5 * 60 * 1000  # 학습량이 적은 날에도 이만큼은 채운다(반복 재생으로)
+MAX_PASSES = 12
+
 ITEM_RE = re.compile(
     r"EN:\s*(?P<en>.+?)\s*\n\s*KO:\s*(?P<ko>.+?)\s*\n\s*EX:\s*(?P<ex>.+?)\s*(?=\n\s*\d+\.\s*EN:|\n\s*SUMMARY_KO:|\Z)",
     re.DOTALL,
@@ -89,6 +92,9 @@ async def build(items: list[dict], summary: str) -> None:
             combined += AudioSegment.silent(duration=pause_after_ms)
             cursor_ms += pause_after_ms
 
+    # 문장별 오디오는 한 번만 합성해서 캐시하고, 5분을 채울 때까지 전체 목록을
+    # 여러 바퀴(패스) 반복 재생한다 - 그날 배운 표현이 적어도 복습 분량은 확보한다.
+    clips = []
     for i, item in enumerate(items, start=1):
         target_path = lines_dir / f"{i:02d}_target.mp3"
         meaning_path = lines_dir / f"{i:02d}_meaning.mp3"
@@ -98,9 +104,25 @@ async def build(items: list[dict], summary: str) -> None:
         await synth(item["ko"], KO_VOICE, meaning_path)
         await synth(item["ex"], EN_VOICE, example_path)
 
-        add_segment("target", i, item["en"], "", AudioSegment.from_mp3(target_path), PAUSE_AFTER_TARGET_MS)
-        add_segment("meaning", i, "", item["ko"], AudioSegment.from_mp3(meaning_path), PAUSE_SHORT_MS)
-        add_segment("example", i, item["ex"], "", AudioSegment.from_mp3(example_path), PAUSE_BETWEEN_ITEMS_MS)
+        clips.append({
+            "item": item,
+            "target": AudioSegment.from_mp3(target_path),
+            "meaning": AudioSegment.from_mp3(meaning_path),
+            "example": AudioSegment.from_mp3(example_path),
+        })
+
+    pass_num = 1
+    while True:
+        label_suffix = "" if pass_num == 1 else f" · {pass_num}회차 반복"
+        for i, clip in enumerate(clips, start=1):
+            item = clip["item"]
+            label = f"{i}{label_suffix}"
+            add_segment("target", label, item["en"], "", clip["target"], PAUSE_AFTER_TARGET_MS)
+            add_segment("meaning", label, "", item["ko"], clip["meaning"], PAUSE_SHORT_MS)
+            add_segment("example", label, item["ex"], "", clip["example"], PAUSE_BETWEEN_ITEMS_MS)
+        if cursor_ms >= TARGET_DURATION_MS or pass_num >= MAX_PASSES:
+            break
+        pass_num += 1
 
     audio_bytes_path = BASE / "output" / "review_audio.mp3"
     combined.export(audio_bytes_path, format="mp3", bitrate="128k")
