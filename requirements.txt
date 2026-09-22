@@ -3,3 +3,5 @@ tzdata
 edge-tts
 pydub
 audioop-lts; python_version >= "3.13"
+gspread
+google-auth

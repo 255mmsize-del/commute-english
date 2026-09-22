@@ -2,3 +2,5 @@ output/
 __pycache__/
 *.pyc
 review_input.txt
+vocab_all_items.json
+vocab_part1_data.json

@@ -28,7 +28,7 @@ KO_VOICE = "ko-KR-SunHiNeural"
 RATE = "+0%"
 PAUSE_MS = 3000  # 문장 하나가 끝나면 3초 후 다음 문장
 
-TOTAL_PARTS = 1  # 지금까지 만들어진 파트 수(새 파트를 추가할 때마다 올려줄 것)
+TOTAL_PARTS = 1  # main()에서 실제 파트 수로 덮어써짐
 
 
 async def synth(text: str, voice: str, out_path: Path) -> None:
@@ -153,12 +153,26 @@ def build_index(total_parts: int) -> None:
 
 
 def main() -> None:
-    if len(sys.argv) != 3:
-        print("사용법: python vocab_build.py <data.json> <part_number>", file=sys.stderr)
+    global TOTAL_PARTS
+    if len(sys.argv) < 2:
+        print("사용법: python vocab_build.py <all_parts.json> [part_number ...]", file=sys.stderr)
+        print("  part_number를 생략하면 모든 파트를 빌드한다.", file=sys.stderr)
         sys.exit(1)
-    data_path, part_num = sys.argv[1], int(sys.argv[2])
-    items = json.loads(Path(data_path).read_text(encoding="utf-8"))
-    asyncio.run(build(items, part_num))
+
+    data_path = sys.argv[1]
+    parts = json.loads(Path(data_path).read_text(encoding="utf-8"))
+    TOTAL_PARTS = len(parts)
+
+    if len(sys.argv) > 2:
+        part_nums = [int(p) for p in sys.argv[2:]]
+    else:
+        part_nums = list(range(1, TOTAL_PARTS + 1))
+
+    for part_num in part_nums:
+        items = parts[part_num - 1]
+        print(f"=== Part {part_num} ({len(items)}개) ===")
+        asyncio.run(build(items, part_num))
+
     build_index(TOTAL_PARTS)
 
 

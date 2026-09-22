@@ -1,0 +1,53 @@
+name: Daily Vocab Review
+
+on:
+  schedule:
+    # 한국 시간(KST, UTC+9) 기준 매일 오전 7:30 (UTC 전날 22:30)
+    - cron: "30 22 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  build-and-send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ffmpeg (needed by pydub for audio export)
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - run: pip install -r requirements.txt
+
+      - name: Enrich any new idiom/sentence entries via Gemini
+        run: python vocab_enrich.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+
+      - name: Fetch all idiom/sentence items from the sheet
+        run: python vocab_fetch.py
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+
+      - name: Build all parts (audio + HTML)
+        run: python vocab_build.py vocab_all_items.json
+
+      - name: Commit and push updated pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/vocab
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "일일 숙어 학습 자료 갱신"
+          git push
+
+      - name: Send today's part via Kakao
+        run: |
+          TOTAL_PARTS=$(python -c "import json; print(len(json.load(open('vocab_all_items.json', encoding='utf-8'))))")
+          python vocab_send.py "$TOTAL_PARTS"
+        env:
+          KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
+          KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          KAKAO_REFRESH_TOKEN: ${{ secrets.KAKAO_REFRESH_TOKEN }}
