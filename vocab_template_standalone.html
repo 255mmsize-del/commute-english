@@ -270,7 +270,7 @@
     const btn = document.createElement("button");
     btn.className = "line";
     btn.dataset.start = row.start_ms / 1000;
-    const roleLabel = row.role === "example" ? `예문 ${row.ex_index} (${row.rep}/${row.rep_total})` : ROLE_LABEL[row.role];
+    const roleLabel = row.role === "example" ? `예문 ${row.ex_index}` : ROLE_LABEL[row.role];
     btn.innerHTML = `
       <span class="role ${row.role}">${roleLabel}</span>
       <span class="text-col">

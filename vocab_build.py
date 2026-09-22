@@ -55,14 +55,12 @@ async def build(items: list[dict], part_num: int) -> None:
     transcript = []
     cursor_ms = 0
 
-    def add_segment(role: str, item_label: str, en: str, ko: str, audio_seg: AudioSegment, ex_index: int = 0, rep: int = 0, rep_total: int = 0) -> None:
+    def add_segment(role: str, item_label: str, en: str, ko: str, audio_seg: AudioSegment, ex_index: int = 0) -> None:
         nonlocal combined, cursor_ms
         transcript.append({
             "item": item_label,
             "role": role,
             "ex_index": ex_index,
-            "rep": rep,
-            "rep_total": rep_total,
             "en": en,
             "ko": ko,
             "start_ms": cursor_ms,
@@ -92,8 +90,10 @@ async def build(items: list[dict], part_num: int) -> None:
             ex_path = lines_dir / f"{i:02d}_ex{ex_i}.mp3"
             await synth(ex["en"], EN_VOICE, ex_path)
             ex_audio = AudioSegment.from_mp3(ex_path)
-            for rep in range(1, EXAMPLE_REPEATS + 1):
-                add_segment("example", item_label, ex["en"], ex["ko"], ex_audio, ex_index=ex_i, rep=rep, rep_total=EXAMPLE_REPEATS)
+            ex_repeated = ex_audio
+            for _ in range(EXAMPLE_REPEATS - 1):
+                ex_repeated += AudioSegment.silent(duration=PAUSE_MS) + ex_audio
+            add_segment("example", item_label, ex["en"], ex["ko"], ex_repeated, ex_index=ex_i)
 
         print(f"  [{i}/{len(items)}] {phrase}")
 
