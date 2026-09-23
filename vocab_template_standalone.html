@@ -19,6 +19,7 @@
     --target: #2a5aa0;
     --meaning: #1f8a7d;
     --example: #6b6f76;
+    --example-alt: #8a4fc2;
     --current-bg: #e7eefb;
     --shadow: 0 1px 2px rgba(20, 26, 33, 0.06), 0 8px 24px rgba(20, 26, 33, 0.08);
   }
@@ -36,6 +37,7 @@
       --target: #7aa8ef;
       --meaning: #63d9c8;
       --example: #9aa2ab;
+      --example-alt: #c298f0;
       --current-bg: #1b2a3f;
       --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
     }
@@ -164,6 +166,21 @@
   .role.target { color: var(--target); }
   .role.meaning { color: var(--meaning); }
   .role.example { color: var(--example); }
+  .role.example_alt { color: var(--example-alt); }
+
+  .alt-toggle {
+    display: flex; align-items: center; gap: 6px; margin: 2px 14px 2px 56px;
+    padding: 7px 12px; border-radius: 999px; border: 1px dashed var(--example-alt);
+    background: transparent; color: var(--example-alt); font-size: 12.5px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .alt-toggle:hover { background: color-mix(in srgb, var(--example-alt) 12%, transparent); }
+  .alt-toggle .chev { transition: transform 0.15s ease; }
+  .alt-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+  .alt-group { display: flex; flex-direction: column; gap: 10px; }
+  .alt-group[hidden] { display: none; }
+  .line.alt-row { border: 1px dashed var(--border); }
 
   .text-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   .en { font-family: "Literata", "Noto Serif KR", serif; font-size: 15.5px; line-height: 1.5; }
@@ -249,7 +266,7 @@
   const transcriptEl = document.getElementById("transcript");
   const rateBtns = Array.from(document.querySelectorAll(".rate-btn"));
 
-  const ROLE_LABEL = { target: "표현", meaning: "뜻", example: "예문" };
+  const ROLE_LABEL = { target: "표현", meaning: "뜻", example: "예문", example_alt: "새 예문" };
 
   function fmt(sec) {
     if (!isFinite(sec) || sec < 0) sec = 0;
@@ -258,19 +275,12 @@
     return `${m}:${s}`;
   }
 
-  let lastItem = null;
-  const rowEls = TRANSCRIPT.map((row) => {
-    if (row.item !== lastItem) {
-      const label = document.createElement("div");
-      label.className = "item-num";
-      label.textContent = row.item;
-      transcriptEl.appendChild(label);
-      lastItem = row.item;
-    }
+  function makeLineBtn(row) {
     const btn = document.createElement("button");
-    btn.className = "line";
+    btn.className = row.role === "example_alt" ? "line alt-row" : "line";
     btn.dataset.start = row.start_ms / 1000;
-    const roleLabel = row.role === "example" ? `예문 ${row.ex_index}` : ROLE_LABEL[row.role];
+    const roleLabel = row.role === "example" ? `예문 ${row.ex_index}`
+      : row.role === "example_alt" ? `새 예문 ${row.ex_index}` : ROLE_LABEL[row.role];
     btn.innerHTML = `
       <span class="role ${row.role}">${roleLabel}</span>
       <span class="text-col">
@@ -283,6 +293,43 @@
       audio.currentTime = row.start_ms / 1000;
       audio.play();
     });
+    return btn;
+  }
+
+  let lastItem = null;
+  let altGroupEl = null;
+  const rowEls = TRANSCRIPT.map((row) => {
+    if (row.item !== lastItem) {
+      const label = document.createElement("div");
+      label.className = "item-num";
+      label.textContent = row.item;
+      transcriptEl.appendChild(label);
+      lastItem = row.item;
+      altGroupEl = null;
+    }
+    if (row.role === "example_alt") {
+      if (!altGroupEl) {
+        const toggle = document.createElement("button");
+        toggle.className = "alt-toggle";
+        toggle.type = "button";
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.innerHTML = `🔄 이 표현, 다른 패턴으로 다시 공부하기 <span class="chev">▾</span>`;
+        const thisGroup = document.createElement("div");
+        thisGroup.className = "alt-group";
+        thisGroup.hidden = true;
+        toggle.addEventListener("click", () => {
+          thisGroup.hidden = !thisGroup.hidden;
+          toggle.setAttribute("aria-expanded", String(!thisGroup.hidden));
+        });
+        transcriptEl.appendChild(toggle);
+        transcriptEl.appendChild(thisGroup);
+        altGroupEl = thisGroup;
+      }
+      const btn = makeLineBtn(row);
+      altGroupEl.appendChild(btn);
+      return btn;
+    }
+    const btn = makeLineBtn(row);
     transcriptEl.appendChild(btn);
     return btn;
   });

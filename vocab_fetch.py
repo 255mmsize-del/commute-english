@@ -53,10 +53,19 @@ def main() -> None:
         ex2_ko = row[10].strip() if len(row) > 10 else ""
         ex3_en = row[11].strip() if len(row) > 11 else ""
         ex3_ko = row[12].strip() if len(row) > 12 else ""
+        ex4_en = row[13].strip() if len(row) > 13 else ""
+        ex4_ko = row[14].strip() if len(row) > 14 else ""
+        ex5_en = row[15].strip() if len(row) > 15 else ""
+        ex5_ko = row[16].strip() if len(row) > 16 else ""
 
         if not (ex1_en and ex2_en and ex3_en):
             skipped_no_examples += 1
             continue
+
+        alt_examples = (
+            [{"en": ex4_en, "ko": ex4_ko}, {"en": ex5_en, "ko": ex5_ko}]
+            if ex4_en and ex5_en else []
+        )
 
         # 대화 형식(A:/B:)이면 표현이 들어간 한 줄만 뽑아 단문 예문으로 쓴다
         def pick_line(en_block: str, ko_block: str) -> tuple[str, str]:
@@ -79,6 +88,7 @@ def main() -> None:
                 {"en": ex2_en, "ko": ex2_ko},
                 {"en": ex3_en, "ko": ex3_ko},
             ],
+            "alt_examples": alt_examples,
         })
 
     parts = [items[i:i + PART_SIZE] for i in range(0, len(items), PART_SIZE)]

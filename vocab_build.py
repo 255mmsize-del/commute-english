@@ -2,6 +2,8 @@
 docs/vocab/partN.html 로 발행한다. 각 문장이 끝나면 3초 뒤 다음 문장으로
 넘어가도록 균일한 pause를 둔다. 문장(줄)을 탭하면 그 지점부터 다시
 재생되므로 안 외워지는 표현만 반복해서 들을 수 있다.
+item에 "alt_examples"가 있으면 각 항목 아래 "다른 패턴" 접이식 버튼으로
+노출되는 추가 예문을 만든다(기본 재생 흐름에는 포함되지 않음).
 
 사용법: python vocab_build.py vocab_part1_data.json 1
   (두 번째 인자는 파트 번호)
@@ -11,6 +13,7 @@ from __future__ import annotations
 
 import asyncio
 import base64
+import itertools
 import json
 import sys
 from pathlib import Path
@@ -97,9 +100,43 @@ async def build(items: list[dict], part_num: int) -> None:
 
         print(f"  [{i}/{len(items)}] {phrase}")
 
+    main_duration_min = cursor_ms / 1000 / 60  # "다른 패턴" 풀을 제외한 기본 학습 시간
+
+    # "다른 패턴" 예문 풀: 기본 재생 흐름 밖(파일 끝)에 이어붙이고,
+    # 화면에는 각 항목 바로 아래 접이식으로 노출한다(오디오 위치와 화면 순서는 독립적).
+    for i, item in enumerate(items, start=1):
+        alt_examples = item.get("alt_examples") or []
+        if not alt_examples:
+            continue
+        no = item["no"]
+        phrase = item["phrase"]
+        item_label = f"{i}. {phrase} (No.{no})"
+        for alt_i, ex in enumerate(alt_examples, start=1):
+            alt_path = lines_dir / f"{i:02d}_alt{alt_i}.mp3"
+            await synth(ex["en"], EN_VOICE, alt_path)
+            alt_audio = AudioSegment.from_mp3(alt_path)
+            alt_repeated = alt_audio
+            for _ in range(EXAMPLE_REPEATS - 1):
+                alt_repeated += AudioSegment.silent(duration=PAUSE_MS) + alt_audio
+            add_segment("example_alt", item_label, ex["en"], ex["ko"], alt_repeated, ex_index=alt_i)
+
+    # 화면 표시 순서를 항목별로 재배열: 각 항목의 본 예문 뒤에 그 항목의 "다른 패턴"을 붙인다.
+    alt_by_item: dict[str, list[dict]] = {}
+    main_rows = []
+    for row in transcript:
+        if row["role"] == "example_alt":
+            alt_by_item.setdefault(row["item"], []).append(row)
+        else:
+            main_rows.append(row)
+    transcript[:] = [
+        row
+        for item_label, group in itertools.groupby(main_rows, key=lambda r: r["item"])
+        for row in (*group, *alt_by_item.get(item_label, []))
+    ]
+
     audio_bytes_path = BASE / "output" / f"vocab_part{part_num}_audio.mp3"
     combined.export(audio_bytes_path, format="mp3", bitrate="128k")
-    duration_min = len(combined) / 1000 / 60
+    duration_min = main_duration_min
 
     audio_data_uri = f"data:audio/mpeg;base64,{base64.b64encode(audio_bytes_path.read_bytes()).decode('ascii')}"
 
@@ -107,7 +144,7 @@ async def build(items: list[dict], part_num: int) -> None:
     html = html.replace("__PAGE_TITLE__", f"숙어 Part {part_num}")
     html = html.replace("__EYEBROW__", f"영어 숙어·문장 공부 · Part {part_num}")
     html = html.replace("__H1__", f"숙어 Part {part_num}")
-    html = html.replace("__SUBLINE__", "표현을 듣고 뜻과 예문 3개까지 익혀보세요. 문장이 끝나면 3초 후 다음 문장으로 넘어갑니다.")
+    html = html.replace("__SUBLINE__", "표현을 듣고 뜻과 예문 3개까지 익혀보세요. 문장이 끝나면 3초 후 다음 문장으로 넘어갑니다. 예문이 익숙해지면 항목마다 '다른 패턴' 버튼으로 새 예문을 들을 수 있어요.")
     html = html.replace("__EPISODE_TITLE__", f"{len(items)}개 표현")
     html = html.replace("__ITEM_COUNT__", str(len(items)))
     html = html.replace("__DURATION_NOTE__", f"{duration_min:.1f}분")
