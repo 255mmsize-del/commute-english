@@ -254,6 +254,7 @@
 
 <script>
   const TRANSCRIPT = __TRANSCRIPT_JSON__;
+  const MAIN_END_MS = __MAIN_END_MS__;
 
   const audio = document.getElementById("audio");
   const playBtn = document.getElementById("playBtn");
@@ -339,7 +340,20 @@
   audio.addEventListener("loadedmetadata", () => { durTimeEl.textContent = fmt(audio.duration); });
 
   let userSeeking = false;
+  // "다른 패턴" 예문은 파일 맨 끝에 있어서, 이어듣기로 자연스럽게 흘러 들어가면 안 되고
+  // 항목의 토글을 눌러 직접 이동했을 때만 들려야 한다. 한 틱 만에 MAIN_END_MS를 훌쩍
+  // 넘기는 큰 점프는 의도적 탐색(탭/스크러버)이고, 조금씩 넘는 건 자연 재생이므로 그때만 멈춘다.
+  let prevMs = 0;
   audio.addEventListener("timeupdate", () => {
+    const ms0 = audio.currentTime * 1000;
+    if (prevMs < MAIN_END_MS && ms0 >= MAIN_END_MS && (ms0 - prevMs) < 2000) {
+      audio.pause();
+      audio.currentTime = MAIN_END_MS / 1000;
+      prevMs = MAIN_END_MS;
+      return;
+    }
+    prevMs = ms0;
+
     curTimeEl.textContent = fmt(audio.currentTime);
     if (!userSeeking && audio.duration) {
       scrubber.value = String((audio.currentTime / audio.duration) * 1000);

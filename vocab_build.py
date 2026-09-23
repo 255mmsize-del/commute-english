@@ -100,7 +100,8 @@ async def build(items: list[dict], part_num: int) -> None:
 
         print(f"  [{i}/{len(items)}] {phrase}")
 
-    main_duration_min = cursor_ms / 1000 / 60  # "다른 패턴" 풀을 제외한 기본 학습 시간
+    main_end_ms = cursor_ms  # 여기가 기본 학습 흐름의 끝 지점 - 이후는 "다른 패턴" 전용 구간
+    main_duration_min = main_end_ms / 1000 / 60
 
     # "다른 패턴" 예문 풀: 기본 재생 흐름 밖(파일 끝)에 이어붙이고,
     # 화면에는 각 항목 바로 아래 접이식으로 노출한다(오디오 위치와 화면 순서는 독립적).
@@ -150,6 +151,7 @@ async def build(items: list[dict], part_num: int) -> None:
     html = html.replace("__DURATION_NOTE__", f"{duration_min:.1f}분")
     html = html.replace("__AUDIO_DATA_URI__", audio_data_uri)
     html = html.replace("__TRANSCRIPT_JSON__", json.dumps(transcript, ensure_ascii=False))
+    html = html.replace("__MAIN_END_MS__", str(main_end_ms))
     html = html.replace("__PART_NAV__", part_nav_html(part_num, TOTAL_PARTS))
 
     out_path = DOCS_DIR / f"part{part_num}.html"
