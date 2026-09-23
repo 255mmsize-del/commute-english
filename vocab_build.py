@@ -23,7 +23,7 @@ TEMPLATE = (BASE / "vocab_template_standalone.html").read_text(encoding="utf-8")
 DOCS_DIR = BASE / "docs" / "vocab"
 DOCS_DIR.mkdir(parents=True, exist_ok=True)
 
-EN_VOICE = "en-US-AriaNeural"
+EN_VOICE = "en-US-AvaMultilingualNeural"
 KO_VOICE = "ko-KR-SunHiNeural"
 RATE = "+0%"
 PAUSE_MS = 3000  # 문장 하나가 끝나면 3초 후 다음 문장

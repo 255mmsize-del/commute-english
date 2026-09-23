@@ -33,7 +33,7 @@ DOCS_DIR = BASE / "docs"
 DOCS_DIR.mkdir(exist_ok=True)
 
 KST = ZoneInfo("Asia/Seoul")
-EN_VOICE = "en-US-AriaNeural"
+EN_VOICE = "en-US-AvaMultilingualNeural"
 KO_VOICE = "ko-KR-SunHiNeural"
 RATE = "+0%"
 

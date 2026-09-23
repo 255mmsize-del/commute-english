@@ -4,8 +4,8 @@
 dialogue의 각 줄: (화자, 목소리, 영어 대사, 한글 해석)
 """
 
-MALE_VOICE = "en-US-GuyNeural"
-FEMALE_VOICE = "en-US-AriaNeural"
+MALE_VOICE = "en-US-AndrewMultilingualNeural"
+FEMALE_VOICE = "en-US-AvaMultilingualNeural"
 M, F = MALE_VOICE, FEMALE_VOICE
 
 EPISODES = [
