@@ -1,0 +1,30 @@
+name: Send Vocab Part Now
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Fetch all idiom/sentence items from the sheet (no TTS, just counts parts)
+        run: python vocab_fetch.py
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+
+      - name: Send today's part via Kakao
+        run: |
+          TOTAL_PARTS=$(python -c "import json; print(len(json.load(open('vocab_all_items.json', encoding='utf-8'))))")
+          python vocab_send.py "$TOTAL_PARTS"
+        env:
+          KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
+          KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          KAKAO_REFRESH_TOKEN: ${{ secrets.KAKAO_REFRESH_TOKEN }}
