@@ -20,6 +20,9 @@ from pathlib import Path
 import edge_tts
 from pydub import AudioSegment
 
+TTS_MAX_RETRIES = 4
+TTS_RETRY_WAIT_SECONDS = 5
+
 BASE = Path(__file__).resolve().parent
 TEMPLATE = (BASE / "vocab_template_standalone.html").read_text(encoding="utf-8")
 DOCS_DIR = BASE / "docs" / "vocab"
@@ -35,8 +38,18 @@ TOTAL_PARTS = 1  # main()에서 실제 파트 수로 덮어써짐
 
 
 async def synth(text: str, voice: str, out_path: Path) -> None:
-    communicate = edge_tts.Communicate(text, voice, rate=RATE)
-    await communicate.save(str(out_path))
+    last_error: Exception | None = None
+    for attempt in range(1, TTS_MAX_RETRIES + 1):
+        try:
+            communicate = edge_tts.Communicate(text, voice, rate=RATE)
+            await communicate.save(str(out_path))
+            return
+        except Exception as exc:  # noqa: BLE001 - edge-tts는 간헐적으로 NoAudioReceived 등을 던짐
+            last_error = exc
+            if attempt < TTS_MAX_RETRIES:
+                print(f"    [TTS 재시도 {attempt}/{TTS_MAX_RETRIES}] {text[:30]!r}: {exc}")
+                await asyncio.sleep(TTS_RETRY_WAIT_SECONDS * attempt)
+    raise RuntimeError(f"TTS 합성 {TTS_MAX_RETRIES}회 실패: {text!r}") from last_error
 
 
 def part_nav_html(current_part: int, total_parts: int) -> str:
