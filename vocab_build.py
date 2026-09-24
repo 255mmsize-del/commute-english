@@ -12,7 +12,6 @@ item에 "alt_examples"가 있으면 각 항목 아래 "다른 패턴" 접이식 
 from __future__ import annotations
 
 import asyncio
-import base64
 import itertools
 import json
 import sys
@@ -135,11 +134,11 @@ async def build(items: list[dict], part_num: int) -> None:
         for row in (*group, *alt_by_item.get(item_label, []))
     ]
 
-    audio_bytes_path = BASE / "output" / f"vocab_part{part_num}_audio.mp3"
-    combined.export(audio_bytes_path, format="mp3", bitrate="128k")
+    audio_dir = DOCS_DIR / "audio"
+    audio_dir.mkdir(parents=True, exist_ok=True)
+    audio_out_path = audio_dir / f"part{part_num}.mp3"
+    combined.export(audio_out_path, format="mp3", bitrate="128k")
     duration_min = main_duration_min
-
-    audio_data_uri = f"data:audio/mpeg;base64,{base64.b64encode(audio_bytes_path.read_bytes()).decode('ascii')}"
 
     html = TEMPLATE
     html = html.replace("__PAGE_TITLE__", f"숙어 Part {part_num}")
@@ -149,14 +148,15 @@ async def build(items: list[dict], part_num: int) -> None:
     html = html.replace("__EPISODE_TITLE__", f"{len(items)}개 표현")
     html = html.replace("__ITEM_COUNT__", str(len(items)))
     html = html.replace("__DURATION_NOTE__", f"{duration_min:.1f}분")
-    html = html.replace("__AUDIO_DATA_URI__", audio_data_uri)
+    html = html.replace("__AUDIO_SRC__", f"audio/part{part_num}.mp3")
     html = html.replace("__TRANSCRIPT_JSON__", json.dumps(transcript, ensure_ascii=False))
     html = html.replace("__MAIN_END_MS__", str(main_end_ms))
     html = html.replace("__PART_NAV__", part_nav_html(part_num, TOTAL_PARTS))
 
     out_path = DOCS_DIR / f"part{part_num}.html"
     out_path.write_text(html, encoding="utf-8")
-    print(f"Saved: {out_path} ({len(html) / 1024 / 1024:.2f} MB, {duration_min:.1f}min, {len(items)} items)")
+    audio_mb = audio_out_path.stat().st_size / 1024 / 1024
+    print(f"Saved: {out_path} (html {len(html) / 1024:.0f} KB, audio {audio_mb:.1f} MB, {duration_min:.1f}min, {len(items)} items)")
 
 
 def build_index(total_parts: int) -> None:
