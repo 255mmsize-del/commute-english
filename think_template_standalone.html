@@ -169,6 +169,8 @@
   .role.example_alt { color: var(--example-alt); }
   .role.section { color: #b7791f; }
   .role.thinking { color: #2f855a; }
+  .line .hl { color: #d62828; font-weight: 700; }
+  @media (prefers-color-scheme: dark) { .line .hl { color: #ff6b6b; } }
   .line.section { background: color-mix(in srgb, #f6c344 14%, transparent); }
   .line.section .ko, .line.thinking .ko { font-size: 14px; color: var(--text); line-height: 1.6; }
   .line.thinking .en { font-size: 13.5px; color: #2b6cb0; font-family: "Noto Sans KR", sans-serif; }
@@ -272,7 +274,7 @@
   const transcriptEl = document.getElementById("transcript");
   const rateBtns = Array.from(document.querySelectorAll(".rate-btn"));
 
-  const ROLE_LABEL = { section: "핵심", target: "표현", thinking: "사고", meaning: "뜻", example: "예문", example_alt: "새 예문" };
+  const ROLE_LABEL = { section: "핵심", target: "표현", thinking: "Think", meaning: "뜻", example: "예문", example_alt: "새 예문" };
 
   function fmt(sec) {
     if (!isFinite(sec) || sec < 0) sec = 0;

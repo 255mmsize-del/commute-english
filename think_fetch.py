@@ -26,12 +26,42 @@ SERIES = [
 SECTION_SEP = "   |   핵심 이미지: "
 PART_SIZE = 20
 HEADER_ROWS = 3  # 제목 / 안내 / 열 머리글
+THINK_COL = 3  # D열: 영어식 사고 (빨간 굵은 글씨 강조 포함)
 
 
-def parse_tab(values: list[list[str]]) -> list[dict]:
+def runs_to_markup(text: str, runs: list[dict]) -> str:
+    """Sheets textFormatRuns 중 굵은 글씨 구간을 **…** 로 감싼 문자열로 바꾼다."""
+    if not runs:
+        return text
+    out, bounds = [], [(r.get("startIndex", 0), bool(r.get("format", {}).get("bold"))) for r in runs]
+    bounds.append((len(text), False))
+    if bounds[0][0] > 0:
+        out.append(text[:bounds[0][0]])
+    for (start, bold), (end, _) in zip(bounds, bounds[1:]):
+        seg = text[start:end]
+        out.append(f"**{seg}**" if bold and seg.strip() else seg)
+    return "".join(out)
+
+
+def fetch_think_markup(sh: gspread.Spreadsheet, tab_name: str) -> dict[int, str]:
+    """D열 각 칸을 강조 마크업이 포함된 문자열로 읽어 {0-based 행: 문자열} 로 돌려준다."""
+    meta = sh.fetch_sheet_metadata({"ranges": [f"'{tab_name}'!D:D"], "includeGridData": True,
+                                    "fields": "sheets.data.rowData.values(formattedValue,textFormatRuns)"})
+    result: dict[int, str] = {}
+    for i, row in enumerate(meta["sheets"][0]["data"][0].get("rowData", [])):
+        values = row.get("values") or [{}]
+        cell = values[0]
+        if cell.get("formattedValue"):
+            result[i] = runs_to_markup(cell["formattedValue"], cell.get("textFormatRuns", []))
+    return result
+
+
+def parse_tab(values: list[list[str]], think_markup: dict[int, str] | None = None) -> list[dict]:
     items: list[dict] = []
     section_title, section_core = "", ""
-    for row in values[HEADER_ROWS:]:
+    for row_idx, row in enumerate(values):
+        if row_idx < HEADER_ROWS:
+            continue
         row = row + [""] * (8 - len(row))
         if row[0].strip() and not row[1].strip():
             title, _, core = row[0].partition(SECTION_SEP)
@@ -53,7 +83,7 @@ def parse_tab(values: list[list[str]]) -> list[dict]:
             "no": row[0].strip(),
             "phrase": row[1].strip(),
             "picture": row[2].strip(),
-            "thinking": row[3].strip(),
+            "thinking": (think_markup or {}).get(row_idx, row[3]).strip(),
             "meaning": row[4].strip(),
             "examples": examples,
         })
@@ -64,7 +94,7 @@ def main() -> None:
     sh = gspread.authorize(get_credentials()).open_by_key(SPREADSHEET_ID)
     parts: list[dict] = []
     for tab_name, series_label in SERIES:
-        items = parse_tab(sh.worksheet(tab_name).get_all_values())
+        items = parse_tab(sh.worksheet(tab_name).get_all_values(), fetch_think_markup(sh, tab_name))
         # 파트 수는 PART_SIZE 기준으로 정하되, 마지막 파트가 너무 작지 않게 고르게 나눈다
         n_parts = max(1, -(-len(items) // PART_SIZE))
         bounds = [round(k * len(items) / n_parts) for k in range(n_parts + 1)]

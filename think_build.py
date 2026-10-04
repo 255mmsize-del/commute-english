@@ -32,7 +32,7 @@ TEMPLATE = (BASE / "think_template_standalone.html").read_text(encoding="utf-8")
 DOCS_DIR = BASE / "docs" / "think"
 AUDIO_DIR = DOCS_DIR / "audio"
 MANIFEST_PATH = DOCS_DIR / "manifest.json"
-BUILD_VERSION = "1"  # 오디오 구성 방식을 바꾸면 올려서 전체 재빌드
+BUILD_VERSION = "2"  # 오디오 구성 방식을 바꾸면 올려서 전체 재빌드 (2: 영어식 사고 설명을 영어 음성으로)
 
 EN_VOICE = "en-US-AvaMultilingualNeural"
 KO_EXPLAIN_VOICE = "ko-KR-HyunsuMultilingualNeural"  # 영어 단어가 섞인 해설도 자연스럽게 읽음
@@ -43,6 +43,19 @@ INNER_PAUSE_MS = 1200  # 예문 반복 사이 간격
 AUDIO_BITRATE = "48k"  # 음성 전용 모노 - 저장소 용량 절약
 
 HANGUL = re.compile(r"[가-힣]+")
+MARK = re.compile(r"\*\*(.+?)\*\*")
+
+
+def strip_marks(text: str) -> str:
+    return MARK.sub(r"\1", text)
+
+
+def marks_to_html(text: str) -> str:
+    """**강조** → 빨간 굵은 글씨 HTML (시트와 같은 강조를 플레이어 화면에도 표시)."""
+    safe = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return MARK.sub(r'<b class="hl">\1</b>', safe)
+
+
 EMOJI = re.compile(r"[\U0001F300-\U0001FAFF←-⇿⌀-⏿☀-➿⬀-⯿■-◿✀-➿●]")
 
 
@@ -130,8 +143,12 @@ async def build(parts: list[dict], part_num: int) -> None:
         label = f"{i}. {it['phrase']} (No.{it['no']})"
         add("target", label, it["phrase"], "",
             await synth(clean_en(it["phrase"]), EN_VOICE, lines_dir / f"{i:02d}_target.mp3"))
-        add("thinking", label, it["picture"], it["thinking"],
-            await synth(clean_ko(it["thinking"]), KO_EXPLAIN_VOICE, lines_dir / f"{i:02d}_thinking.mp3"))
+        thinking_plain = strip_marks(it["thinking"])
+        if HANGUL.search(thinking_plain):  # 예전 한국어 풀이
+            think_seg = await synth(clean_ko(thinking_plain), KO_EXPLAIN_VOICE, lines_dir / f"{i:02d}_thinking.mp3")
+        else:  # Think in English — 원어민 음성으로
+            think_seg = await synth(thinking_plain, EN_VOICE, lines_dir / f"{i:02d}_thinking.mp3")
+        add("thinking", label, it["picture"], marks_to_html(it["thinking"]), think_seg)
         add("meaning", label, "", it["meaning"],
             await synth(clean_ko(it["meaning"]), KO_VOICE, lines_dir / f"{i:02d}_meaning.mp3"))
 
@@ -152,7 +169,7 @@ async def build(parts: list[dict], part_num: int) -> None:
         "__PAGE_TITLE__": title,
         "__EYEBROW__": f"영어식 사고 · {part['series']} · {part['series_part']}/{part['series_total']}",
         "__H1__": title,
-        "__SUBLINE__": "표현을 듣고 → 영어식 사고 풀이(그림) → 뜻 → 예문(영어·해석·영어·영어) 순서로 익혀요. 줄을 탭하면 그 지점부터 다시 들을 수 있어요.",
+        "__SUBLINE__": "표현 → Think in English(원어민 설명, 빨간 글씨가 핵심) → 뜻 → 예문(영어·해석·영어·영어) 순서로 익혀요. 줄을 탭하면 그 지점부터 다시 들을 수 있어요.",
         "__EPISODE_TITLE__": f"{len(items)}개 표현",
         "__ITEM_COUNT__": str(len(items)),
         "__DURATION_NOTE__": f"{duration_min:.1f}분",
