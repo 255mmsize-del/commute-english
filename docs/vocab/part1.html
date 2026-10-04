@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>숙어 Part 1 · 영어 숙어 공부</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap" />
+<style>
+  :root {
+    --bg: #f2f4f6;
+    --surface: #ffffff;
+    --surface-2: #e7ebee;
+    --border: #d7dde2;
+    --text: #1b2430;
+    --text-muted: #5b6773;
+    --accent: #3d6bb3;
+    --accent-ink: #ffffff;
+    --target: #2a5aa0;
+    --meaning: #1f8a7d;
+    --example: #6b6f76;
+    --example-alt: #8a4fc2;
+    --current-bg: #e7eefb;
+    --shadow: 0 1px 2px rgba(20, 26, 33, 0.06), 0 8px 24px rgba(20, 26, 33, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121820;
+      --surface: #1a2229;
+      --surface-2: #212a33;
+      --border: #2c3742;
+      --text: #edf1f4;
+      --text-muted: #93a1ac;
+      --accent: #6f9ceb;
+      --accent-ink: #0d1520;
+      --target: #7aa8ef;
+      --meaning: #63d9c8;
+      --example: #9aa2ab;
+      --example-alt: #c298f0;
+      --current-bg: #1b2a3f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #121820;
+    --surface: #1a2229;
+    --surface-2: #212a33;
+    --border: #2c3742;
+    --text: #edf1f4;
+    --text-muted: #93a1ac;
+    --accent: #6f9ceb;
+    --accent-ink: #0d1520;
+    --target: #7aa8ef;
+    --meaning: #63d9c8;
+    --example: #9aa2ab;
+    --current-bg: #1b2a3f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Sora", "Noto Sans KR", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 18px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  header.masthead { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-family: "Sora", sans-serif; font-size: 26px; font-weight: 700; margin: 0; text-wrap: balance; }
+  .subline { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+  .part-nav {
+    display: flex; gap: 8px; flex-wrap: wrap; font-size: 13px;
+  }
+  .part-nav a, .part-nav span {
+    padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); text-decoration: none; color: var(--text-muted);
+  }
+  .part-nav a.current, .part-nav span.current { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 12px;
+    z-index: 5;
+  }
+
+  .episode-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .episode-title { font-weight: 600; font-size: 15px; }
+  .episode-meta { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .scrubber {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px;
+    background: var(--surface-2); cursor: pointer; accent-color: var(--accent);
+  }
+  .scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .controls-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
+  .icon-btn {
+    background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
+    width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 15px; transition: transform 0.12s ease, background 0.12s ease;
+  }
+  .icon-btn:hover { background: var(--current-bg); }
+  .icon-btn:active { transform: scale(0.94); }
+  .icon-btn.play { width: 60px; height: 60px; background: var(--accent); color: var(--accent-ink); border: none; font-size: 20px; }
+  .icon-btn:focus-visible, .rate-btn:focus-visible, .line:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .rate-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .rate-btn {
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text-muted);
+    font-family: "Sora", sans-serif; font-weight: 600; font-size: 13px; padding: 7px 13px; border-radius: 999px;
+    cursor: pointer; font-variant-numeric: tabular-nums;
+  }
+  .rate-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+  .transcript-heading { display: flex; align-items: center; justify-content: space-between; }
+  .transcript-heading h2 { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin: 0; }
+  .legend { display: flex; gap: 12px; font-size: 12px; color: var(--text-muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.target { background: var(--target); }
+  .dot.meaning { background: var(--meaning); }
+  .dot.example { background: var(--example); }
+
+  .transcript { display: flex; flex-direction: column; gap: 10px; }
+  .item-num {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--text);
+    padding: 14px 2px 0; border-top: 1px solid var(--border); margin-top: 4px;
+  }
+  .item-num:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+  .line {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: start; gap: 12px;
+    padding: 12px 14px; border-radius: 14px; border: 1px solid transparent; cursor: pointer;
+    background: transparent; text-align: left; font-family: inherit; color: inherit;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .line:hover { background: var(--surface-2); }
+  .line.current { background: var(--current-bg); border-color: var(--accent); }
+
+  .role { font-size: 11px; font-weight: 700; letter-spacing: 0.03em; padding-top: 3px; }
+  .role.target { color: var(--target); }
+  .role.meaning { color: var(--meaning); }
+  .role.example { color: var(--example); }
+  .role.example_alt { color: var(--example-alt); }
+
+  .alt-toggle {
+    display: flex; align-items: center; gap: 6px; margin: 2px 14px 2px 56px;
+    padding: 7px 12px; border-radius: 999px; border: 1px dashed var(--example-alt);
+    background: transparent; color: var(--example-alt); font-size: 12.5px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .alt-toggle:hover { background: color-mix(in srgb, var(--example-alt) 12%, transparent); }
+  .alt-toggle .chev { transition: transform 0.15s ease; }
+  .alt-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+  .alt-group { display: flex; flex-direction: column; gap: 10px; }
+  .alt-group[hidden] { display: none; }
+  .line.alt-row { border: 1px dashed var(--border); }
+
+  .text-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .en { font-family: "Literata", "Noto Serif KR", serif; font-size: 15.5px; line-height: 1.5; }
+  .ko { font-family: "Noto Sans KR", sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+
+  .replay-btn {
+    align-self: center; background: none; border: none; color: var(--text-muted); font-size: 16px;
+    cursor: pointer; padding: 4px; border-radius: 8px; opacity: 0.55;
+  }
+  .line:hover .replay-btn, .line.current .replay-btn { opacity: 1; color: var(--accent); }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 12px; padding-top: 8px; }
+
+  @media (max-width: 420px) {
+    .line { grid-template-columns: 44px 1fr auto; }
+    .role { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">영어 숙어·문장 공부 · Part 1</div>
+    <h1>숙어 Part 1</h1>
+    <p class="subline">표현을 듣고 뜻과 예문 3개까지 익혀보세요. 문장이 끝나면 3초 후 다음 문장으로 넘어갑니다. 예문이 익숙해지면 항목마다 '다른 패턴' 버튼으로 새 예문을 들을 수 있어요.</p>
+  </header>
+
+  <nav class="part-nav"><span class="current">Part 1</span>
+<a href="part2.html">Part 2</a>
+<a href="part3.html">Part 3</a>
+<a href="part4.html">Part 4</a>
+<a href="part5.html">Part 5</a>
+<a href="part6.html">Part 6</a>
+<a href="part7.html">Part 7</a>
+<a href="part8.html">Part 8</a>
+<a href="part9.html">Part 9</a>
+<a href="part10.html">Part 10</a></nav>
+
+  <div class="player">
+    <audio id="audio" preload="metadata" src="audio/part1.mp3"></audio>
+
+    <div class="episode-row">
+      <span class="episode-title">30개 표현</span>
+      <span class="episode-meta"><span id="curTime">0:00</span> / <span id="durTime">--:--</span></span>
+    </div>
+
+    <input type="range" class="scrubber" id="scrubber" min="0" max="1000" value="0" aria-label="재생 위치" />
+
+    <div class="controls-row">
+      <button class="icon-btn" id="restartBtn" title="처음부터" aria-label="처음부터 다시 듣기">⏮</button>
+      <button class="icon-btn" id="rewindBtn" title="10초 뒤로" aria-label="10초 뒤로">⟲10</button>
+      <button class="icon-btn play" id="playBtn" aria-label="재생">▶</button>
+      <button class="icon-btn" id="forwardBtn" title="10초 앞으로" aria-label="10초 앞으로">10⟳</button>
+    </div>
+
+    <div class="rate-row" role="group" aria-label="재생 속도">
+      <button class="rate-btn" data-rate="0.75" aria-pressed="false">0.75×</button>
+      <button class="rate-btn" data-rate="1" aria-pressed="true">1.0×</button>
+      <button class="rate-btn" data-rate="1.25" aria-pressed="false">1.25×</button>
+      <button class="rate-btn" data-rate="1.5" aria-pressed="false">1.5×</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="transcript-heading">
+      <h2>표현 &amp; 예문 (30개)</h2>
+      <div class="legend">
+        <span><i class="dot target"></i>표현</span>
+        <span><i class="dot meaning"></i>뜻</span>
+        <span><i class="dot example"></i>예문</span>
+      </div>
+    </div>
+    <div class="transcript" id="transcript"></div>
+  </section>
+
+  <nav class="part-nav"><span class="current">Part 1</span>
+<a href="part2.html">Part 2</a>
+<a href="part3.html">Part 3</a>
+<a href="part4.html">Part 4</a>
+<a href="part5.html">Part 5</a>
+<a href="part6.html">Part 6</a>
+<a href="part7.html">Part 7</a>
+<a href="part8.html">Part 8</a>
+<a href="part9.html">Part 9</a>
+<a href="part10.html">Part 10</a></nav>
+
+  <footer>문장을 탭하면 그 지점부터 다시 재생됩니다 · 32.9분 · 안 외워지는 표현은 탭해서 반복 재생하세요</footer>
+</div>
+
+<script>
+  const TRANSCRIPT = [{"item": "1. have been + 장소 (No.3)", "role": "target", "ex_index": 0, "en": "have been + 장소", "ko": "", "start_ms": 0, "end_ms": 1992}, {"item": "1. have been + 장소 (No.3)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~에 가본 적이 있다 (경험)", "start_ms": 4992, "end_ms": 8088}, {"item": "1. have been + 장소 (No.3)", "role": "example", "ex_index": 1, "en": "Have you ever been to London?", "ko": "런던에 가본 적이 있나요?", "start_ms": 11088, "end_ms": 22704}, {"item": "1. have been + 장소 (No.3)", "role": "example", "ex_index": 2, "en": "She has been to Japan three times this year.", "ko": "그녀는 올해 일본에 세 번 다녀왔어요.", "start_ms": 25704, "end_ms": 40416}, {"item": "1. have been + 장소 (No.3)", "role": "example", "ex_index": 3, "en": "We have never been to that restaurant before.", "ko": "우리는 그 식당에 가본 적이 한 번도 없어요.", "start_ms": 43416, "end_ms": 57264}, {"item": "1. have been + 장소 (No.3)", "role": "example_alt", "ex_index": 1, "en": "My brother has been in the library all morning preparing for his final exam.", "ko": "내 남동생은 기말고사 준비를 하느라 오전 내내 도서관에 있었다.", "start_ms": 1974552, "end_ms": 1993296}, {"item": "1. have been + 장소 (No.3)", "role": "example_alt", "ex_index": 2, "en": "I have been to the new community center twice to sign up for the yoga class.", "ko": "나는 요가 수업을 등록하기 위해 그 새로운 주민 센터에 두 번 다녀왔다.", "start_ms": 1996296, "end_ms": 2014608}, {"item": "2. have been + p.p. (No.4)", "role": "target", "ex_index": 0, "en": "have been + p.p.", "ko": "", "start_ms": 60264, "end_ms": 62136}, {"item": "2. have been + p.p. (No.4)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~되어 왔다", "start_ms": 65136, "end_ms": 67032}, {"item": "2. have been + p.p. (No.4)", "role": "example", "ex_index": 1, "en": "Has the report been submitted yet?", "ko": "보고서는 이미 제출되었나요?", "start_ms": 70032, "end_ms": 82152}, {"item": "2. have been + p.p. (No.4)", "role": "example", "ex_index": 2, "en": "The windows have been cleaned already.", "ko": "창문은 이미 닦였어요.", "start_ms": 85152, "end_ms": 97776}, {"item": "2. have been + p.p. (No.4)", "role": "example", "ex_index": 3, "en": "This song has been played on the radio all day.", "ko": "이 노래는 하루 종일 라디오에서 나왔어요.", "start_ms": 100776, "end_ms": 115776}, {"item": "2. have been + p.p. (No.4)", "role": "example_alt", "ex_index": 1, "en": "Several innovative solutions have been proposed by the research team to address the climate crisis.", "ko": "기후 위기를 해결하기 위해 연구팀에 의해 몇 가지 혁신적인 해결책들이 제안되어 왔다.", "start_ms": 2017608, "end_ms": 2039880}, {"item": "2. have been + p.p. (No.4)", "role": "example_alt", "ex_index": 2, "en": "My original travel plans have been completely disrupted by the unexpected flight cancellation.", "ko": "예상치 못한 항공편 취소로 인해 나의 원래 여행 계획이 완전히 틀어지고 말았다.", "start_ms": 2042880, "end_ms": 2065224}, {"item": "3. have been + -ing (No.5)", "role": "target", "ex_index": 0, "en": "have been + -ing", "ko": "", "start_ms": 118776, "end_ms": 120744}, {"item": "3. have been + -ing (No.5)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(과거부터 현재까지) 계속 ~해 오고 있다", "start_ms": 123744, "end_ms": 127656}, {"item": "3. have been + -ing (No.5)", "role": "example", "ex_index": 1, "en": "You look exhausted. What have you been doing?", "ko": "너 엄청 지쳐 보인다. 그동안 뭐 하고 있었어?", "start_ms": 130656, "end_ms": 144936}, {"item": "3. have been + -ing (No.5)", "role": "example", "ex_index": 2, "en": "I have been studying English for two years.", "ko": "저는 2년째 영어를 공부하고 있어요.", "start_ms": 147936, "end_ms": 161784}, {"item": "3. have been + -ing (No.5)", "role": "example", "ex_index": 3, "en": "They have been waiting outside for an hour.", "ko": "그들은 한 시간째 밖에서 기다리고 있어요.", "start_ms": 164784, "end_ms": 176904}, {"item": "3. have been + -ing (No.5)", "role": "example_alt", "ex_index": 1, "en": "The economy has been struggling significantly due to the unexpected global supply chain disruptions.", "ko": "예상치 못한 글로벌 공급망 중단으로 인해 경제가 상당히 어려움을 겪어오고 있다.", "start_ms": 2068224, "end_ms": 2091648}, {"item": "3. have been + -ing (No.5)", "role": "example_alt", "ex_index": 2, "en": "My neighbors have been playing loud music late at night for the past week, and it is driving me crazy.", "ko": "지난주부터 이웃들이 밤늦게까지 큰 소리로 음악을 틀어놓고 있어서 미칠 지경이다.", "start_ms": 2094648, "end_ms": 2118144}, {"item": "4. put in (No.11)", "role": "target", "ex_index": 0, "en": "put in", "ko": "", "start_ms": 179904, "end_ms": 180792}, {"item": "4. put in (No.11)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(시간·노력을) 들이다", "start_ms": 183792, "end_ms": 186696}, {"item": "4. put in (No.11)", "role": "example", "ex_index": 1, "en": "How much time did you put in on this project?", "ko": "이 프로젝트에 시간을 얼마나 들였어?", "start_ms": 189696, "end_ms": 203184}, {"item": "4. put in (No.11)", "role": "example", "ex_index": 2, "en": "He put in a lot of effort to pass the exam.", "ko": "그는 시험에 합격하려고 많은 노력을 들였어요.", "start_ms": 206184, "end_ms": 219960}, {"item": "4. put in (No.11)", "role": "example", "ex_index": 3, "en": "Did you put in your vacation request yet?", "ko": "휴가 신청서는 이미 제출했나요?", "start_ms": 222960, "end_ms": 235728}, {"item": "4. put in (No.11)", "role": "example_alt", "ex_index": 1, "en": "The technicians had to put in a new heating system before the winter arrived.", "ko": "기술자들은 겨울이 오기 전에 새로운 난방 시스템을 설치해야 했다.", "start_ms": 2121144, "end_ms": 2139888}, {"item": "4. put in (No.11)", "role": "example_alt", "ex_index": 2, "en": "I managed to put in a quick word about the promotion during the meeting.", "ko": "나는 회의 중에 승진에 관한 말을 살짝 끼워 넣는 데 성공했다.", "start_ms": 2142888, "end_ms": 2159184}, {"item": "5. put in ( ) hours (No.13)", "role": "target", "ex_index": 0, "en": "put in ( ) hours", "ko": "", "start_ms": 238728, "end_ms": 240720}, {"item": "5. put in ( ) hours (No.13)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(~시간을) 일하다", "start_ms": 243720, "end_ms": 246360}, {"item": "5. put in ( ) hours (No.13)", "role": "example", "ex_index": 1, "en": "I put in 12 hours at the office yesterday to finish the project.", "ko": "프로젝트를 끝내려고 어제 사무실에서 12시간이나 일했거든.", "start_ms": 249360, "end_ms": 267240}, {"item": "5. put in ( ) hours (No.13)", "role": "example", "ex_index": 2, "en": "She puts in eight hours a day at the office.", "ko": "그녀는 하루에 8시간을 사무실에서 일해요.", "start_ms": 270240, "end_ms": 284160}, {"item": "5. put in ( ) hours (No.13)", "role": "example", "ex_index": 3, "en": "We put in extra hours to finish the project on time.", "ko": "우리는 프로젝트를 제때 끝내려고 추가 시간을 일했어요.", "start_ms": 287160, "end_ms": 303456}, {"item": "5. put in ( ) hours (No.13)", "role": "example_alt", "ex_index": 1, "en": "Athletes must put in thousands of hours of practice to reach the professional level.", "ko": "운동선수들은 프로 수준에 도달하기 위해 수천 시간의 연습을 쏟아부어야 합니다.", "start_ms": 2162184, "end_ms": 2182584}, {"item": "5. put in ( ) hours (No.13)", "role": "example_alt", "ex_index": 2, "en": "Even with his busy schedule, he consistently puts in two hours of study every single evening.", "ko": "바쁜 일정 속에서도 그는 매일 저녁 빠짐없이 두 시간씩 공부에 공을 들입니다.", "start_ms": 2185584, "end_ms": 2209944}, {"item": "6. moved forward (No.32)", "role": "target", "ex_index": 0, "en": "moved forward", "ko": "", "start_ms": 306456, "end_ms": 308328}, {"item": "6. moved forward (No.32)", "role": "meaning", "ex_index": 0, "en": "", "ko": "앞으로 나아가다", "start_ms": 311328, "end_ms": 313728}, {"item": "6. moved forward (No.32)", "role": "example", "ex_index": 1, "en": "Yes, we have moved forward with the initial phase.", "ko": "네, 초기 단계를 추진하기 시작했어요.", "start_ms": 316728, "end_ms": 331728}, {"item": "6. moved forward (No.32)", "role": "example", "ex_index": 2, "en": "The company decided to move forward with the merger.", "ko": "그 회사는 합병을 추진하기로 결정했어요.", "start_ms": 334728, "end_ms": 349584}, {"item": "6. moved forward (No.32)", "role": "example", "ex_index": 3, "en": "Let's move forward and finalize the schedule.", "ko": "이제 진행해서 일정을 확정합시다.", "start_ms": 352584, "end_ms": 368304}, {"item": "6. moved forward (No.32)", "role": "example_alt", "ex_index": 1, "en": "Despite the painful breakup last year, she has finally moved forward and started seeing someone new.", "ko": "작년에 겪은 가슴 아픈 이별에도 불구하고, 그녀는 마침내 과거를 극복하고 새로운 사람을 만나기 시작했다.", "start_ms": 2212944, "end_ms": 2238456}, {"item": "6. moved forward (No.32)", "role": "example_alt", "ex_index": 2, "en": "The research team moved forward on the development of the vaccine after receiving the green light from the committee.", "ko": "연구팀은 위원회로부터 승인을 받은 후 백신 개발을 본격적으로 추진했다.", "start_ms": 2241456, "end_ms": 2264808}, {"item": "7. come up (No.35)", "role": "target", "ex_index": 0, "en": "come up", "ko": "", "start_ms": 371304, "end_ms": 373176}, {"item": "7. come up (No.35)", "role": "meaning", "ex_index": 0, "en": "", "ko": "나타나다, 나오다", "start_ms": 376176, "end_ms": 379848}, {"item": "7. come up (No.35)", "role": "example", "ex_index": 1, "en": "Did the topic of the budget come up in the meeting?", "ko": "회의에서 예산 문제가 언급됐나요?", "start_ms": 382848, "end_ms": 396552}, {"item": "7. come up (No.35)", "role": "example", "ex_index": 2, "en": "His name came up during the discussion.", "ko": "논의 중에 그의 이름이 언급됐어요.", "start_ms": 399552, "end_ms": 412392}, {"item": "7. come up (No.35)", "role": "example", "ex_index": 3, "en": "Something urgent came up, so I have to leave early.", "ko": "급한 일이 생겨서 일찍 가봐야 해요.", "start_ms": 415392, "end_ms": 431112}, {"item": "7. come up (No.35)", "role": "example_alt", "ex_index": 1, "en": "The date for the annual conference is coming up fast, so we need to finalize the schedule.", "ko": "연례 회의 날짜가 빠르게 다가오고 있어서, 우리는 일정을 확정 지어야 합니다.", "start_ms": 2267808, "end_ms": 2288856}, {"item": "7. come up (No.35)", "role": "example_alt", "ex_index": 2, "en": "A new opportunity came up unexpectedly, and she decided to take the risk.", "ko": "예상치 못하게 새로운 기회가 생겨서, 그녀는 위험을 감수하기로 마음먹었습니다.", "start_ms": 2291856, "end_ms": 2313480}, {"item": "8. be about to (No.43)", "role": "target", "ex_index": 0, "en": "be about to", "ko": "", "start_ms": 434112, "end_ms": 435984}, {"item": "8. be about to (No.43)", "role": "meaning", "ex_index": 0, "en": "", "ko": "막 ~하려고 하다", "start_ms": 438984, "end_ms": 441312}, {"item": "8. be about to (No.43)", "role": "example", "ex_index": 1, "en": "Yes, I was just about to head out for dinner.", "ko": "벌써 가려고?", "start_ms": 444312, "end_ms": 457440}, {"item": "8. be about to (No.43)", "role": "example", "ex_index": 2, "en": "I was about to call you when you texted me.", "ko": "네가 문자를 보냈을 때 마침 전화하려던 참이었어요.", "start_ms": 460440, "end_ms": 473640}, {"item": "8. be about to (No.43)", "role": "example", "ex_index": 3, "en": "The movie is about to start, so hurry up.", "ko": "영화가 곧 시작하니까 서둘러요.", "start_ms": 476640, "end_ms": 491712}, {"item": "8. be about to (No.43)", "role": "example_alt", "ex_index": 1, "en": "The company is about to undergo a major restructuring to improve efficiency.", "ko": "그 회사는 효율성을 높이기 위해 대대적인 구조 조정을 단행하려 한다.", "start_ms": 2316480, "end_ms": 2335800}, {"item": "8. be about to (No.43)", "role": "example_alt", "ex_index": 2, "en": "I was about to give up on the project, but then I found the missing data.", "ko": "그 프로젝트를 포기하려던 참이었는데, 그때 마침 누락된 데이터를 발견했다.", "start_ms": 2338800, "end_ms": 2357256}, {"item": "9. apply A to B (No.44)", "role": "target", "ex_index": 0, "en": "apply A to B", "ko": "", "start_ms": 494712, "end_ms": 496752}, {"item": "9. apply A to B (No.44)", "role": "meaning", "ex_index": 0, "en": "", "ko": "A를 B에 적용하다", "start_ms": 499752, "end_ms": 502296}, {"item": "9. apply A to B (No.44)", "role": "example", "ex_index": 1, "en": "Just apply a little antibiotic ointment to the wound.", "ko": "상처 부위에 항생제 연고를 조금 바르면 돼.", "start_ms": 505296, "end_ms": 521448}, {"item": "9. apply A to B (No.44)", "role": "example", "ex_index": 2, "en": "Please apply this cream to the affected area twice a day.", "ko": "이 크림을 하루에 두 번 환부에 발라주세요.", "start_ms": 524448, "end_ms": 540672}, {"item": "9. apply A to B (No.44)", "role": "example", "ex_index": 3, "en": "We should apply the same rules to everyone equally.", "ko": "우리는 모두에게 동일한 규칙을 적용해야 해요.", "start_ms": 543672, "end_ms": 559752}, {"item": "9. apply A to B (No.44)", "role": "example_alt", "ex_index": 1, "en": "The manager decided to apply the surplus funds to the company's long-term debt.", "ko": "관리자는 잉여 자금을 회사의 장기 부채를 갚는 데 사용하기로 결정했다.", "start_ms": 2360256, "end_ms": 2380368}, {"item": "9. apply A to B (No.44)", "role": "example_alt", "ex_index": 2, "en": "You need to apply the theoretical knowledge from your studies to real-world business challenges.", "ko": "당신은 학업에서 얻은 이론적 지식을 실제 비즈니스 과제에 적용해야 합니다.", "start_ms": 2383368, "end_ms": 2404200}, {"item": "10. come clean (No.47)", "role": "target", "ex_index": 0, "en": "come clean", "ko": "", "start_ms": 562752, "end_ms": 564624}, {"item": "10. come clean (No.47)", "role": "meaning", "ex_index": 0, "en": "", "ko": "솔직하게 털어놓다", "start_ms": 567624, "end_ms": 570168}, {"item": "10. come clean (No.47)", "role": "example", "ex_index": 1, "en": "I know you were the one who broke the vase, so you'd better come clean.", "ko": "네가 꽃병을 깬 사람이라는 거 알아, 그러니까 솔직하게 털어놓는 게 좋을 거야.", "start_ms": 573168, "end_ms": 590040}, {"item": "10. come clean (No.47)", "role": "example", "ex_index": 2, "en": "He finally came clean about lying to his boss.", "ko": "그는 결국 상사에게 거짓말한 것을 솔직히 털어놓았어요.", "start_ms": 593040, "end_ms": 608472}, {"item": "10. come clean (No.47)", "role": "example", "ex_index": 3, "en": "It's better to come clean now than to get caught later.", "ko": "나중에 들키는 것보다 지금 솔직히 말하는 게 나아요.", "start_ms": 611472, "end_ms": 626400}, {"item": "10. come clean (No.47)", "role": "example_alt", "ex_index": 1, "en": "The corporate whistleblower decided to come clean regarding the internal financial discrepancies before the audit began.", "ko": "그 회사 내부 고발자는 감사가 시작되기 전에 내부 재정 불일치 문제에 대해 솔직하게 털어놓기로 결심했다.", "start_ms": 2407200, "end_ms": 2432856}, {"item": "10. come clean (No.47)", "role": "example_alt", "ex_index": 2, "en": "If you are struggling with the guilt of your secret, coming clean might be the only way to find peace of mind.", "ko": "만약 당신이 비밀에 대한 죄책감으로 괴로워하고 있다면, 모든 것을 밝히는 것이 마음의 평화를 찾을 수 있는 유일한 방법일지도 모른다.", "start_ms": 2435856, "end_ms": 2460216}, {"item": "11. come true (No.48)", "role": "target", "ex_index": 0, "en": "come true", "ko": "", "start_ms": 629400, "end_ms": 631272}, {"item": "11. come true (No.48)", "role": "meaning", "ex_index": 0, "en": "", "ko": "실현되다", "start_ms": 634272, "end_ms": 636336}, {"item": "11. come true (No.48)", "role": "example", "ex_index": 1, "en": "Do you think you will ever become a pilot?", "ko": "너는 언젠가 파일럿이 될 수 있을 거라고 생각해?", "start_ms": 639336, "end_ms": 652104}, {"item": "11. come true (No.48)", "role": "example", "ex_index": 2, "en": "Her wish finally came true after years of hard work.", "ko": "수년간의 노력 끝에 그녀의 소원이 마침내 이루어졌어요.", "start_ms": 655104, "end_ms": 673056}, {"item": "11. come true (No.48)", "role": "example", "ex_index": 3, "en": "If you keep trying, your dreams can come true.", "ko": "계속 노력하면 꿈은 이루어질 수 있어요.", "start_ms": 676056, "end_ms": 690984}, {"item": "11. come true (No.48)", "role": "example_alt", "ex_index": 1, "en": "It felt surreal to see my childhood dream of publishing a novel finally come true.", "ko": "어린 시절 소설가가 되겠다는 꿈이 마침내 실현되는 것을 보니 비현실적으로 느껴졌다.", "start_ms": 2463216, "end_ms": 2484336}, {"item": "11. come true (No.48)", "role": "example_alt", "ex_index": 2, "en": "Winning the championship was a vision that came true thanks to the team's relentless dedication.", "ko": "우승은 팀의 끊임없는 헌신 덕분에 이루어진 비전이었다.", "start_ms": 2487336, "end_ms": 2511696}, {"item": "12. keep up (No.52)", "role": "target", "ex_index": 0, "en": "keep up", "ko": "", "start_ms": 693984, "end_ms": 695856}, {"item": "12. keep up (No.52)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(속도, 수준 등에) 뒤지지 않다", "start_ms": 698856, "end_ms": 702744}, {"item": "12. keep up (No.52)", "role": "example", "ex_index": 1, "en": "The lecture is moving too fast. I can't keep up with the professor.", "ko": "강의 진도가 너무 빨라. 교수님 속도를 따라갈 수가 없어.", "start_ms": 705744, "end_ms": 725136}, {"item": "12. keep up (No.52)", "role": "example", "ex_index": 2, "en": "You need to run faster to keep up with the group.", "ko": "그룹을 따라가려면 더 빨리 뛰어야 해요.", "start_ms": 728136, "end_ms": 741840}, {"item": "12. keep up (No.52)", "role": "example", "ex_index": 3, "en": "It's hard to keep up with all the new technology.", "ko": "새로운 기술을 다 따라가기가 힘들어요.", "start_ms": 744840, "end_ms": 759264}, {"item": "12. keep up (No.52)", "role": "example_alt", "ex_index": 1, "en": "Despite the late hour, they managed to keep up their intense conversation until dawn.", "ko": "늦은 시간이었음에도 불구하고, 그들은 새벽까지 열띤 대화를 계속 이어갔다.", "start_ms": 2514696, "end_ms": 2536104}, {"item": "12. keep up (No.52)", "role": "example_alt", "ex_index": 2, "en": "I drank three cups of coffee just to keep up during the long overnight shift.", "ko": "나는 긴 야간 근무 시간 동안 잠들지 않고 깨어 있기 위해 커피를 세 잔이나 마셨다.", "start_ms": 2539104, "end_ms": 2559432}, {"item": "13. for weeks at a time (No.65)", "role": "target", "ex_index": 0, "en": "for weeks at a time", "ko": "", "start_ms": 762264, "end_ms": 764136}, {"item": "13. for weeks at a time (No.65)", "role": "meaning", "ex_index": 0, "en": "", "ko": "몇 주 동안 계속해서", "start_ms": 767136, "end_ms": 769680}, {"item": "13. for weeks at a time (No.65)", "role": "example", "ex_index": 1, "en": "It's peaceful. I don't see another human for weeks at a time.", "ko": "평화롭거든요. 한 번씩 몇 주 동안은 다른 사람을 아무도 못 봐요.", "start_ms": 772680, "end_ms": 790344}, {"item": "13. for weeks at a time (No.65)", "role": "example", "ex_index": 2, "en": "He travels for work and is away for weeks at a time.", "ko": "그는 출장을 다니느라 한 번에 몇 주씩 집을 비워요.", "start_ms": 793344, "end_ms": 810288}, {"item": "13. for weeks at a time (No.65)", "role": "example", "ex_index": 3, "en": "The road was closed for weeks at a time last winter.", "ko": "지난 겨울 그 도로는 한 번에 몇 주씩 폐쇄되었어요.", "start_ms": 813288, "end_ms": 828864}, {"item": "13. for weeks at a time (No.65)", "role": "example_alt", "ex_index": 1, "en": "My grandmother keeps her curtains drawn for weeks at a time when she is feeling under the weather.", "ko": "우리 할머니는 몸 상태가 좋지 않으실 때는 몇 주씩 계속해서 커튼을 쳐두시곤 한다.", "start_ms": 2562432, "end_ms": 2585568}, {"item": "13. for weeks at a time (No.65)", "role": "example_alt", "ex_index": 2, "en": "Due to the unpredictable supply chain, our factory has been sitting idle for weeks at a time.", "ko": "예측할 수 없는 공급망 문제로 인해 우리 공장은 한 번에 수 주씩 가동이 중단된 상태였다.", "start_ms": 2588568, "end_ms": 2612064}, {"item": "14. go for it (No.68)", "role": "target", "ex_index": 0, "en": "go for it", "ko": "", "start_ms": 831864, "end_ms": 833736}, {"item": "14. go for it (No.68)", "role": "meaning", "ex_index": 0, "en": "", "ko": "한번 해봐", "start_ms": 836736, "end_ms": 838680}, {"item": "14. go for it (No.68)", "role": "example", "ex_index": 1, "en": "I'm really nervous about auditioning for the play.", "ko": "연극 오디션을 보는 게 정말 떨려.", "start_ms": 841680, "end_ms": 856104}, {"item": "14. go for it (No.68)", "role": "example", "ex_index": 2, "en": "If you really want the job, just go for it.", "ko": "정말 그 일을 원한다면, 그냥 도전해봐요.", "start_ms": 859104, "end_ms": 872664}, {"item": "14. go for it (No.68)", "role": "example", "ex_index": 3, "en": "She decided to go for it and start her own business.", "ko": "그녀는 도전해보기로 결심하고 자기 사업을 시작했어요.", "start_ms": 875664, "end_ms": 891744}, {"item": "14. go for it (No.68)", "role": "example_alt", "ex_index": 1, "en": "I was hesitant to apply for the overseas volunteer program, but my mentor told me to go for it.", "ko": "해외 봉사 프로그램에 지원하는 것을 망설였지만, 멘토께서 한번 도전해 보라고 말씀하셨다.", "start_ms": 2615064, "end_ms": 2637120}, {"item": "14. go for it (No.68)", "role": "example_alt", "ex_index": 2, "en": "Since there is no better opportunity than this to showcase your talent, you should definitely go for it.", "ko": "당신의 재능을 보여주기에 이보다 더 좋은 기회는 없으니, 무조건 시도해 보는 것이 좋겠다.", "start_ms": 2640120, "end_ms": 2664120}, {"item": "15. be glad to (No.72)", "role": "target", "ex_index": 0, "en": "be glad to", "ko": "", "start_ms": 894744, "end_ms": 896616}, {"item": "15. be glad to (No.72)", "role": "meaning", "ex_index": 0, "en": "", "ko": "기꺼이 ~하다", "start_ms": 899616, "end_ms": 901872}, {"item": "15. be glad to (No.72)", "role": "example", "ex_index": 1, "en": "I'd be glad to help you with that.", "ko": "기꺼이 도와드릴게요.", "start_ms": 904872, "end_ms": 916992}, {"item": "15. be glad to (No.72)", "role": "example", "ex_index": 2, "en": "I'd be glad to answer any questions you have.", "ko": "궁금한 점 있으면 기꺼이 답해드릴게요.", "start_ms": 919992, "end_ms": 934200}, {"item": "15. be glad to (No.72)", "role": "example", "ex_index": 3, "en": "We were glad to see everyone at the reunion.", "ko": "우리는 동창회에서 모두를 만나서 기뻤어요.", "start_ms": 937200, "end_ms": 951120}, {"item": "15. be glad to (No.72)", "role": "example_alt", "ex_index": 1, "en": "She was glad to find that her hard work had finally paid off with a promotion.", "ko": "그녀는 자신의 노력이 결국 승진이라는 성과로 이어졌다는 사실을 알고 기뻐했다.", "start_ms": 2667120, "end_ms": 2686584}, {"item": "15. be glad to (No.72)", "role": "example_alt", "ex_index": 2, "en": "I would be glad to offer you a ride home if you don't mind waiting a few minutes.", "ko": "몇 분 정도 기다려도 괜찮으시다면 기꺼이 집까지 차로 태워다 드릴게요.", "start_ms": 2689584, "end_ms": 2707248}, {"item": "16. in the end (No.85)", "role": "target", "ex_index": 0, "en": "in the end", "ko": "", "start_ms": 954120, "end_ms": 955992}, {"item": "16. in the end (No.85)", "role": "meaning", "ex_index": 0, "en": "", "ko": "결국", "start_ms": 958992, "end_ms": 960864}, {"item": "16. in the end (No.85)", "role": "example", "ex_index": 1, "en": "I know, but you did a great job and it paid off in the end.", "ko": "알아, 그래도 네가 정말 잘 해냈고 결국 다 보상받은 거야.", "start_ms": 963864, "end_ms": 981816}, {"item": "16. in the end (No.85)", "role": "example", "ex_index": 2, "en": "In the end, they decided to cancel the trip.", "ko": "결국 그들은 여행을 취소하기로 했어요.", "start_ms": 984816, "end_ms": 1000392}, {"item": "16. in the end (No.85)", "role": "example", "ex_index": 3, "en": "In the end, everything worked out just fine.", "ko": "결국 모든 게 다 잘 풀렸어요.", "start_ms": 1003392, "end_ms": 1017960}, {"item": "16. in the end (No.85)", "role": "example_alt", "ex_index": 1, "en": "Despite the fierce competition, their innovative startup succeeded in the end.", "ko": "치열한 경쟁에도 불구하고 그들의 혁신적인 스타트업은 결국 성공했다.", "start_ms": 2710248, "end_ms": 2730504}, {"item": "16. in the end (No.85)", "role": "example_alt", "ex_index": 2, "en": "I spent hours searching for the missing documents and found them in the end.", "ko": "나는 사라진 서류들을 찾느라 몇 시간을 보냈고 결국 그것들을 찾아냈다.", "start_ms": 2733504, "end_ms": 2751888}, {"item": "17. take a nap (No.86)", "role": "target", "ex_index": 0, "en": "take a nap", "ko": "", "start_ms": 1020960, "end_ms": 1022832}, {"item": "17. take a nap (No.86)", "role": "meaning", "ex_index": 0, "en": "", "ko": "낮잠을 자다", "start_ms": 1025832, "end_ms": 1027896}, {"item": "17. take a nap (No.86)", "role": "example", "ex_index": 1, "en": "Why don't you take a nap for twenty minutes?", "ko": "20분 정도 낮잠을 자는 게 어때?", "start_ms": 1030896, "end_ms": 1045464}, {"item": "17. take a nap (No.86)", "role": "example", "ex_index": 2, "en": "I usually take a nap on Sunday afternoons.", "ko": "저는 보통 일요일 오후에 낮잠을 자요.", "start_ms": 1048464, "end_ms": 1062816}, {"item": "17. take a nap (No.86)", "role": "example", "ex_index": 3, "en": "The baby is taking a nap right now, so please be quiet.", "ko": "아기가 지금 낮잠을 자고 있으니 조용히 해주세요.", "start_ms": 1065816, "end_ms": 1083480}, {"item": "17. take a nap (No.86)", "role": "example_alt", "ex_index": 1, "en": "Exhausted from the long drive, he pulled over at a rest stop to take a nap.", "ko": "장시간 운전으로 피곤해진 그는 낮잠을 자기 위해 휴게소에 차를 세웠다.", "start_ms": 2754888, "end_ms": 2774856}, {"item": "17. take a nap (No.86)", "role": "example_alt", "ex_index": 2, "en": "If you don't take a quick nap, you might struggle to stay awake during the evening lecture.", "ko": "잠시 눈을 붙이지 않으면 저녁 강의 때 깨어 있기 힘들지도 몰라.", "start_ms": 2777856, "end_ms": 2796744}, {"item": "18. bear to (No.89)", "role": "target", "ex_index": 0, "en": "bear to", "ko": "", "start_ms": 1086480, "end_ms": 1088352}, {"item": "18. bear to (No.89)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(보통 부정문이나 의문문에서) ~을 견디다", "start_ms": 1091352, "end_ms": 1095528}, {"item": "18. bear to (No.89)", "role": "example", "ex_index": 1, "en": "I can't bear to see him in such pain.", "ko": "그가 그렇게 고통스러워하는 걸 차마 볼 수가 없어.", "start_ms": 1098528, "end_ms": 1112304}, {"item": "18. bear to (No.89)", "role": "example", "ex_index": 2, "en": "I can't bear to throw away his old letters.", "ko": "그의 오래된 편지를 차마 버릴 수가 없어요.", "start_ms": 1115304, "end_ms": 1129440}, {"item": "18. bear to (No.89)", "role": "example", "ex_index": 3, "en": "She couldn't bear to watch the sad ending of the movie.", "ko": "그녀는 그 영화의 슬픈 결말을 차마 볼 수 없었어요.", "start_ms": 1132440, "end_ms": 1148232}, {"item": "18. bear to (No.89)", "role": "example_alt", "ex_index": 1, "en": "How can you bear to stay in this noisy city for so long?", "ko": "어떻게 이렇게 시끄러운 도시에서 그렇게 오랫동안 견딜 수 있나요?", "start_ms": 2799744, "end_ms": 2817912}, {"item": "18. bear to (No.89)", "role": "example_alt", "ex_index": 2, "en": "I barely bear to think about the possibility of failing the exam again.", "ko": "시험에 다시 떨어질 가능성에 대해서는 차마 생각조차 하기 어렵습니다.", "start_ms": 2820912, "end_ms": 2839584}, {"item": "19. deaf ears (No.91)", "role": "target", "ex_index": 0, "en": "deaf ears", "ko": "", "start_ms": 1151232, "end_ms": 1153104}, {"item": "19. deaf ears (No.91)", "role": "meaning", "ex_index": 0, "en": "", "ko": "못 들은 척함", "start_ms": 1156104, "end_ms": 1158336}, {"item": "19. deaf ears (No.91)", "role": "example", "ex_index": 1, "en": "It seems like your pleas are falling on deaf ears.", "ko": "네 간청이 전혀 먹히질 않는 모양이네.", "start_ms": 1161336, "end_ms": 1176552}, {"item": "19. deaf ears (No.91)", "role": "example", "ex_index": 2, "en": "My warnings fell on deaf ears, and he made the same mistake again.", "ko": "제 경고는 무시당했고, 그는 또 같은 실수를 저질렀어요.", "start_ms": 1179552, "end_ms": 1199592}, {"item": "19. deaf ears (No.91)", "role": "example", "ex_index": 3, "en": "The manager's advice often falls on deaf ears among the new staff.", "ko": "매니저의 조언은 신입 직원들에게 종종 무시당해요.", "start_ms": 1202592, "end_ms": 1221192}, {"item": "19. deaf ears (No.91)", "role": "example_alt", "ex_index": 1, "en": "The politician's ambitious proposal to revitalize the downtown district fell on deaf ears during the heated city council meeting.", "ko": "도심 지역을 활성화하려는 그 정치인의 야심 찬 제안은 열띤 시의회 회의에서 철저히 무시당했다.", "start_ms": 2842584, "end_ms": 2870184}, {"item": "19. deaf ears (No.91)", "role": "example_alt", "ex_index": 2, "en": "Despite the mounting evidence of a potential market crash, the desperate warnings of the financial analyst fell on deaf ears of the investors.", "ko": "잠재적인 시장 붕괴에 대한 증거가 늘어남에도 불구하고, 그 금융 분석가의 절박한 경고는 투자자들에게 전혀 받아들여지지 않았다.", "start_ms": 2873184, "end_ms": 2905032}, {"item": "20. be hitting on (someone) (No.100)", "role": "target", "ex_index": 0, "en": "be hitting on (someone)", "ko": "", "start_ms": 1224192, "end_ms": 1226064}, {"item": "20. be hitting on (someone) (No.100)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(누군가에게) 추파를 던지다", "start_ms": 1229064, "end_ms": 1232328}, {"item": "20. be hitting on (someone) (No.100)", "role": "example", "ex_index": 1, "en": "I think he's hitting on me, but I'm not interested.", "ko": "나한테 작업 거는 것 같은데, 난 관심 없어.", "start_ms": 1235328, "end_ms": 1250904}, {"item": "20. be hitting on (someone) (No.100)", "role": "example", "ex_index": 2, "en": "I think that guy at the bar was hitting on you.", "ko": "바에 있던 그 남자가 너한테 작업 거는 것 같았어.", "start_ms": 1253904, "end_ms": 1267680}, {"item": "20. be hitting on (someone) (No.100)", "role": "example", "ex_index": 3, "en": "She gets annoyed when strangers hit on her at parties.", "ko": "그녀는 파티에서 낯선 사람들이 작업 걸면 짜증이 나요.", "start_ms": 1270680, "end_ms": 1286400}, {"item": "20. be hitting on (someone) (No.100)", "role": "example_alt", "ex_index": 1, "en": "My coworker kept hitting on me during the meeting, which made it impossible for me to focus on the presentation.", "ko": "내 직장 동료가 회의 내내 나에게 추파를 던져서 발표에 집중할 수가 없었다.", "start_ms": 2908032, "end_ms": 2931528}, {"item": "20. be hitting on (someone) (No.100)", "role": "example_alt", "ex_index": 2, "en": "Even though I told him I was married, he didn't stop hitting on me until I finally walked away.", "ko": "결혼했다고 말했는데도 그 사람은 내가 결국 자리를 뜰 때까지 나에게 계속 작업을 걸었다.", "start_ms": 2934528, "end_ms": 2957592}, {"item": "21. in a moment (No.101)", "role": "target", "ex_index": 0, "en": "in a moment", "ko": "", "start_ms": 1289400, "end_ms": 1291272}, {"item": "21. in a moment (No.101)", "role": "meaning", "ex_index": 0, "en": "", "ko": "곧, 잠시 후에", "start_ms": 1294272, "end_ms": 1296768}, {"item": "21. in a moment (No.101)", "role": "example", "ex_index": 1, "en": "Sure, I'll be there in a moment.", "ko": "응, 금방 갈게.", "start_ms": 1299768, "end_ms": 1312536}, {"item": "21. in a moment (No.101)", "role": "example", "ex_index": 2, "en": "The doctor will be with you in a moment.", "ko": "의사 선생님이 곧 오실 거예요.", "start_ms": 1315536, "end_ms": 1327512}, {"item": "21. in a moment (No.101)", "role": "example", "ex_index": 3, "en": "I'll finish this email in a moment and then we can go.", "ko": "이 이메일 곧 끝내고 나서 같이 가요.", "start_ms": 1330512, "end_ms": 1347672}, {"item": "21. in a moment (No.101)", "role": "example_alt", "ex_index": 1, "en": "The storm is expected to clear up in a moment, revealing a bright blue sky.", "ko": "폭풍이 곧 잦아들 것으로 예상되며, 맑고 푸른 하늘이 드러날 것이다.", "start_ms": 2960592, "end_ms": 2980776}, {"item": "21. in a moment (No.101)", "role": "example_alt", "ex_index": 2, "en": "Everything changed in a moment when the lights suddenly went out during the performance.", "ko": "공연 도중 갑자기 불이 꺼지면서 모든 상황이 순식간에 바뀌었다.", "start_ms": 2983776, "end_ms": 3003528}, {"item": "22. be afraid (No.103)", "role": "target", "ex_index": 0, "en": "be afraid", "ko": "", "start_ms": 1350672, "end_ms": 1352544}, {"item": "22. be afraid (No.103)", "role": "meaning", "ex_index": 0, "en": "", "ko": "두려워하다", "start_ms": 1355544, "end_ms": 1357752}, {"item": "22. be afraid (No.103)", "role": "example", "ex_index": 1, "en": "No, I'm afraid of heights.", "ko": "아니, 난 고소공포증이 있어서 무서워.", "start_ms": 1360752, "end_ms": 1374240}, {"item": "22. be afraid (No.103)", "role": "example", "ex_index": 2, "en": "I'm afraid I can't make it to the meeting tomorrow.", "ko": "죄송하지만 내일 회의에 참석하기 어려울 것 같아요.", "start_ms": 1377240, "end_ms": 1391232}, {"item": "22. be afraid (No.103)", "role": "example", "ex_index": 3, "en": "She is afraid of spiders and screams whenever she sees one.", "ko": "그녀는 거미를 무서워해서 볼 때마다 소리를 질러요.", "start_ms": 1394232, "end_ms": 1411464}, {"item": "22. be afraid (No.103)", "role": "example_alt", "ex_index": 1, "en": "I'm afraid that our flight has been delayed due to the heavy storm in the area.", "ko": "유감스럽게도 해당 지역의 폭풍 때문에 비행기가 지연되었다는 소식을 전해드립니다.", "start_ms": 3006528, "end_ms": 3025488}, {"item": "22. be afraid (No.103)", "role": "example_alt", "ex_index": 2, "en": "He is afraid of losing his job, so he has been working extra hours every day.", "ko": "그는 일자리를 잃을까 봐 걱정되어 매일 초과 근무를 하고 있다.", "start_ms": 3028488, "end_ms": 3049896}, {"item": "23. go with the flow (No.168)", "role": "target", "ex_index": 0, "en": "go with the flow", "ko": "", "start_ms": 1414464, "end_ms": 1416336}, {"item": "23. go with the flow (No.168)", "role": "meaning", "ex_index": 0, "en": "", "ko": "흐름에 따르다", "start_ms": 1419336, "end_ms": 1421400}, {"item": "23. go with the flow (No.168)", "role": "example", "ex_index": 1, "en": "We don't have a solid plan for the trip yet. Should we just book a hotel when we arrive?", "ko": "우리 아직 여행 계획이 확실하지 않아. 도착해서 호텔을 예약할까?", "start_ms": 1424400, "end_ms": 1444944}, {"item": "23. go with the flow (No.168)", "role": "example", "ex_index": 2, "en": "I don't have a strict plan; I just go with the flow.", "ko": "저는 딱히 계획이 없고 그냥 흘러가는 대로 해요.", "start_ms": 1447944, "end_ms": 1463736}, {"item": "23. go with the flow (No.168)", "role": "example", "ex_index": 3, "en": "It's easier to go with the flow than to fight every change.", "ko": "매번 변화에 맞서기보다 흐름에 맡기는 게 더 편해요.", "start_ms": 1466736, "end_ms": 1484688}, {"item": "23. go with the flow (No.168)", "role": "example_alt", "ex_index": 1, "en": "Rather than obsessing over the exact timing of the launch, the startup decided to go with the flow as market trends shifted.", "ko": "출시 시기에 집착하기보다는, 그 스타트업은 시장의 흐름이 바뀌는 것에 맞춰 유연하게 대처하기로 결정했다.", "start_ms": 3052896, "end_ms": 3079704}, {"item": "23. go with the flow (No.168)", "role": "example_alt", "ex_index": 2, "en": "Since the weather is completely unpredictable today, we might as well go with the flow and pick our outdoor activities on the spot.", "ko": "오늘 날씨를 전혀 예측할 수 없으니, 그냥 상황을 받아들이고 현장에서 야외 활동을 정하는 게 좋겠다.", "start_ms": 3082704, "end_ms": 3110016}, {"item": "24. a piece of advice (No.169)", "role": "target", "ex_index": 0, "en": "a piece of advice", "ko": "", "start_ms": 1487688, "end_ms": 1489560}, {"item": "24. a piece of advice (No.169)", "role": "meaning", "ex_index": 0, "en": "", "ko": "조언 한 마디", "start_ms": 1492560, "end_ms": 1494576}, {"item": "24. a piece of advice (No.169)", "role": "example", "ex_index": 1, "en": "Let me give you a piece of advice: focus on the deadline first.", "ko": "조언 하나 하자면, 마감 기한에 먼저 집중해 봐.", "start_ms": 1497576, "end_ms": 1514736}, {"item": "24. a piece of advice (No.169)", "role": "example", "ex_index": 2, "en": "Can I give you a piece of advice about your resume?", "ko": "이력서에 대해 조언 한 마디 해도 될까요?", "start_ms": 1517736, "end_ms": 1531440}, {"item": "24. a piece of advice (No.169)", "role": "example", "ex_index": 3, "en": "Here's a piece of advice: always double-check your work.", "ko": "조언 하나 하자면, 항상 본인 작업을 다시 확인하세요.", "start_ms": 1534440, "end_ms": 1551312}, {"item": "24. a piece of advice (No.169)", "role": "example_alt", "ex_index": 1, "en": "She offered a valuable piece of advice that changed my perspective on the whole situation.", "ko": "그녀는 상황 전체에 대한 나의 관점을 바꿔놓은 가치 있는 조언 한 마디를 해주었다.", "start_ms": 3113016, "end_ms": 3133848}, {"item": "24. a piece of advice (No.169)", "role": "example_alt", "ex_index": 2, "en": "Following a piece of advice from my mentor, I decided to invest in my professional development this year.", "ko": "멘토의 조언을 따라, 나는 올해 자기 계발에 투자하기로 마음먹었다.", "start_ms": 3136848, "end_ms": 3161208}, {"item": "25. over and over again (No.170)", "role": "target", "ex_index": 0, "en": "over and over again", "ko": "", "start_ms": 1554312, "end_ms": 1556256}, {"item": "25. over and over again (No.170)", "role": "meaning", "ex_index": 0, "en": "", "ko": "반복해서", "start_ms": 1559256, "end_ms": 1561200}, {"item": "25. over and over again (No.170)", "role": "example", "ex_index": 1, "en": "I've watched this movie over and over again.", "ko": "나 이 영화 벌써 몇 번이나 반복해서 봤어.", "start_ms": 1564200, "end_ms": 1579776}, {"item": "25. over and over again (No.170)", "role": "example", "ex_index": 2, "en": "He apologized over and over again for the mistake.", "ko": "그는 그 실수에 대해 계속 반복해서 사과했어요.", "start_ms": 1582776, "end_ms": 1598928}, {"item": "25. over and over again (No.170)", "role": "example", "ex_index": 3, "en": "I had to explain the rule over and over again.", "ko": "저는 그 규칙을 계속 반복해서 설명해야 했어요.", "start_ms": 1601928, "end_ms": 1617360}, {"item": "25. over and over again (No.170)", "role": "example_alt", "ex_index": 1, "en": "The catchy melody kept playing over and over again in my head throughout the entire workday.", "ko": "그 중독성 있는 멜로디가 근무 시간 내내 머릿속에서 계속해서 맴돌았다.", "start_ms": 3164208, "end_ms": 3186192}, {"item": "25. over and over again (No.170)", "role": "example_alt", "ex_index": 2, "en": "Scientific breakthroughs are rarely achieved on the first try; researchers must test their hypotheses over and over again.", "ko": "과학적 돌파구는 좀처럼 한 번의 시도로 이루어지지 않기에, 연구원들은 가설을 거듭해서 시험해야 한다.", "start_ms": 3189192, "end_ms": 3218592}, {"item": "26. be about time to (No.174)", "role": "target", "ex_index": 0, "en": "be about time to", "ko": "", "start_ms": 1620360, "end_ms": 1622232}, {"item": "26. be about time to (No.174)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~할 때가 되다", "start_ms": 1625232, "end_ms": 1627272}, {"item": "26. be about time to (No.174)", "role": "example", "ex_index": 1, "en": "The kitchen is a total mess. It's about time to start cleaning.", "ko": "부엌이 완전히 엉망이야. 이제 청소할 때가 됐어.", "start_ms": 1630272, "end_ms": 1648440}, {"item": "26. be about time to (No.174)", "role": "example", "ex_index": 2, "en": "It's about time to renew your driver's license.", "ko": "이제 운전면허증을 갱신할 때가 됐어요.", "start_ms": 1651440, "end_ms": 1665720}, {"item": "26. be about time to (No.174)", "role": "example", "ex_index": 3, "en": "Don't you think it's about time to apologize to her?", "ko": "이제 그녀에게 사과할 때가 됐다고 생각하지 않아요?", "start_ms": 1668720, "end_ms": 1682568}, {"item": "26. be about time to (No.174)", "role": "example_alt", "ex_index": 1, "en": "With the economy showing signs of recovery, it is about time to diversify our investment portfolio.", "ko": "경기가 회복세를 보이고 있으니, 이제 우리 투자 포트폴리오를 다각화할 때가 되었습니다.", "start_ms": 3221592, "end_ms": 3245232}, {"item": "26. be about time to (No.174)", "role": "example_alt", "ex_index": 2, "en": "Given how much effort we have put into this project, it is about time to expect some tangible results.", "ko": "우리가 이 프로젝트에 쏟은 노력을 고려하면, 이제는 가시적인 성과를 기대할 때가 되었습니다.", "start_ms": 3248232, "end_ms": 3272592}, {"item": "27. let + 사람 + v (No.180)", "role": "target", "ex_index": 0, "en": "let + 사람 + v", "ko": "", "start_ms": 1685568, "end_ms": 1687920}, {"item": "27. let + 사람 + v (No.180)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~가 ~하게 해주다(허락하다)", "start_ms": 1690920, "end_ms": 1694448}, {"item": "27. let + 사람 + v (No.180)", "role": "example", "ex_index": 1, "en": "I'll let you go if you finish your homework first.", "ko": "숙제를 먼저 끝내면 가게 해줄게.", "start_ms": 1697448, "end_ms": 1711656}, {"item": "27. let + 사람 + v (No.180)", "role": "example", "ex_index": 2, "en": "Please let me know if you need any help.", "ko": "도움이 필요하면 알려주세요.", "start_ms": 1714656, "end_ms": 1726848}, {"item": "27. let + 사람 + v (No.180)", "role": "example", "ex_index": 3, "en": "Her parents won't let her stay out past midnight.", "ko": "그녀의 부모님은 그녀가 자정 이후에 밖에 있는 걸 허락하지 않아요.", "start_ms": 1729848, "end_ms": 1745136}, {"item": "27. let + 사람 + v (No.180)", "role": "example_alt", "ex_index": 1, "en": "The security guard let the delivery driver enter the building after verifying his ID.", "ko": "경비원은 신분증을 확인한 후 배달 기사가 건물 안으로 들어오게 해주었다.", "start_ms": 3275592, "end_ms": 3296064}, {"item": "27. let + 사람 + v (No.180)", "role": "example_alt", "ex_index": 2, "en": "Don't let these minor setbacks discourage you from pursuing your long-term goals.", "ko": "이런 사소한 좌절들이 당신의 장기적인 목표를 추구하는 것을 방해하게 내버려 두지 마세요.", "start_ms": 3299064, "end_ms": 3318960}, {"item": "28. through thick and thin (No.183)", "role": "target", "ex_index": 0, "en": "through thick and thin", "ko": "", "start_ms": 1748136, "end_ms": 1750008}, {"item": "28. through thick and thin (No.183)", "role": "meaning", "ex_index": 0, "en": "", "ko": "좋을 때나 힘들 때나 (변함없이)", "start_ms": 1753008, "end_ms": 1756536}, {"item": "28. through thick and thin (No.183)", "role": "example", "ex_index": 1, "en": "I know. We've stuck together through thick and thin.", "ko": "그래 맞아. 우리는 좋을 때나 힘들 때나 늘 함께였지.", "start_ms": 1759536, "end_ms": 1776552}, {"item": "28. through thick and thin (No.183)", "role": "example", "ex_index": 2, "en": "A good friend stays with you through thick and thin.", "ko": "좋은 친구는 좋을 때나 힘들 때나 곁에 있어줘요.", "start_ms": 1779552, "end_ms": 1795128}, {"item": "28. through thick and thin (No.183)", "role": "example", "ex_index": 3, "en": "They supported each other through thick and thin during the crisis.", "ko": "그들은 그 위기 동안 좋을 때나 힘들 때나 서로를 지지했어요.", "start_ms": 1798128, "end_ms": 1815720}, {"item": "28. through thick and thin (No.183)", "role": "example_alt", "ex_index": 1, "en": "The local community has stood by the small business owner through thick and thin since the store first opened.", "ko": "지역 사회는 그 가게가 처음 문을 연 이후로 좋을 때나 힘들 때나 그 소상공인의 곁을 지켜왔다.", "start_ms": 3321960, "end_ms": 3347040}, {"item": "28. through thick and thin (No.183)", "role": "example_alt", "ex_index": 2, "en": "She remained dedicated to her research project through thick and thin, despite facing repeated funding cuts and technical failures.", "ko": "그녀는 반복되는 자금 삭감과 기술적 결함에도 불구하고 어떠한 어려움이 있어도 자신의 연구 프로젝트에 전념했다.", "start_ms": 3350040, "end_ms": 3380880}, {"item": "29. break up (No.185)", "role": "target", "ex_index": 0, "en": "break up", "ko": "", "start_ms": 1818720, "end_ms": 1820592}, {"item": "29. break up (No.185)", "role": "meaning", "ex_index": 0, "en": "", "ko": "헤어지다, 결별하다", "start_ms": 1823592, "end_ms": 1827312}, {"item": "29. break up (No.185)", "role": "example", "ex_index": 1, "en": "Did you hear that Sarah and Mark broke up?", "ko": "사라랑 마크가 헤어졌다는 소식 들었어?", "start_ms": 1830312, "end_ms": 1844376}, {"item": "29. break up (No.185)", "role": "example", "ex_index": 2, "en": "The couple decided to break up after realizing their long-term goals were no longer aligned.", "ko": "그 커플은 자신들의 장기적인 목표가 더 이상 일치하지 않는다는 것을 깨닫고 헤어지기로 결정했다.", "start_ms": 1847376, "end_ms": 1869864}, {"item": "29. break up (No.185)", "role": "example", "ex_index": 3, "en": "The meeting was quite chaotic, so the manager asked everyone to break up into smaller groups for discussion.", "ko": "회의가 다소 혼란스러워서 관리자는 모두에게 토론을 위해 더 작은 그룹으로 나뉘어 해산할 것을 요청했다.", "start_ms": 1872864, "end_ms": 1897224}, {"item": "29. break up (No.185)", "role": "example_alt", "ex_index": 1, "en": "The transmission started to break up as the plane entered the dense storm clouds.", "ko": "비행기가 짙은 폭풍우 구름 속으로 진입하면서 통신 상태가 끊기기 시작했다.", "start_ms": 3383880, "end_ms": 3405288}, {"item": "29. break up (No.185)", "role": "example_alt", "ex_index": 2, "en": "The police officers had to break up the crowd that was gathering outside the stadium.", "ko": "경찰관들은 경기장 밖에 모여드는 군중을 해산시켜야 했다.", "start_ms": 3408288, "end_ms": 3427752}, {"item": "30. parental rights (No.186)", "role": "target", "ex_index": 0, "en": "parental rights", "ko": "", "start_ms": 1900224, "end_ms": 1902096}, {"item": "30. parental rights (No.186)", "role": "meaning", "ex_index": 0, "en": "", "ko": "부모의 권리 (자녀를 양육, 보호, 교육할 법적 권한)", "start_ms": 1905096, "end_ms": 1910784}, {"item": "30. parental rights (No.186)", "role": "example", "ex_index": 1, "en": "The court is deciding on the parental rights for their child.", "ko": "법원이 아이에 대한 친권을 결정하고 있어.", "start_ms": 1913784, "end_ms": 1929936}, {"item": "30. parental rights (No.186)", "role": "example", "ex_index": 2, "en": "The judge granted her full parental rights over the children.", "ko": "판사는 그녀에게 아이들에 대한 완전한 친권을 부여했어요.", "start_ms": 1932936, "end_ms": 1949952}, {"item": "30. parental rights (No.186)", "role": "example", "ex_index": 3, "en": "Losing parental rights is one of the most difficult legal outcomes.", "ko": "친권을 잃는 것은 가장 힘든 법적 결과 중 하나예요.", "start_ms": 1952952, "end_ms": 1971552}, {"item": "30. parental rights (No.186)", "role": "example_alt", "ex_index": 1, "en": "Some activists are advocating for the reform of legislation regarding parental rights in cases of domestic abuse.", "ko": "일부 활동가들은 가정폭력 사건에서 부모의 권리와 관련된 법 개정을 촉구하고 있다.", "start_ms": 3430752, "end_ms": 3458352}, {"item": "30. parental rights (No.186)", "role": "example_alt", "ex_index": 2, "en": "The social worker emphasized that the biological father has yet to relinquish his parental rights despite years of absence.", "ko": "사회복지사는 생물학적 아버지가 수년간 연락이 없었음에도 불구하고 여전히 친권을 포기하지 않았다는 점을 강조했다.", "start_ms": 3461352, "end_ms": 3488376}];
+  const MAIN_END_MS = 1974552;
+
+  const audio = document.getElementById("audio");
+  const playBtn = document.getElementById("playBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const rewindBtn = document.getElementById("rewindBtn");
+  const forwardBtn = document.getElementById("forwardBtn");
+  const scrubber = document.getElementById("scrubber");
+  const curTimeEl = document.getElementById("curTime");
+  const durTimeEl = document.getElementById("durTime");
+  const transcriptEl = document.getElementById("transcript");
+  const rateBtns = Array.from(document.querySelectorAll(".rate-btn"));
+
+  const ROLE_LABEL = { target: "표현", meaning: "뜻", example: "예문", example_alt: "새 예문" };
+
+  function fmt(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  function makeLineBtn(row) {
+    const btn = document.createElement("button");
+    btn.className = row.role === "example_alt" ? "line alt-row" : "line";
+    btn.dataset.start = row.start_ms / 1000;
+    const roleLabel = row.role === "example" ? `예문 ${row.ex_index}`
+      : row.role === "example_alt" ? `새 예문 ${row.ex_index}` : ROLE_LABEL[row.role];
+    btn.innerHTML = `
+      <span class="role ${row.role}">${roleLabel}</span>
+      <span class="text-col">
+        <span class="en">${row.en}</span>
+        <span class="ko">${row.ko}</span>
+      </span>
+      <span class="replay-btn" aria-hidden="true">↻</span>
+    `;
+    btn.addEventListener("click", () => {
+      audio.currentTime = row.start_ms / 1000;
+      audio.play();
+    });
+    return btn;
+  }
+
+  let lastItem = null;
+  let altGroupEl = null;
+  const rowEls = TRANSCRIPT.map((row) => {
+    if (row.item !== lastItem) {
+      const label = document.createElement("div");
+      label.className = "item-num";
+      label.textContent = row.item;
+      transcriptEl.appendChild(label);
+      lastItem = row.item;
+      altGroupEl = null;
+    }
+    if (row.role === "example_alt") {
+      if (!altGroupEl) {
+        const toggle = document.createElement("button");
+        toggle.className = "alt-toggle";
+        toggle.type = "button";
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.innerHTML = `🔄 이 표현, 다른 패턴으로 다시 공부하기 <span class="chev">▾</span>`;
+        const thisGroup = document.createElement("div");
+        thisGroup.className = "alt-group";
+        thisGroup.hidden = true;
+        toggle.addEventListener("click", () => {
+          thisGroup.hidden = !thisGroup.hidden;
+          toggle.setAttribute("aria-expanded", String(!thisGroup.hidden));
+        });
+        transcriptEl.appendChild(toggle);
+        transcriptEl.appendChild(thisGroup);
+        altGroupEl = thisGroup;
+      }
+      const btn = makeLineBtn(row);
+      altGroupEl.appendChild(btn);
+      return btn;
+    }
+    const btn = makeLineBtn(row);
+    transcriptEl.appendChild(btn);
+    return btn;
+  });
+
+  let currentIndex = -1;
+
+  audio.addEventListener("loadedmetadata", () => { durTimeEl.textContent = fmt(audio.duration); });
+
+  let userSeeking = false;
+  // "다른 패턴" 예문은 파일 맨 끝에 있어서, 이어듣기로 자연스럽게 흘러 들어가면 안 되고
+  // 항목의 토글을 눌러 직접 이동했을 때만 들려야 한다. 한 틱 만에 MAIN_END_MS를 훌쩍
+  // 넘기는 큰 점프는 의도적 탐색(탭/스크러버)이고, 조금씩 넘는 건 자연 재생이므로 그때만 멈춘다.
+  let prevMs = 0;
+  audio.addEventListener("timeupdate", () => {
+    const ms0 = audio.currentTime * 1000;
+    if (prevMs < MAIN_END_MS && ms0 >= MAIN_END_MS && (ms0 - prevMs) < 2000) {
+      audio.pause();
+      audio.currentTime = MAIN_END_MS / 1000;
+      prevMs = MAIN_END_MS;
+      return;
+    }
+    prevMs = ms0;
+
+    curTimeEl.textContent = fmt(audio.currentTime);
+    if (!userSeeking && audio.duration) {
+      scrubber.value = String((audio.currentTime / audio.duration) * 1000);
+    }
+    const ms = audio.currentTime * 1000;
+    let idx = TRANSCRIPT.findIndex((r) => ms >= r.start_ms && ms < r.end_ms);
+    if (idx === -1 && TRANSCRIPT.length) {
+      idx = ms >= TRANSCRIPT[TRANSCRIPT.length - 1].end_ms ? TRANSCRIPT.length - 1 : currentIndex;
+    }
+    if (idx !== currentIndex && idx >= 0) {
+      if (currentIndex >= 0) rowEls[currentIndex].classList.remove("current");
+      rowEls[idx].classList.add("current");
+      rowEls[idx].scrollIntoView({ behavior: "smooth", block: "center" });
+      currentIndex = idx;
+    }
+  });
+
+  audio.addEventListener("play", () => { playBtn.textContent = "⏸"; playBtn.setAttribute("aria-label", "일시정지"); });
+  audio.addEventListener("pause", () => { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "재생"); });
+  audio.addEventListener("ended", () => { playBtn.textContent = "▶"; });
+
+  playBtn.addEventListener("click", () => { if (audio.paused) audio.play(); else audio.pause(); });
+  restartBtn.addEventListener("click", () => { audio.currentTime = 0; audio.play(); });
+  rewindBtn.addEventListener("click", () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+  forwardBtn.addEventListener("click", () => { audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10); });
+
+  scrubber.addEventListener("input", () => {
+    userSeeking = true;
+    if (audio.duration) { curTimeEl.textContent = fmt((Number(scrubber.value) / 1000) * audio.duration); }
+  });
+  scrubber.addEventListener("change", () => {
+    if (audio.duration) { audio.currentTime = (Number(scrubber.value) / 1000) * audio.duration; }
+    userSeeking = false;
+  });
+
+  rateBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      audio.playbackRate = Number(btn.dataset.rate);
+      rateBtns.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    });
+  });
+</script>
+</body>
+</html>

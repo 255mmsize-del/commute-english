@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>구동사·숙어 Part 8 · 영어식 사고</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap" />
+<style>
+  :root {
+    --bg: #f2f4f6;
+    --surface: #ffffff;
+    --surface-2: #e7ebee;
+    --border: #d7dde2;
+    --text: #1b2430;
+    --text-muted: #5b6773;
+    --accent: #3d6bb3;
+    --accent-ink: #ffffff;
+    --target: #2a5aa0;
+    --meaning: #1f8a7d;
+    --example: #6b6f76;
+    --example-alt: #8a4fc2;
+    --current-bg: #e7eefb;
+    --shadow: 0 1px 2px rgba(20, 26, 33, 0.06), 0 8px 24px rgba(20, 26, 33, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121820;
+      --surface: #1a2229;
+      --surface-2: #212a33;
+      --border: #2c3742;
+      --text: #edf1f4;
+      --text-muted: #93a1ac;
+      --accent: #6f9ceb;
+      --accent-ink: #0d1520;
+      --target: #7aa8ef;
+      --meaning: #63d9c8;
+      --example: #9aa2ab;
+      --example-alt: #c298f0;
+      --current-bg: #1b2a3f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #121820;
+    --surface: #1a2229;
+    --surface-2: #212a33;
+    --border: #2c3742;
+    --text: #edf1f4;
+    --text-muted: #93a1ac;
+    --accent: #6f9ceb;
+    --accent-ink: #0d1520;
+    --target: #7aa8ef;
+    --meaning: #63d9c8;
+    --example: #9aa2ab;
+    --current-bg: #1b2a3f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Sora", "Noto Sans KR", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 18px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  header.masthead { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-family: "Sora", sans-serif; font-size: 26px; font-weight: 700; margin: 0; text-wrap: balance; }
+  .subline { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+  .part-nav {
+    display: flex; gap: 8px; flex-wrap: wrap; font-size: 13px;
+  }
+  .part-nav a, .part-nav span {
+    padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); text-decoration: none; color: var(--text-muted);
+  }
+  .part-nav a.current, .part-nav span.current { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 12px;
+    z-index: 5;
+  }
+
+  .episode-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .episode-title { font-weight: 600; font-size: 15px; }
+  .episode-meta { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .scrubber {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px;
+    background: var(--surface-2); cursor: pointer; accent-color: var(--accent);
+  }
+  .scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .controls-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
+  .icon-btn {
+    background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
+    width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 15px; transition: transform 0.12s ease, background 0.12s ease;
+  }
+  .icon-btn:hover { background: var(--current-bg); }
+  .icon-btn:active { transform: scale(0.94); }
+  .icon-btn.play { width: 60px; height: 60px; background: var(--accent); color: var(--accent-ink); border: none; font-size: 20px; }
+  .icon-btn:focus-visible, .rate-btn:focus-visible, .line:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .rate-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .rate-btn {
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text-muted);
+    font-family: "Sora", sans-serif; font-weight: 600; font-size: 13px; padding: 7px 13px; border-radius: 999px;
+    cursor: pointer; font-variant-numeric: tabular-nums;
+  }
+  .rate-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+  .transcript-heading { display: flex; align-items: center; justify-content: space-between; }
+  .transcript-heading h2 { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin: 0; }
+  .legend { display: flex; gap: 12px; font-size: 12px; color: var(--text-muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.target { background: var(--target); }
+  .dot.meaning { background: var(--meaning); }
+  .dot.example { background: var(--example); }
+
+  .transcript { display: flex; flex-direction: column; gap: 10px; }
+  .item-num {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--text);
+    padding: 14px 2px 0; border-top: 1px solid var(--border); margin-top: 4px;
+  }
+  .item-num:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+  .line {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: start; gap: 12px;
+    padding: 12px 14px; border-radius: 14px; border: 1px solid transparent; cursor: pointer;
+    background: transparent; text-align: left; font-family: inherit; color: inherit;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .line:hover { background: var(--surface-2); }
+  .line.current { background: var(--current-bg); border-color: var(--accent); }
+
+  .role { font-size: 11px; font-weight: 700; letter-spacing: 0.03em; padding-top: 3px; }
+  .role.target { color: var(--target); }
+  .role.meaning { color: var(--meaning); }
+  .role.example { color: var(--example); }
+  .role.example_alt { color: var(--example-alt); }
+  .role.section { color: #b7791f; }
+  .role.thinking { color: #2f855a; }
+  .line.section { background: color-mix(in srgb, #f6c344 14%, transparent); }
+  .line.section .ko, .line.thinking .ko { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .line.thinking .en { font-size: 13.5px; color: #2b6cb0; font-family: "Noto Sans KR", sans-serif; }
+
+  .alt-toggle {
+    display: flex; align-items: center; gap: 6px; margin: 2px 14px 2px 56px;
+    padding: 7px 12px; border-radius: 999px; border: 1px dashed var(--example-alt);
+    background: transparent; color: var(--example-alt); font-size: 12.5px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .alt-toggle:hover { background: color-mix(in srgb, var(--example-alt) 12%, transparent); }
+  .alt-toggle .chev { transition: transform 0.15s ease; }
+  .alt-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+  .alt-group { display: flex; flex-direction: column; gap: 10px; }
+  .alt-group[hidden] { display: none; }
+  .line.alt-row { border: 1px dashed var(--border); }
+
+  .text-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .en { font-family: "Literata", "Noto Serif KR", serif; font-size: 15.5px; line-height: 1.5; }
+  .ko { font-family: "Noto Sans KR", sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+
+  .replay-btn {
+    align-self: center; background: none; border: none; color: var(--text-muted); font-size: 16px;
+    cursor: pointer; padding: 4px; border-radius: 8px; opacity: 0.55;
+  }
+  .line:hover .replay-btn, .line.current .replay-btn { opacity: 1; color: var(--accent); }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 12px; padding-top: 8px; }
+
+  @media (max-width: 420px) {
+    .line { grid-template-columns: 44px 1fr auto; }
+    .role { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">영어식 사고 · 구동사·숙어 · 8/8</div>
+    <h1>구동사·숙어 Part 8</h1>
+    <p class="subline">표현을 듣고 → 영어식 사고 풀이(그림) → 뜻 → 예문(영어·해석·영어·영어) 순서로 익혀요. 줄을 탭하면 그 지점부터 다시 들을 수 있어요.</p>
+  </header>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<a href="part2.html">구동 2</a>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<span class="current">구동 8</span>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a></nav>
+
+  <div class="player">
+    <audio id="audio" preload="metadata" src="audio/part8.mp3"></audio>
+
+    <div class="episode-row">
+      <span class="episode-title">19개 표현</span>
+      <span class="episode-meta"><span id="curTime">0:00</span> / <span id="durTime">--:--</span></span>
+    </div>
+
+    <input type="range" class="scrubber" id="scrubber" min="0" max="1000" value="0" aria-label="재생 위치" />
+
+    <div class="controls-row">
+      <button class="icon-btn" id="restartBtn" title="처음부터" aria-label="처음부터 다시 듣기">⏮</button>
+      <button class="icon-btn" id="rewindBtn" title="10초 뒤로" aria-label="10초 뒤로">⟲10</button>
+      <button class="icon-btn play" id="playBtn" aria-label="재생">▶</button>
+      <button class="icon-btn" id="forwardBtn" title="10초 앞으로" aria-label="10초 앞으로">10⟳</button>
+    </div>
+
+    <div class="rate-row" role="group" aria-label="재생 속도">
+      <button class="rate-btn" data-rate="0.75" aria-pressed="false">0.75×</button>
+      <button class="rate-btn" data-rate="1" aria-pressed="true">1.0×</button>
+      <button class="rate-btn" data-rate="1.25" aria-pressed="false">1.25×</button>
+      <button class="rate-btn" data-rate="1.5" aria-pressed="false">1.5×</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="transcript-heading">
+      <h2>표현 &amp; 예문 (19개)</h2>
+      <div class="legend">
+        <span><i class="dot target"></i>표현</span>
+        <span><i class="dot meaning"></i>뜻</span>
+        <span><i class="dot example"></i>예문</span>
+      </div>
+    </div>
+    <div class="transcript" id="transcript"></div>
+  </section>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<a href="part2.html">구동 2</a>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<span class="current">구동 8</span>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a></nav>
+
+  <footer>문장을 탭하면 그 지점부터 다시 재생됩니다 · 21.2분 · 안 외워지는 표현은 탭해서 반복 재생하세요</footer>
+</div>
+
+<script>
+  const TRANSCRIPT = [{"item": "🧩 덩어리 표현 (통째로 말하기)", "role": "section", "ex_index": 0, "en": "", "ko": "문법으로 쪼개지 말고 '말하는 사람의 마음 상태' 하나로 기억하고 입에 붙이기", "start_ms": 0, "end_ms": 11112}, {"item": "1. I wouldn't mind (No.545)", "role": "target", "ex_index": 0, "en": "I wouldn't mind", "ko": "", "start_ms": 13112, "end_ms": 14984}, {"item": "1. I wouldn't mind (No.545)", "role": "thinking", "ex_index": 0, "en": "wouldn't mind(마음이 걸리지 않을 것이다)", "ko": "마음(mind)에 아무 걸림돌이 '없는' 그림. 겉으론 '싫지 않아'지만 실제로는 '~하면 좋겠다'는 부드러운 바람.", "start_ms": 16984, "end_ms": 26512}, {"item": "1. I wouldn't mind (No.545)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~해도 괜찮다, ~하면 좋겠다 (은근한 희망)", "start_ms": 28512, "end_ms": 32952}, {"item": "1. I wouldn't mind (No.545)", "role": "example", "ex_index": 1, "en": "I wouldn't mind a cup of coffee.", "ko": "커피 한잔하면 좋겠는데.", "start_ms": 34952, "end_ms": 46904}, {"item": "1. I wouldn't mind (No.545)", "role": "example", "ex_index": 2, "en": "I wouldn't mind living by the sea.", "ko": "바닷가에 살면 좋겠다.", "start_ms": 48904, "end_ms": 61864}, {"item": "1. I wouldn't mind (No.545)", "role": "example", "ex_index": 3, "en": "I wouldn't mind if you joined us.", "ko": "너도 같이 오면 좋겠어.", "start_ms": 63864, "end_ms": 76056}, {"item": "2. be (really / not really) into (No.546 / 648)", "role": "target", "ex_index": 0, "en": "be (really / not really) into", "ko": "", "start_ms": 78056, "end_ms": 80072}, {"item": "2. be (really / not really) into (No.546 / 648)", "role": "thinking", "ex_index": 0, "en": "be + into(안으로 쏙 빠져 들어간)", "ko": "어떤 취미 '안으로' 몸이 쏙 빠져 들어가 있는 그림. 그래서 '~에 푹 빠져 있다, ~을 좋아한다'. not really into = 별로 안 좋아해.", "start_ms": 82072, "end_ms": 92968}, {"item": "2. be (really / not really) into (No.546 / 648)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~에 빠져 있다, ~을 좋아하다 / (not) 별로 안 좋아하다", "start_ms": 94968, "end_ms": 101016}, {"item": "2. be (really / not really) into (No.546 / 648)", "role": "example", "ex_index": 1, "en": "I'm really into hiking these days.", "ko": "요즘 등산에 푹 빠져 있어.", "start_ms": 103016, "end_ms": 116600}, {"item": "2. be (really / not really) into (No.546 / 648)", "role": "example", "ex_index": 2, "en": "I'm not really into horror movies.", "ko": "공포 영화는 별로 안 좋아해.", "start_ms": 118600, "end_ms": 132616}, {"item": "2. be (really / not really) into (No.546 / 648)", "role": "example", "ex_index": 3, "en": "What kind of music are you into?", "ko": "어떤 음악 좋아해?", "start_ms": 134616, "end_ms": 146496}, {"item": "3. be in the middle of (No.547)", "role": "target", "ex_index": 0, "en": "be in the middle of", "ko": "", "start_ms": 148496, "end_ms": 150368}, {"item": "3. be in the middle of (No.547)", "role": "thinking", "ex_index": 0, "en": "in(안에) + the middle(한가운데) + of(~의)", "ko": "어떤 일의 '한가운데 안에' 서 있어서 지금 빠져나갈 수 없는 그림. 그래서 '한창 ~하는 중이다'.", "start_ms": 152368, "end_ms": 160120}, {"item": "3. be in the middle of (No.547)", "role": "meaning", "ex_index": 0, "en": "", "ko": "한창 ~하는 중이다", "start_ms": 162120, "end_ms": 164472}, {"item": "3. be in the middle of (No.547)", "role": "example", "ex_index": 1, "en": "I'm in the middle of something. Can I call you back?", "ko": "나 지금 뭐 하는 중이야. 다시 전화해도 돼?", "start_ms": 166472, "end_ms": 183848}, {"item": "3. be in the middle of (No.547)", "role": "example", "ex_index": 2, "en": "She's in the middle of a meeting.", "ko": "그녀는 한창 회의 중이야.", "start_ms": 185848, "end_ms": 198184}, {"item": "3. be in the middle of (No.547)", "role": "example", "ex_index": 3, "en": "We're in the middle of moving.", "ko": "우리 한창 이사 중이야.", "start_ms": 200184, "end_ms": 211896}, {"item": "4. be sick of (No.541)", "role": "target", "ex_index": 0, "en": "be sick of", "ko": "", "start_ms": 213896, "end_ms": 215768}, {"item": "4. be sick of (No.541)", "role": "thinking", "ex_index": 0, "en": "be sick(속이 메스꺼운) + of(~ 때문에)", "ko": "같은 음식을 계속 먹어서 '속이 울렁거리는' 그림. 그래서 '~에 질리다, 지긋지긋하다'. (= be tired of)", "start_ms": 217768, "end_ms": 227128}, {"item": "4. be sick of (No.541)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~에 질리다, ~이 지긋지긋하다", "start_ms": 229128, "end_ms": 233088}, {"item": "4. be sick of (No.541)", "role": "example", "ex_index": 1, "en": "I'm sick of eating ramen every day.", "ko": "매일 라면 먹는 거 질렸어.", "start_ms": 235088, "end_ms": 249392}, {"item": "4. be sick of (No.541)", "role": "example", "ex_index": 2, "en": "I'm sick of this rain.", "ko": "이 비 지긋지긋하다.", "start_ms": 251392, "end_ms": 263152}, {"item": "4. be sick of (No.541)", "role": "example", "ex_index": 3, "en": "Aren't you sick of waiting?", "ko": "기다리는 거 지겹지 않아?", "start_ms": 265152, "end_ms": 276912}, {"item": "5. be dying to (No.595)", "role": "target", "ex_index": 0, "en": "be dying to", "ko": "", "start_ms": 278912, "end_ms": 280784}, {"item": "5. be dying to (No.595)", "role": "thinking", "ex_index": 0, "en": "be dying(죽을 것 같은) + to(~하고 싶어서)", "ko": "그걸 못 하면 '죽을 것만 같은' 과장된 그림. 그래서 '~하고 싶어 죽겠다'. (= can't wait to보다 더 강렬)", "start_ms": 282784, "end_ms": 291496}, {"item": "5. be dying to (No.595)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~하고 싶어 죽겠다, 몹시 ~하고 싶다", "start_ms": 293496, "end_ms": 297072}, {"item": "5. be dying to (No.595)", "role": "example", "ex_index": 1, "en": "I'm dying to see that movie.", "ko": "그 영화 보고 싶어 죽겠어.", "start_ms": 299072, "end_ms": 311096}, {"item": "5. be dying to (No.595)", "role": "example", "ex_index": 2, "en": "I'm dying to know what happened.", "ko": "무슨 일이 있었는지 궁금해 죽겠어.", "start_ms": 313096, "end_ms": 325720}, {"item": "5. be dying to (No.595)", "role": "example", "ex_index": 3, "en": "She's dying to meet you.", "ko": "그녀가 너를 너무 만나고 싶어 해.", "start_ms": 327720, "end_ms": 340008}, {"item": "6. I can't stand (No.619)", "role": "target", "ex_index": 0, "en": "I can't stand", "ko": "", "start_ms": 342008, "end_ms": 343880}, {"item": "6. I can't stand (No.619)", "role": "thinking", "ex_index": 0, "en": "can't(못 하다) + stand(버티고 서 있다)", "ko": "싫은 것 앞에서 '버티고 서 있을 수가 없는' 그림. 다리가 풀려 도망치고 싶을 정도로 '참을 수 없다, 정말 싫다'.", "start_ms": 345880, "end_ms": 354880}, {"item": "6. I can't stand (No.619)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~을 참을 수 없다, 정말 싫다", "start_ms": 356880, "end_ms": 360216}, {"item": "6. I can't stand (No.619)", "role": "example", "ex_index": 1, "en": "I can't stand the heat.", "ko": "더위는 정말 못 참겠어.", "start_ms": 362216, "end_ms": 374192}, {"item": "6. I can't stand (No.619)", "role": "example", "ex_index": 2, "en": "I can't stand people who lie.", "ko": "거짓말하는 사람은 질색이야.", "start_ms": 376192, "end_ms": 389488}, {"item": "6. I can't stand (No.619)", "role": "example", "ex_index": 3, "en": "I can't stand waiting in line.", "ko": "줄 서서 기다리는 거 너무 싫어.", "start_ms": 391488, "end_ms": 404328}, {"item": "7. I take it (that) (No.630)", "role": "target", "ex_index": 0, "en": "I take it (that)", "ko": "", "start_ms": 406328, "end_ms": 408200}, {"item": "7. I take it (that) (No.630)", "role": "thinking", "ex_index": 0, "en": "take(받아들이다) + it(그 상황을)", "ko": "상대의 표정·상황을 단서로 '집어 들어서' 내가 이렇게 받아들이고 있다는 그림. 그래서 '보아하니 ~인가 보네'. (확인하듯 말할 때)", "start_ms": 410200, "end_ms": 420832}, {"item": "7. I take it (that) (No.630)", "role": "meaning", "ex_index": 0, "en": "", "ko": "보아하니 ~인 거지? / ~라고 이해해도 되지?", "start_ms": 422832, "end_ms": 426624}, {"item": "7. I take it (that) (No.630)", "role": "example", "ex_index": 1, "en": "I take it you didn't like the food.", "ko": "보아하니 음식이 별로였나 보네.", "start_ms": 428624, "end_ms": 441200}, {"item": "7. I take it (that) (No.630)", "role": "example", "ex_index": 2, "en": "I take it you two have met before.", "ko": "두 분 전에 만난 적 있으신가 봐요.", "start_ms": 443200, "end_ms": 456424}, {"item": "7. I take it (that) (No.630)", "role": "example", "ex_index": 3, "en": "I take it that's a no?", "ko": "그건 거절이라는 뜻이지?", "start_ms": 458424, "end_ms": 470232}, {"item": "8. I bet (No.585)", "role": "target", "ex_index": 0, "en": "I bet", "ko": "", "start_ms": 472232, "end_ms": 473048}, {"item": "8. I bet (No.585)", "role": "thinking", "ex_index": 0, "en": "bet(돈을 걸다)", "ko": "내 판단에 '돈을 걸 수 있을' 만큼 확신하는 그림. 그래서 '틀림없이 ~야, 분명해'. 맞장구로 쓰면 '그렇겠다, 당연하지'.", "start_ms": 475048, "end_ms": 485728}, {"item": "8. I bet (No.585)", "role": "meaning", "ex_index": 0, "en": "", "ko": "틀림없이 ~야 / (맞장구) 그렇겠다", "start_ms": 487728, "end_ms": 491832}, {"item": "8. I bet (No.585)", "role": "example", "ex_index": 1, "en": "I bet he's going to be late again.", "ko": "틀림없이 그 사람 또 늦을 거야.", "start_ms": 493832, "end_ms": 507656}, {"item": "8. I bet (No.585)", "role": "example", "ex_index": 2, "en": "I bet you're tired after that trip.", "ko": "그 여행 다녀와서 분명 피곤하겠다.", "start_ms": 509656, "end_ms": 523552}, {"item": "8. I bet (No.585)", "role": "example", "ex_index": 3, "en": "I was so nervous. — I bet!", "ko": "나 엄청 긴장했어. — 그랬겠다!", "start_ms": 525552, "end_ms": 541440}, {"item": "9. I can tell (No.599)", "role": "target", "ex_index": 0, "en": "I can tell", "ko": "", "start_ms": 543440, "end_ms": 545312}, {"item": "9. I can tell (No.599)", "role": "thinking", "ex_index": 0, "en": "can tell(구별해서 알아차릴 수 있다)", "ko": "표정·목소리 같은 단서를 보고 '척 보면 알 수 있는' 그림. tell에는 '구별하다'라는 뜻이 있어서 '딱 보니 알겠다'.", "start_ms": 547312, "end_ms": 556360}, {"item": "9. I can tell (No.599)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(보니까) 알겠다, 티가 난다", "start_ms": 558360, "end_ms": 562104}, {"item": "9. I can tell (No.599)", "role": "example", "ex_index": 1, "en": "I can tell you're upset.", "ko": "너 화난 거 티 나.", "start_ms": 564104, "end_ms": 575648}, {"item": "9. I can tell (No.599)", "role": "example", "ex_index": 2, "en": "I could tell he was lying.", "ko": "그가 거짓말하는 걸 알 수 있었어.", "start_ms": 577648, "end_ms": 590056}, {"item": "9. I can tell (No.599)", "role": "example", "ex_index": 3, "en": "Can you tell the difference?", "ko": "차이를 구별할 수 있어?", "start_ms": 592056, "end_ms": 603840}, {"item": "10. I figured (No.587)", "role": "target", "ex_index": 0, "en": "I figured", "ko": "", "start_ms": 605840, "end_ms": 607712}, {"item": "10. I figured (No.587)", "role": "thinking", "ex_index": 0, "en": "figure(숫자를 계산하다)", "ko": "머릿속에서 계산기를 '톡톡' 두드려 '이렇겠구나' 하고 답을 낸 그림. 그래서 '~일 거라고 생각했어(짐작했어)'.", "start_ms": 609712, "end_ms": 618952}, {"item": "10. I figured (No.587)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~일 거라고 생각했어, 짐작했어", "start_ms": 620952, "end_ms": 624552}, {"item": "10. I figured (No.587)", "role": "example", "ex_index": 1, "en": "I figured you'd be hungry, so I brought food.", "ko": "너 배고플 것 같아서 음식 가져왔어.", "start_ms": 626552, "end_ms": 642176}, {"item": "10. I figured (No.587)", "role": "example", "ex_index": 2, "en": "I figured it out!", "ko": "알아냈어!", "start_ms": 644176, "end_ms": 655264}, {"item": "10. I figured (No.587)", "role": "example", "ex_index": 3, "en": "I figured as much.", "ko": "그럴 줄 알았어.", "start_ms": 657264, "end_ms": 668664}, {"item": "11. I tend to (No.579)", "role": "target", "ex_index": 0, "en": "I tend to", "ko": "", "start_ms": 670664, "end_ms": 672536}, {"item": "11. I tend to (No.579)", "role": "thinking", "ex_index": 0, "en": "tend(~쪽으로 기울다) + to", "ko": "내 행동이 자꾸 '그쪽으로 기울어지는' 그림. 매번은 아니지만 대체로 그렇게 되니 '~하는 경향이 있다, 자주 ~하는 편이다'.", "start_ms": 674536, "end_ms": 683896}, {"item": "11. I tend to (No.579)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~하는 경향이 있다, ~하는 편이다", "start_ms": 685896, "end_ms": 689448}, {"item": "11. I tend to (No.579)", "role": "example", "ex_index": 1, "en": "I tend to eat too much when I'm stressed.", "ko": "나는 스트레스 받으면 과식하는 편이야.", "start_ms": 691448, "end_ms": 706160}, {"item": "11. I tend to (No.579)", "role": "example", "ex_index": 2, "en": "I tend to forget names.", "ko": "나는 이름을 잘 잊어버리는 편이야.", "start_ms": 708160, "end_ms": 721072}, {"item": "11. I tend to (No.579)", "role": "example", "ex_index": 3, "en": "Prices tend to go up in summer.", "ko": "여름엔 가격이 오르는 경향이 있어.", "start_ms": 723072, "end_ms": 736536}, {"item": "12. I happen to (No.580)", "role": "target", "ex_index": 0, "en": "I happen to", "ko": "", "start_ms": 738536, "end_ms": 740408}, {"item": "12. I happen to (No.580)", "role": "thinking", "ex_index": 0, "en": "happen(우연히 일어나다) + to", "ko": "계획한 게 아닌데 '우연히 그렇게 된' 그림. 그래서 '마침 ~하다, 우연히 ~하다'. 공손하게 묻거나 은근히 말할 때도 씀.", "start_ms": 742408, "end_ms": 752560}, {"item": "12. I happen to (No.580)", "role": "meaning", "ex_index": 0, "en": "", "ko": "마침(우연히) ~하다", "start_ms": 754560, "end_ms": 757872}, {"item": "12. I happen to (No.580)", "role": "example", "ex_index": 1, "en": "I happen to know the owner.", "ko": "내가 마침 사장님을 알아.", "start_ms": 759872, "end_ms": 771776}, {"item": "12. I happen to (No.580)", "role": "example", "ex_index": 2, "en": "Do you happen to have a pen?", "ko": "혹시 펜 있어?", "start_ms": 773776, "end_ms": 785176}, {"item": "12. I happen to (No.580)", "role": "example", "ex_index": 3, "en": "We happened to be in the same class.", "ko": "우리는 우연히 같은 반이었어.", "start_ms": 787176, "end_ms": 801864}, {"item": "13. There's no way (No.581)", "role": "target", "ex_index": 0, "en": "There's no way", "ko": "", "start_ms": 803864, "end_ms": 805736}, {"item": "13. There's no way (No.581)", "role": "thinking", "ex_index": 0, "en": "There's no(없다) + way(길)", "ko": "그 결과로 가는 '길이 아예 없는' 그림. 길이 없으니 '절대 ~일 리가 없다, 말도 안 돼'.", "start_ms": 807736, "end_ms": 814912}, {"item": "13. There's no way (No.581)", "role": "meaning", "ex_index": 0, "en": "", "ko": "절대 ~할 리 없다, 말도 안 돼", "start_ms": 816912, "end_ms": 820368}, {"item": "13. There's no way (No.581)", "role": "example", "ex_index": 1, "en": "There's no way I can finish this today.", "ko": "이걸 오늘 끝낼 방법은 절대 없어.", "start_ms": 822368, "end_ms": 836480}, {"item": "13. There's no way (No.581)", "role": "example", "ex_index": 2, "en": "There's no way he's 50!", "ko": "그가 쉰 살이라고? 말도 안 돼!", "start_ms": 838480, "end_ms": 852136}, {"item": "13. There's no way (No.581)", "role": "example", "ex_index": 3, "en": "No way! That's amazing.", "ko": "말도 안 돼! 대박이다.", "start_ms": 854136, "end_ms": 869424}, {"item": "14. It depends on (No.612)", "role": "target", "ex_index": 0, "en": "It depends on", "ko": "", "start_ms": 871424, "end_ms": 873296}, {"item": "14. It depends on (No.612)", "role": "thinking", "ex_index": 0, "en": "depend(아래에 매달려 있다) + on(~에)", "ko": "결과가 어떤 조건 '아래에 대롱대롱 매달려' 있는 그림. 그 조건이 흔들리면 결과도 바뀌니 '~에 달려 있다'.", "start_ms": 875296, "end_ms": 883768}, {"item": "14. It depends on (No.612)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~에 달려 있다, ~에 따라 다르다", "start_ms": 885768, "end_ms": 889368}, {"item": "14. It depends on (No.612)", "role": "example", "ex_index": 1, "en": "It depends on the weather.", "ko": "날씨에 따라 달라.", "start_ms": 891368, "end_ms": 902984}, {"item": "14. It depends on (No.612)", "role": "example", "ex_index": 2, "en": "It depends on how much it costs.", "ko": "가격이 얼마냐에 달렸어.", "start_ms": 904984, "end_ms": 917632}, {"item": "14. It depends on (No.612)", "role": "example", "ex_index": 3, "en": "Are you coming? — It depends.", "ko": "올 거야? — 상황 봐서.", "start_ms": 919632, "end_ms": 933792}, {"item": "15. I owe you (No.623)", "role": "target", "ex_index": 0, "en": "I owe you", "ko": "", "start_ms": 935792, "end_ms": 937664}, {"item": "15. I owe you (No.623)", "role": "thinking", "ex_index": 0, "en": "owe(빚지다)", "ko": "상대에게 '빚 장부'를 하나 달아 두는 그림. 도움을 받아 갚아야 할 게 생겼으니 '신세 졌어, 고마워'. I owe you one = 하나 빚졌어(다음에 갚을게).", "start_ms": 939664, "end_ms": 952648}, {"item": "15. I owe you (No.623)", "role": "meaning", "ex_index": 0, "en": "", "ko": "신세 졌어, 고마워 (다음에 갚을게)", "start_ms": 954648, "end_ms": 958848}, {"item": "15. I owe you (No.623)", "role": "example", "ex_index": 1, "en": "Thanks for the ride. I owe you one.", "ko": "태워 줘서 고마워. 신세 졌다.", "start_ms": 960848, "end_ms": 977504}, {"item": "15. I owe you (No.623)", "role": "example", "ex_index": 2, "en": "I owe you an apology.", "ko": "너한테 사과할 게 있어.", "start_ms": 979504, "end_ms": 992008}, {"item": "15. I owe you (No.623)", "role": "example", "ex_index": 3, "en": "How much do I owe you?", "ko": "내가 얼마 주면 돼?", "start_ms": 994008, "end_ms": 1005432}, {"item": "16. be obsessed with (No.695)", "role": "target", "ex_index": 0, "en": "be obsessed with", "ko": "", "start_ms": 1007432, "end_ms": 1009304}, {"item": "16. be obsessed with (No.695)", "role": "thinking", "ex_index": 0, "en": "be obsessed(사로잡힌 상태) + with(~에)", "ko": "어떤 것이 머릿속을 꽉 '점령하고' 떠나지 않는 그림. 그래서 '~에 집착하다, 완전 빠져 있다'. 회화에선 긍정적으로 '완전 사랑해'처럼도 씀.", "start_ms": 1011304, "end_ms": 1023616}, {"item": "16. be obsessed with (No.695)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~에 집착하다, 완전히 빠져 있다", "start_ms": 1025616, "end_ms": 1029696}, {"item": "16. be obsessed with (No.695)", "role": "example", "ex_index": 1, "en": "I'm obsessed with this song.", "ko": "나 이 노래에 완전 꽂혔어.", "start_ms": 1031696, "end_ms": 1044272}, {"item": "16. be obsessed with (No.695)", "role": "example", "ex_index": 2, "en": "He's obsessed with his weight.", "ko": "그는 몸무게에 집착해.", "start_ms": 1046272, "end_ms": 1058152}, {"item": "16. be obsessed with (No.695)", "role": "example", "ex_index": 3, "en": "She's obsessed with K-dramas.", "ko": "그녀는 한국 드라마에 푹 빠져 있어.", "start_ms": 1060152, "end_ms": 1073976}, {"item": "17. What if (No.699)", "role": "target", "ex_index": 0, "en": "What if", "ko": "", "start_ms": 1075976, "end_ms": 1077848}, {"item": "17. What if (No.699)", "role": "thinking", "ex_index": 0, "en": "What (would happen) if ~?", "ko": "갈림길에서 '만약 이쪽으로 가면 무슨 일이 생길까?' 하고 다른 길을 상상해 보는 그림. 그래서 '~하면 어떡해? / ~하면 어때?'", "start_ms": 1079848, "end_ms": 1090288}, {"item": "17. What if (No.699)", "role": "meaning", "ex_index": 0, "en": "", "ko": "만약 ~하면 어떡해? / ~하면 어때?", "start_ms": 1092288, "end_ms": 1095624}, {"item": "17. What if (No.699)", "role": "example", "ex_index": 1, "en": "What if it rains tomorrow?", "ko": "내일 비 오면 어떡해?", "start_ms": 1097624, "end_ms": 1109408}, {"item": "17. What if (No.699)", "role": "example", "ex_index": 2, "en": "What if we just stayed home?", "ko": "그냥 집에 있으면 어때?", "start_ms": 1111408, "end_ms": 1123168}, {"item": "17. What if (No.699)", "role": "example", "ex_index": 3, "en": "What if I fail the test?", "ko": "시험에 떨어지면 어쩌지?", "start_ms": 1125168, "end_ms": 1137192}, {"item": "18. How come? (No.670)", "role": "target", "ex_index": 0, "en": "How come?", "ko": "", "start_ms": 1139192, "end_ms": 1141064}, {"item": "18. How come? (No.670)", "role": "thinking", "ex_index": 0, "en": "How (did it) come (about) that ~?", "ko": "'어떻게 그런 상황이 오게(come) 된 거야?' 하고 과정을 궁금해하는 그림. why보다 부드럽고 놀란 느낌. 뒤의 어순은 평서문 그대로!", "start_ms": 1143064, "end_ms": 1155760}, {"item": "18. How come? (No.670)", "role": "meaning", "ex_index": 0, "en": "", "ko": "어째서? 왜? (놀람·궁금함)", "start_ms": 1157760, "end_ms": 1163280}, {"item": "18. How come? (No.670)", "role": "example", "ex_index": 1, "en": "How come you didn't call me?", "ko": "왜 나한테 전화 안 했어?", "start_ms": 1165280, "end_ms": 1177160}, {"item": "18. How come? (No.670)", "role": "example", "ex_index": 2, "en": "How come she's not here?", "ko": "그녀는 왜 여기 없어?", "start_ms": 1179160, "end_ms": 1190992}, {"item": "18. How come? (No.670)", "role": "example", "ex_index": 3, "en": "I'm not going. — How come?", "ko": "나 안 가. — 왜?", "start_ms": 1192992, "end_ms": 1205424}, {"item": "19. be all set (to) (No.662)", "role": "target", "ex_index": 0, "en": "be all set (to)", "ko": "", "start_ms": 1207424, "end_ms": 1209296}, {"item": "19. be all set (to) (No.662)", "role": "thinking", "ex_index": 0, "en": "all(완전히) + set(세팅된)", "ko": "식탁 위 접시와 수저가 '완전히 세팅된' 그림. 준비가 다 끝났으니 '준비 완료, ~할 준비가 다 됐다'.", "start_ms": 1211296, "end_ms": 1219864}, {"item": "19. be all set (to) (No.662)", "role": "meaning", "ex_index": 0, "en": "", "ko": "준비가 다 됐다, ~할 준비 완료", "start_ms": 1221864, "end_ms": 1225584}, {"item": "19. be all set (to) (No.662)", "role": "example", "ex_index": 1, "en": "Are you all set?", "ko": "준비 다 됐어?", "start_ms": 1227584, "end_ms": 1238912}, {"item": "19. be all set (to) (No.662)", "role": "example", "ex_index": 2, "en": "I'm all set to go.", "ko": "나 갈 준비 다 됐어.", "start_ms": 1240912, "end_ms": 1252720}, {"item": "19. be all set (to) (No.662)", "role": "example", "ex_index": 3, "en": "You're all set. Enjoy your stay!", "ko": "다 처리됐습니다. 즐거운 시간 보내세요!", "start_ms": 1254720, "end_ms": 1271568}];
+  const MAIN_END_MS = 1273568;
+
+  const audio = document.getElementById("audio");
+  const playBtn = document.getElementById("playBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const rewindBtn = document.getElementById("rewindBtn");
+  const forwardBtn = document.getElementById("forwardBtn");
+  const scrubber = document.getElementById("scrubber");
+  const curTimeEl = document.getElementById("curTime");
+  const durTimeEl = document.getElementById("durTime");
+  const transcriptEl = document.getElementById("transcript");
+  const rateBtns = Array.from(document.querySelectorAll(".rate-btn"));
+
+  const ROLE_LABEL = { section: "핵심", target: "표현", thinking: "사고", meaning: "뜻", example: "예문", example_alt: "새 예문" };
+
+  function fmt(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  function makeLineBtn(row) {
+    const btn = document.createElement("button");
+    btn.className = row.role === "example_alt" ? "line alt-row" : `line ${row.role}`;
+    btn.dataset.start = row.start_ms / 1000;
+    const roleLabel = row.role === "example" ? `예문 ${row.ex_index}`
+      : row.role === "example_alt" ? `새 예문 ${row.ex_index}` : ROLE_LABEL[row.role];
+    btn.innerHTML = `
+      <span class="role ${row.role}">${roleLabel}</span>
+      <span class="text-col">
+        <span class="en">${row.en}</span>
+        <span class="ko">${row.ko}</span>
+      </span>
+      <span class="replay-btn" aria-hidden="true">↻</span>
+    `;
+    btn.addEventListener("click", () => {
+      audio.currentTime = row.start_ms / 1000;
+      audio.play();
+    });
+    return btn;
+  }
+
+  let lastItem = null;
+  let altGroupEl = null;
+  const rowEls = TRANSCRIPT.map((row) => {
+    if (row.item !== lastItem) {
+      const label = document.createElement("div");
+      label.className = "item-num";
+      label.textContent = row.item;
+      transcriptEl.appendChild(label);
+      lastItem = row.item;
+      altGroupEl = null;
+    }
+    if (row.role === "example_alt") {
+      if (!altGroupEl) {
+        const toggle = document.createElement("button");
+        toggle.className = "alt-toggle";
+        toggle.type = "button";
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.innerHTML = `🔄 이 표현, 다른 패턴으로 다시 공부하기 <span class="chev">▾</span>`;
+        const thisGroup = document.createElement("div");
+        thisGroup.className = "alt-group";
+        thisGroup.hidden = true;
+        toggle.addEventListener("click", () => {
+          thisGroup.hidden = !thisGroup.hidden;
+          toggle.setAttribute("aria-expanded", String(!thisGroup.hidden));
+        });
+        transcriptEl.appendChild(toggle);
+        transcriptEl.appendChild(thisGroup);
+        altGroupEl = thisGroup;
+      }
+      const btn = makeLineBtn(row);
+      altGroupEl.appendChild(btn);
+      return btn;
+    }
+    const btn = makeLineBtn(row);
+    transcriptEl.appendChild(btn);
+    return btn;
+  });
+
+  let currentIndex = -1;
+
+  audio.addEventListener("loadedmetadata", () => { durTimeEl.textContent = fmt(audio.duration); });
+
+  let userSeeking = false;
+  // "다른 패턴" 예문은 파일 맨 끝에 있어서, 이어듣기로 자연스럽게 흘러 들어가면 안 되고
+  // 항목의 토글을 눌러 직접 이동했을 때만 들려야 한다. 한 틱 만에 MAIN_END_MS를 훌쩍
+  // 넘기는 큰 점프는 의도적 탐색(탭/스크러버)이고, 조금씩 넘는 건 자연 재생이므로 그때만 멈춘다.
+  let prevMs = 0;
+  audio.addEventListener("timeupdate", () => {
+    const ms0 = audio.currentTime * 1000;
+    if (prevMs < MAIN_END_MS && ms0 >= MAIN_END_MS && (ms0 - prevMs) < 2000) {
+      audio.pause();
+      audio.currentTime = MAIN_END_MS / 1000;
+      prevMs = MAIN_END_MS;
+      return;
+    }
+    prevMs = ms0;
+
+    curTimeEl.textContent = fmt(audio.currentTime);
+    if (!userSeeking && audio.duration) {
+      scrubber.value = String((audio.currentTime / audio.duration) * 1000);
+    }
+    const ms = audio.currentTime * 1000;
+    let idx = TRANSCRIPT.findIndex((r) => ms >= r.start_ms && ms < r.end_ms);
+    if (idx === -1 && TRANSCRIPT.length) {
+      idx = ms >= TRANSCRIPT[TRANSCRIPT.length - 1].end_ms ? TRANSCRIPT.length - 1 : currentIndex;
+    }
+    if (idx !== currentIndex && idx >= 0) {
+      if (currentIndex >= 0) rowEls[currentIndex].classList.remove("current");
+      rowEls[idx].classList.add("current");
+      rowEls[idx].scrollIntoView({ behavior: "smooth", block: "center" });
+      currentIndex = idx;
+    }
+  });
+
+  audio.addEventListener("play", () => { playBtn.textContent = "⏸"; playBtn.setAttribute("aria-label", "일시정지"); });
+  audio.addEventListener("pause", () => { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "재생"); });
+  audio.addEventListener("ended", () => { playBtn.textContent = "▶"; });
+
+  playBtn.addEventListener("click", () => { if (audio.paused) audio.play(); else audio.pause(); });
+  restartBtn.addEventListener("click", () => { audio.currentTime = 0; audio.play(); });
+  rewindBtn.addEventListener("click", () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+  forwardBtn.addEventListener("click", () => { audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10); });
+
+  scrubber.addEventListener("input", () => {
+    userSeeking = true;
+    if (audio.duration) { curTimeEl.textContent = fmt((Number(scrubber.value) / 1000) * audio.duration); }
+  });
+  scrubber.addEventListener("change", () => {
+    if (audio.duration) { audio.currentTime = (Number(scrubber.value) / 1000) * audio.duration; }
+    userSeeking = false;
+  });
+
+  rateBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      audio.playbackRate = Number(btn.dataset.rate);
+      rateBtns.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    });
+  });
+</script>
+</body>
+</html>

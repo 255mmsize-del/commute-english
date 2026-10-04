@@ -1,0 +1,182 @@
+[
+  {"no": 3, "phrase": "have been + 장소", "phrase_tts": "have been to a place", "meaning": "~에 가본 적이 있다 / ~에 다녀왔다",
+   "examples": [
+     {"en": "I have been there a few times.", "ko": "저는 거기 몇 번 다녀왔어요."},
+     {"en": "She has been to Japan three times this year.", "ko": "그녀는 올해 일본에 세 번 다녀왔어요."},
+     {"en": "We have never been to that restaurant before.", "ko": "우리는 그 식당에 가본 적이 한 번도 없어요."}
+   ]},
+  {"no": 4, "phrase": "have been + p.p.", "phrase_tts": "have been done", "meaning": "~되어 왔다 / ~되었다",
+   "examples": [
+     {"en": "It has been sent to the manager.", "ko": "그것은 매니저님께 전송되었어요."},
+     {"en": "The windows have been cleaned already.", "ko": "창문은 이미 닦였어요."},
+     {"en": "This song has been played on the radio all day.", "ko": "이 노래는 하루 종일 라디오에서 나왔어요."}
+   ]},
+  {"no": 5, "phrase": "have been + -ing", "phrase_tts": "have been doing", "meaning": "계속 ~해 오고 있다",
+   "examples": [
+     {"en": "I've been cleaning the house since this morning.", "ko": "저는 아침부터 계속 집을 청소하고 있었어요."},
+     {"en": "I have been studying English for two years.", "ko": "저는 2년째 영어를 공부하고 있어요."},
+     {"en": "They have been waiting outside for an hour.", "ko": "그들은 한 시간째 밖에서 기다리고 있어요."}
+   ]},
+  {"no": 11, "phrase": "put in", "meaning": "(시간·노력을) 들이다 / 제출하다",
+   "examples": [
+     {"en": "I put in about twenty hours this week.", "ko": "저는 이번 주에 약 20시간을 들였어요."},
+     {"en": "He put in a lot of effort to pass the exam.", "ko": "그는 시험에 합격하려고 많은 노력을 들였어요."},
+     {"en": "Did you put in your vacation request yet?", "ko": "휴가 신청서는 이미 제출했나요?"}
+   ]},
+  {"no": 13, "phrase": "put in ( ) hours", "phrase_tts": "put in hours", "meaning": "(~시간을) 일하다 / 투입하다",
+   "examples": [
+     {"en": "I put in 12 hours at the office yesterday.", "ko": "저는 어제 사무실에서 12시간 일했어요."},
+     {"en": "She puts in eight hours a day at the office.", "ko": "그녀는 하루에 8시간을 사무실에서 일해요."},
+     {"en": "We put in extra hours to finish the project on time.", "ko": "우리는 프로젝트를 제때 끝내려고 추가 시간을 일했어요."}
+   ]},
+  {"no": 32, "phrase": "moved forward", "meaning": "앞으로 나아가다 / 일을 추진하다",
+   "examples": [
+     {"en": "We have moved forward with the initial phase.", "ko": "우리는 초기 단계를 추진했어요."},
+     {"en": "The company decided to move forward with the merger.", "ko": "그 회사는 합병을 추진하기로 결정했어요."},
+     {"en": "Let's move forward and finalize the schedule.", "ko": "이제 진행해서 일정을 확정합시다."}
+   ]},
+  {"no": 35, "phrase": "come up", "meaning": "언급되다 / 생기다, 발생하다",
+   "examples": [
+     {"en": "It came up, but we didn't reach a decision.", "ko": "그것이 언급되었지만 결론을 내리지 못했어요."},
+     {"en": "His name came up during the discussion.", "ko": "논의 중에 그의 이름이 언급됐어요."},
+     {"en": "Something urgent came up, so I have to leave early.", "ko": "급한 일이 생겨서 일찍 가봐야 해요."}
+   ]},
+  {"no": 43, "phrase": "be about to", "meaning": "막 ~하려고 하다",
+   "examples": [
+     {"en": "I was just about to head out for dinner.", "ko": "저는 막 저녁 먹으러 나가려던 참이었어요."},
+     {"en": "I was about to call you when you texted me.", "ko": "네가 문자를 보냈을 때 마침 전화하려던 참이었어요."},
+     {"en": "The movie is about to start, so hurry up.", "ko": "영화가 곧 시작하니까 서둘러요."}
+   ]},
+  {"no": 44, "phrase": "apply A to B", "meaning": "A를 B에 적용하다 / 바르다",
+   "examples": [
+     {"en": "Just apply a little antibiotic ointment to the wound.", "ko": "상처에 항생제 연고를 조금 발라주세요."},
+     {"en": "Please apply this cream to the affected area twice a day.", "ko": "이 크림을 하루에 두 번 환부에 발라주세요."},
+     {"en": "We should apply the same rules to everyone equally.", "ko": "우리는 모두에게 동일한 규칙을 적용해야 해요."}
+   ]},
+  {"no": 47, "phrase": "come clean", "meaning": "솔직하게 털어놓다",
+   "examples": [
+     {"en": "You'd better come clean.", "ko": "솔직하게 털어놓는 게 좋을 거예요."},
+     {"en": "He finally came clean about lying to his boss.", "ko": "그는 결국 상사에게 거짓말한 것을 솔직히 털어놓았어요."},
+     {"en": "It's better to come clean now than to get caught later.", "ko": "나중에 들키는 것보다 지금 솔직히 말하는 게 나아요."}
+   ]},
+  {"no": 48, "phrase": "come true", "meaning": "실현되다 / 이루어지다",
+   "examples": [
+     {"en": "I am working hard to make my dream come true.", "ko": "저는 제 꿈을 이루기 위해 열심히 노력하고 있어요."},
+     {"en": "Her wish finally came true after years of hard work.", "ko": "수년간의 노력 끝에 그녀의 소원이 마침내 이루어졌어요."},
+     {"en": "If you keep trying, your dreams can come true.", "ko": "계속 노력하면 꿈은 이루어질 수 있어요."}
+   ]},
+  {"no": 52, "phrase": "keep up", "meaning": "뒤지지 않다 / 계속 유지하다",
+   "examples": [
+     {"en": "I can't keep up with the professor.", "ko": "저는 교수님 속도를 따라갈 수가 없어요."},
+     {"en": "You need to run faster to keep up with the group.", "ko": "그룹을 따라가려면 더 빨리 뛰어야 해요."},
+     {"en": "It's hard to keep up with all the new technology.", "ko": "새로운 기술을 다 따라가기가 힘들어요."}
+   ]},
+  {"no": 65, "phrase": "for weeks at a time", "meaning": "몇 주 동안 계속해서",
+   "examples": [
+     {"en": "I don't see another human for weeks at a time.", "ko": "저는 한 번에 몇 주씩 다른 사람을 못 봐요."},
+     {"en": "He travels for work and is away for weeks at a time.", "ko": "그는 출장을 다니느라 한 번에 몇 주씩 집을 비워요."},
+     {"en": "The road was closed for weeks at a time last winter.", "ko": "지난 겨울 그 도로는 한 번에 몇 주씩 폐쇄되었어요."}
+   ]},
+  {"no": 68, "phrase": "go for it", "meaning": "한번 해봐 / 시도해 봐",
+   "examples": [
+     {"en": "Just go for it!", "ko": "그냥 한번 해봐!"},
+     {"en": "If you really want the job, just go for it.", "ko": "정말 그 일을 원한다면, 그냥 도전해봐요."},
+     {"en": "She decided to go for it and start her own business.", "ko": "그녀는 도전해보기로 결심하고 자기 사업을 시작했어요."}
+   ]},
+  {"no": 72, "phrase": "be glad to", "meaning": "기꺼이 ~하다",
+   "examples": [
+     {"en": "I'd be glad to help you with that.", "ko": "기꺼이 도와드릴게요."},
+     {"en": "I'd be glad to answer any questions you have.", "ko": "궁금한 점 있으면 기꺼이 답해드릴게요."},
+     {"en": "We were glad to see everyone at the reunion.", "ko": "우리는 동창회에서 모두를 만나서 기뻤어요."}
+   ]},
+  {"no": 85, "phrase": "in the end", "meaning": "결국 / 마침내",
+   "examples": [
+     {"en": "It paid off in the end.", "ko": "결국 보상받았어요."},
+     {"en": "In the end, they decided to cancel the trip.", "ko": "결국 그들은 여행을 취소하기로 했어요."},
+     {"en": "In the end, everything worked out just fine.", "ko": "결국 모든 게 다 잘 풀렸어요."}
+   ]},
+  {"no": 86, "phrase": "take a nap", "meaning": "낮잠을 자다",
+   "examples": [
+     {"en": "Why don't you take a nap for twenty minutes?", "ko": "20분 정도 낮잠을 자는 게 어때요?"},
+     {"en": "I usually take a nap on Sunday afternoons.", "ko": "저는 보통 일요일 오후에 낮잠을 자요."},
+     {"en": "The baby is taking a nap right now, so please be quiet.", "ko": "아기가 지금 낮잠을 자고 있으니 조용히 해주세요."}
+   ]},
+  {"no": 89, "phrase": "bear to", "meaning": "~을 견디다 / 참다",
+   "examples": [
+     {"en": "I can't bear to see him in such pain.", "ko": "저는 그가 그렇게 고통스러워하는 걸 차마 볼 수 없어요."},
+     {"en": "I can't bear to throw away his old letters.", "ko": "그의 오래된 편지를 차마 버릴 수가 없어요."},
+     {"en": "She couldn't bear to watch the sad ending of the movie.", "ko": "그녀는 그 영화의 슬픈 결말을 차마 볼 수 없었어요."}
+   ]},
+  {"no": 91, "phrase": "deaf ears", "phrase_tts": "fall on deaf ears", "meaning": "못 들은 척함 / 무시함",
+   "examples": [
+     {"en": "Your pleas are falling on deaf ears.", "ko": "당신의 간청이 무시당하고 있어요."},
+     {"en": "My warnings fell on deaf ears, and he made the same mistake again.", "ko": "제 경고는 무시당했고, 그는 또 같은 실수를 저질렀어요."},
+     {"en": "The manager's advice often falls on deaf ears among the new staff.", "ko": "매니저의 조언은 신입 직원들에게 종종 무시당해요."}
+   ]},
+  {"no": 100, "phrase": "be hitting on (someone)", "phrase_tts": "be hitting on someone", "meaning": "추파를 던지다 / 작업을 걸다",
+   "examples": [
+     {"en": "I think he's hitting on me.", "ko": "저 사람이 저한테 작업 거는 것 같아요."},
+     {"en": "I think that guy at the bar was hitting on you.", "ko": "바에 있던 그 남자가 너한테 작업 거는 것 같았어."},
+     {"en": "She gets annoyed when strangers hit on her at parties.", "ko": "그녀는 파티에서 낯선 사람들이 작업 걸면 짜증이 나요."}
+   ]},
+  {"no": 101, "phrase": "in a moment", "meaning": "곧, 잠시 후에",
+   "examples": [
+     {"en": "I'll be there in a moment.", "ko": "곧 갈게요."},
+     {"en": "The doctor will be with you in a moment.", "ko": "의사 선생님이 곧 오실 거예요."},
+     {"en": "I'll finish this email in a moment and then we can go.", "ko": "이 이메일 곧 끝내고 나서 같이 가요."}
+   ]},
+  {"no": 103, "phrase": "be afraid", "meaning": "두려워하다 / 걱정하다",
+   "examples": [
+     {"en": "I'm afraid of heights.", "ko": "저는 고소공포증이 있어요."},
+     {"en": "I'm afraid I can't make it to the meeting tomorrow.", "ko": "죄송하지만 내일 회의에 참석하기 어려울 것 같아요."},
+     {"en": "She is afraid of spiders and screams whenever she sees one.", "ko": "그녀는 거미를 무서워해서 볼 때마다 소리를 질러요."}
+   ]},
+  {"no": 168, "phrase": "go with the flow", "meaning": "흐름에 따르다 / 상황을 받아들이다",
+   "examples": [
+     {"en": "Let's just go with the flow.", "ko": "그냥 흐름에 맡기자."},
+     {"en": "I don't have a strict plan; I just go with the flow.", "ko": "저는 딱히 계획이 없고 그냥 흘러가는 대로 해요."},
+     {"en": "It's easier to go with the flow than to fight every change.", "ko": "매번 변화에 맞서기보다 흐름에 맡기는 게 더 편해요."}
+   ]},
+  {"no": 169, "phrase": "a piece of advice", "meaning": "조언 한 마디",
+   "examples": [
+     {"en": "Let me give you a piece of advice.", "ko": "조언 한 마디 해드릴게요."},
+     {"en": "Can I give you a piece of advice about your resume?", "ko": "이력서에 대해 조언 한 마디 해도 될까요?"},
+     {"en": "Here's a piece of advice: always double-check your work.", "ko": "조언 하나 하자면, 항상 본인 작업을 다시 확인하세요."}
+   ]},
+  {"no": 170, "phrase": "over and over again", "meaning": "반복해서 / 되풀이하여",
+   "examples": [
+     {"en": "I've watched this movie over and over again.", "ko": "저는 이 영화를 반복해서 봤어요."},
+     {"en": "He apologized over and over again for the mistake.", "ko": "그는 그 실수에 대해 계속 반복해서 사과했어요."},
+     {"en": "I had to explain the rule over and over again.", "ko": "저는 그 규칙을 계속 반복해서 설명해야 했어요."}
+   ]},
+  {"no": 174, "phrase": "be about time to", "meaning": "~할 때가 되다",
+   "examples": [
+     {"en": "It's about time to start cleaning.", "ko": "이제 청소를 시작할 때가 됐어요."},
+     {"en": "It's about time to renew your driver's license.", "ko": "이제 운전면허증을 갱신할 때가 됐어요."},
+     {"en": "Don't you think it's about time to apologize to her?", "ko": "이제 그녀에게 사과할 때가 됐다고 생각하지 않아요?"}
+   ]},
+  {"no": 180, "phrase": "let + 사람 + v", "phrase_tts": "let someone do something", "meaning": "~가 ~하게 해주다",
+   "examples": [
+     {"en": "I'll let you go if you finish your homework first.", "ko": "숙제를 먼저 끝내면 가게 해줄게요."},
+     {"en": "Please let me know if you need any help.", "ko": "도움이 필요하면 알려주세요."},
+     {"en": "Her parents won't let her stay out past midnight.", "ko": "그녀의 부모님은 그녀가 자정 이후에 밖에 있는 걸 허락하지 않아요."}
+   ]},
+  {"no": 183, "phrase": "through thick and thin", "meaning": "좋을 때나 힘들 때나",
+   "examples": [
+     {"en": "We've stuck together through thick and thin.", "ko": "우리는 좋을 때나 힘들 때나 늘 함께였어요."},
+     {"en": "A good friend stays with you through thick and thin.", "ko": "좋은 친구는 좋을 때나 힘들 때나 곁에 있어줘요."},
+     {"en": "They supported each other through thick and thin during the crisis.", "ko": "그들은 그 위기 동안 좋을 때나 힘들 때나 서로를 지지했어요."}
+   ]},
+  {"no": 186, "phrase": "parental rights", "meaning": "부모의 권리 / 친권",
+   "examples": [
+     {"en": "The court is deciding on the parental rights for their child.", "ko": "법원이 그 아이에 대한 친권을 결정하고 있어요."},
+     {"en": "The judge granted her full parental rights over the children.", "ko": "판사는 그녀에게 아이들에 대한 완전한 친권을 부여했어요."},
+     {"en": "Losing parental rights is one of the most difficult legal outcomes.", "ko": "친권을 잃는 것은 가장 힘든 법적 결과 중 하나예요."}
+   ]},
+  {"no": 187, "phrase": "old folks' home", "meaning": "양로원 / 노인 요양 시설",
+   "examples": [
+     {"en": "My grandfather has decided to move into an old folks' home.", "ko": "할아버지께서 양로원으로 들어가시기로 하셨어요."},
+     {"en": "They visit their grandmother at the old folks' home every weekend.", "ko": "그들은 주말마다 양로원에 계신 할머니를 뵈러 가요."},
+     {"en": "The old folks' home organizes fun activities for the residents every week.", "ko": "그 양로원은 매주 입주자들을 위한 재미있는 활동을 마련해요."}
+   ]}
+]

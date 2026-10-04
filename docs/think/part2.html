@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>구동사·숙어 Part 2 · 영어식 사고</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap" />
+<style>
+  :root {
+    --bg: #f2f4f6;
+    --surface: #ffffff;
+    --surface-2: #e7ebee;
+    --border: #d7dde2;
+    --text: #1b2430;
+    --text-muted: #5b6773;
+    --accent: #3d6bb3;
+    --accent-ink: #ffffff;
+    --target: #2a5aa0;
+    --meaning: #1f8a7d;
+    --example: #6b6f76;
+    --example-alt: #8a4fc2;
+    --current-bg: #e7eefb;
+    --shadow: 0 1px 2px rgba(20, 26, 33, 0.06), 0 8px 24px rgba(20, 26, 33, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121820;
+      --surface: #1a2229;
+      --surface-2: #212a33;
+      --border: #2c3742;
+      --text: #edf1f4;
+      --text-muted: #93a1ac;
+      --accent: #6f9ceb;
+      --accent-ink: #0d1520;
+      --target: #7aa8ef;
+      --meaning: #63d9c8;
+      --example: #9aa2ab;
+      --example-alt: #c298f0;
+      --current-bg: #1b2a3f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #121820;
+    --surface: #1a2229;
+    --surface-2: #212a33;
+    --border: #2c3742;
+    --text: #edf1f4;
+    --text-muted: #93a1ac;
+    --accent: #6f9ceb;
+    --accent-ink: #0d1520;
+    --target: #7aa8ef;
+    --meaning: #63d9c8;
+    --example: #9aa2ab;
+    --current-bg: #1b2a3f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Sora", "Noto Sans KR", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 18px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  header.masthead { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-family: "Sora", sans-serif; font-size: 26px; font-weight: 700; margin: 0; text-wrap: balance; }
+  .subline { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+  .part-nav {
+    display: flex; gap: 8px; flex-wrap: wrap; font-size: 13px;
+  }
+  .part-nav a, .part-nav span {
+    padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); text-decoration: none; color: var(--text-muted);
+  }
+  .part-nav a.current, .part-nav span.current { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 12px;
+    z-index: 5;
+  }
+
+  .episode-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .episode-title { font-weight: 600; font-size: 15px; }
+  .episode-meta { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .scrubber {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px;
+    background: var(--surface-2); cursor: pointer; accent-color: var(--accent);
+  }
+  .scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .controls-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
+  .icon-btn {
+    background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
+    width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 15px; transition: transform 0.12s ease, background 0.12s ease;
+  }
+  .icon-btn:hover { background: var(--current-bg); }
+  .icon-btn:active { transform: scale(0.94); }
+  .icon-btn.play { width: 60px; height: 60px; background: var(--accent); color: var(--accent-ink); border: none; font-size: 20px; }
+  .icon-btn:focus-visible, .rate-btn:focus-visible, .line:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .rate-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .rate-btn {
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text-muted);
+    font-family: "Sora", sans-serif; font-weight: 600; font-size: 13px; padding: 7px 13px; border-radius: 999px;
+    cursor: pointer; font-variant-numeric: tabular-nums;
+  }
+  .rate-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+  .transcript-heading { display: flex; align-items: center; justify-content: space-between; }
+  .transcript-heading h2 { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin: 0; }
+  .legend { display: flex; gap: 12px; font-size: 12px; color: var(--text-muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.target { background: var(--target); }
+  .dot.meaning { background: var(--meaning); }
+  .dot.example { background: var(--example); }
+
+  .transcript { display: flex; flex-direction: column; gap: 10px; }
+  .item-num {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--text);
+    padding: 14px 2px 0; border-top: 1px solid var(--border); margin-top: 4px;
+  }
+  .item-num:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+  .line {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: start; gap: 12px;
+    padding: 12px 14px; border-radius: 14px; border: 1px solid transparent; cursor: pointer;
+    background: transparent; text-align: left; font-family: inherit; color: inherit;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .line:hover { background: var(--surface-2); }
+  .line.current { background: var(--current-bg); border-color: var(--accent); }
+
+  .role { font-size: 11px; font-weight: 700; letter-spacing: 0.03em; padding-top: 3px; }
+  .role.target { color: var(--target); }
+  .role.meaning { color: var(--meaning); }
+  .role.example { color: var(--example); }
+  .role.example_alt { color: var(--example-alt); }
+  .role.section { color: #b7791f; }
+  .role.thinking { color: #2f855a; }
+  .line.section { background: color-mix(in srgb, #f6c344 14%, transparent); }
+  .line.section .ko, .line.thinking .ko { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .line.thinking .en { font-size: 13.5px; color: #2b6cb0; font-family: "Noto Sans KR", sans-serif; }
+
+  .alt-toggle {
+    display: flex; align-items: center; gap: 6px; margin: 2px 14px 2px 56px;
+    padding: 7px 12px; border-radius: 999px; border: 1px dashed var(--example-alt);
+    background: transparent; color: var(--example-alt); font-size: 12.5px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .alt-toggle:hover { background: color-mix(in srgb, var(--example-alt) 12%, transparent); }
+  .alt-toggle .chev { transition: transform 0.15s ease; }
+  .alt-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+  .alt-group { display: flex; flex-direction: column; gap: 10px; }
+  .alt-group[hidden] { display: none; }
+  .line.alt-row { border: 1px dashed var(--border); }
+
+  .text-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .en { font-family: "Literata", "Noto Serif KR", serif; font-size: 15.5px; line-height: 1.5; }
+  .ko { font-family: "Noto Sans KR", sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+
+  .replay-btn {
+    align-self: center; background: none; border: none; color: var(--text-muted); font-size: 16px;
+    cursor: pointer; padding: 4px; border-radius: 8px; opacity: 0.55;
+  }
+  .line:hover .replay-btn, .line.current .replay-btn { opacity: 1; color: var(--accent); }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 12px; padding-top: 8px; }
+
+  @media (max-width: 420px) {
+    .line { grid-template-columns: 44px 1fr auto; }
+    .role { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">영어식 사고 · 구동사·숙어 · 2/8</div>
+    <h1>구동사·숙어 Part 2</h1>
+    <p class="subline">표현을 듣고 → 영어식 사고 풀이(그림) → 뜻 → 예문(영어·해석·영어·영어) 순서로 익혀요. 줄을 탭하면 그 지점부터 다시 들을 수 있어요.</p>
+  </header>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<span class="current">구동 2</span>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<a href="part8.html">구동 8</a>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a></nav>
+
+  <div class="player">
+    <audio id="audio" preload="metadata" src="audio/part2.mp3"></audio>
+
+    <div class="episode-row">
+      <span class="episode-title">19개 표현</span>
+      <span class="episode-meta"><span id="curTime">0:00</span> / <span id="durTime">--:--</span></span>
+    </div>
+
+    <input type="range" class="scrubber" id="scrubber" min="0" max="1000" value="0" aria-label="재생 위치" />
+
+    <div class="controls-row">
+      <button class="icon-btn" id="restartBtn" title="처음부터" aria-label="처음부터 다시 듣기">⏮</button>
+      <button class="icon-btn" id="rewindBtn" title="10초 뒤로" aria-label="10초 뒤로">⟲10</button>
+      <button class="icon-btn play" id="playBtn" aria-label="재생">▶</button>
+      <button class="icon-btn" id="forwardBtn" title="10초 앞으로" aria-label="10초 앞으로">10⟳</button>
+    </div>
+
+    <div class="rate-row" role="group" aria-label="재생 속도">
+      <button class="rate-btn" data-rate="0.75" aria-pressed="false">0.75×</button>
+      <button class="rate-btn" data-rate="1" aria-pressed="true">1.0×</button>
+      <button class="rate-btn" data-rate="1.25" aria-pressed="false">1.25×</button>
+      <button class="rate-btn" data-rate="1.5" aria-pressed="false">1.5×</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="transcript-heading">
+      <h2>표현 &amp; 예문 (19개)</h2>
+      <div class="legend">
+        <span><i class="dot target"></i>표현</span>
+        <span><i class="dot meaning"></i>뜻</span>
+        <span><i class="dot example"></i>예문</span>
+      </div>
+    </div>
+    <div class="transcript" id="transcript"></div>
+  </section>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<span class="current">구동 2</span>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<a href="part8.html">구동 8</a>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a></nav>
+
+  <footer>문장을 탭하면 그 지점부터 다시 재생됩니다 · 23.5분 · 안 외워지는 표현은 탭해서 반복 재생하세요</footer>
+</div>
+
+<script>
+  const TRANSCRIPT = [{"item": "➡ OUT", "role": "section", "ex_index": 0, "en": "", "ko": "안 → 밖으로 → ① 안에 있던 것이 밖으로 나옴(드러남)  ② 끝까지 다 써서 바닥남  ③ 무리 밖으로 빠짐", "start_ms": 0, "end_ms": 10224}, {"item": "1. stay out (No.718)", "role": "target", "ex_index": 0, "en": "stay out", "ko": "", "start_ms": 12224, "end_ms": 14096}, {"item": "1. stay out (No.718)", "role": "thinking", "ex_index": 0, "en": "stay(머물다) + out(집 밖에)", "ko": "집(안)에 들어오지 않고 계속 '밖에' 머무는 그림. 밤늦게까지 밖에 있으면 '외박하다/늦게 들어오다', 어떤 일 밖에 머물면 '끼어들지 않다'.", "start_ms": 16096, "end_ms": 27784}, {"item": "1. stay out (No.718)", "role": "meaning", "ex_index": 0, "en": "", "ko": "밖에 있다(늦게 들어오다) / (~에) 끼어들지 않다", "start_ms": 29784, "end_ms": 34704}, {"item": "1. stay out (No.718)", "role": "example", "ex_index": 1, "en": "Don't stay out too late tonight.", "ko": "오늘 밤 너무 늦게까지 밖에 있지 마.", "start_ms": 36704, "end_ms": 49328}, {"item": "1. stay out (No.718)", "role": "example", "ex_index": 2, "en": "We stayed out until 2 a.m.", "ko": "우리 새벽 2시까지 밖에서 놀았어.", "start_ms": 51328, "end_ms": 65968}, {"item": "1. stay out (No.718)", "role": "example", "ex_index": 3, "en": "Stay out of this. It's none of your business.", "ko": "이 일엔 끼어들지 마. 네 일 아니잖아.", "start_ms": 67968, "end_ms": 84648}, {"item": "2. wear out (No.826)", "role": "target", "ex_index": 0, "en": "wear out", "ko": "", "start_ms": 86648, "end_ms": 88520}, {"item": "2. wear out (No.826)", "role": "thinking", "ex_index": 0, "en": "wear(닳게 하다) + out(끝까지 다 → 바닥남)", "ko": "운동화를 계속 신어서 밑창이 '끝까지' 닳아 구멍이 나는 그림. out은 '다 써서 없어질 때까지'. 사람의 힘을 다 닳게 하면 '지치게 하다'.", "start_ms": 90520, "end_ms": 101896}, {"item": "2. wear out (No.826)", "role": "meaning", "ex_index": 0, "en": "", "ko": "닳다, 해지다 / 지치게 하다", "start_ms": 103896, "end_ms": 108600}, {"item": "2. wear out (No.826)", "role": "example", "ex_index": 1, "en": "I wore out my running shoes in six months.", "ko": "6개월 만에 운동화가 다 닳았어.", "start_ms": 110600, "end_ms": 126632}, {"item": "2. wear out (No.826)", "role": "example", "ex_index": 2, "en": "The kids wore me out today.", "ko": "오늘 애들 때문에 완전 녹초가 됐어.", "start_ms": 128632, "end_ms": 141376}, {"item": "2. wear out (No.826)", "role": "example", "ex_index": 3, "en": "This old sofa is starting to wear out.", "ko": "이 낡은 소파가 해지기 시작했어.", "start_ms": 143376, "end_ms": 158856}, {"item": "3. be worn out (No.828)", "role": "target", "ex_index": 0, "en": "be worn out", "ko": "", "start_ms": 160856, "end_ms": 162728}, {"item": "3. be worn out (No.828)", "role": "thinking", "ex_index": 0, "en": "be + worn out(다 닳아버린 상태)", "ko": "wear out의 결과 상태. 몸이 '끝까지 다' 닳아버린 상태로 있으니 '완전히 지친, 녹초가 된'. 물건이면 '닳아 해진'.", "start_ms": 164728, "end_ms": 174088}, {"item": "3. be worn out (No.828)", "role": "meaning", "ex_index": 0, "en": "", "ko": "완전히 지치다, 녹초가 되다 / 닳아 해지다", "start_ms": 176088, "end_ms": 181776}, {"item": "3. be worn out (No.828)", "role": "example", "ex_index": 1, "en": "I'm completely worn out after that hike.", "ko": "그 등산 후에 완전 녹초야.", "start_ms": 183776, "end_ms": 197360}, {"item": "3. be worn out (No.828)", "role": "example", "ex_index": 2, "en": "You look worn out. Get some rest.", "ko": "너 엄청 지쳐 보여. 좀 쉬어.", "start_ms": 199360, "end_ms": 215032}, {"item": "3. be worn out (No.828)", "role": "example", "ex_index": 3, "en": "These jeans are worn out at the knees.", "ko": "이 청바지 무릎이 다 해졌어.", "start_ms": 217032, "end_ms": 231024}, {"item": "4. be left out (No.825)", "role": "target", "ex_index": 0, "en": "be left out", "ko": "", "start_ms": 233024, "end_ms": 234896}, {"item": "4. be left out (No.825)", "role": "thinking", "ex_index": 0, "en": "be + left(남겨진) + out(무리 밖에)", "ko": "모두 원 안에 모였는데 나만 원 '밖에' 남겨진 그림. 그래서 '소외되다, 빠지다'. feel left out = 소외감을 느끼다.", "start_ms": 236896, "end_ms": 247696}, {"item": "4. be left out (No.825)", "role": "meaning", "ex_index": 0, "en": "", "ko": "소외되다, (명단·무리에서) 빠지다", "start_ms": 249696, "end_ms": 254736}, {"item": "4. be left out (No.825)", "role": "example", "ex_index": 1, "en": "I felt left out when they spoke Spanish.", "ko": "그들이 스페인어로 말할 때 소외감을 느꼈어.", "start_ms": 256736, "end_ms": 272696}, {"item": "4. be left out (No.825)", "role": "example", "ex_index": 2, "en": "Nobody should be left out of the team photo.", "ko": "단체 사진에서 아무도 빠지면 안 돼.", "start_ms": 274696, "end_ms": 289264}, {"item": "4. be left out (No.825)", "role": "example", "ex_index": 3, "en": "Invite him too. He'll feel left out.", "ko": "그 사람도 초대해. 소외감 느낄 거야.", "start_ms": 291264, "end_ms": 308112}, {"item": "5. miss out on (No.824)", "role": "target", "ex_index": 0, "en": "miss out on", "ko": "", "start_ms": 310112, "end_ms": 311984}, {"item": "5. miss out on (No.824)", "role": "thinking", "ex_index": 0, "en": "miss(놓치다) + out(기회 밖으로 빠짐) + on(그 대상)", "ko": "다들 기차(기회)에 탔는데 나는 놓쳐서 플랫폼 '밖에' 남은 그림. 좋은 기회나 재미있는 일을 '놓치다'. FOMO = fear of missing out.", "start_ms": 313984, "end_ms": 325480}, {"item": "5. miss out on (No.824)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(좋은 기회·경험을) 놓치다", "start_ms": 327480, "end_ms": 331080}, {"item": "5. miss out on (No.824)", "role": "example", "ex_index": 1, "en": "Don't miss out on this sale!", "ko": "이번 세일 놓치지 마!", "start_ms": 333080, "end_ms": 344672}, {"item": "5. miss out on (No.824)", "role": "example", "ex_index": 2, "en": "I missed out on the party because I was sick.", "ko": "아파서 파티를 못 갔어(놓쳤어).", "start_ms": 346672, "end_ms": 362896}, {"item": "5. miss out on (No.824)", "role": "example", "ex_index": 3, "en": "You're missing out. This food is amazing.", "ko": "너 손해 보는 거야. 이 음식 진짜 맛있어.", "start_ms": 364896, "end_ms": 382560}, {"item": "6. gasp out (No.770)", "role": "target", "ex_index": 0, "en": "gasp out", "ko": "", "start_ms": 384560, "end_ms": 386432}, {"item": "6. gasp out (No.770)", "role": "thinking", "ex_index": 0, "en": "gasp(헉 하고 숨을 들이켜다) + out(소리로 밖에 내뱉음)", "ko": "숨이 차서 '헉헉' 거리며 말을 겨우 '밖으로' 내뱉는 그림. 숨 가쁘게 말하다.", "start_ms": 388432, "end_ms": 394984}, {"item": "6. gasp out (No.770)", "role": "meaning", "ex_index": 0, "en": "", "ko": "숨을 헐떡이며 (말을) 내뱉다", "start_ms": 396984, "end_ms": 400680}, {"item": "6. gasp out (No.770)", "role": "example", "ex_index": 1, "en": "\"Help me!\" she gasped out.", "ko": "\"도와줘요!\" 그녀가 숨을 헐떡이며 외쳤어.", "start_ms": 402680, "end_ms": 416096}, {"item": "6. gasp out (No.770)", "role": "example", "ex_index": 2, "en": "He gasped out a thank-you after the race.", "ko": "그는 경주가 끝나고 숨을 몰아쉬며 고맙다고 했어.", "start_ms": 418096, "end_ms": 434968}, {"item": "6. gasp out (No.770)", "role": "example", "ex_index": 3, "en": "She could only gasp out a few words.", "ko": "그녀는 겨우 몇 마디만 숨 가쁘게 내뱉을 수 있었어.", "start_ms": 436968, "end_ms": 452664}, {"item": "7. run out of (No.635)", "role": "target", "ex_index": 0, "en": "run out of", "ko": "", "start_ms": 454664, "end_ms": 456536}, {"item": "7. run out of (No.635)", "role": "thinking", "ex_index": 0, "en": "run(흘러가다) + out(밖으로 다 빠져나감) + of(~이)", "ko": "통 안에 있던 것이 계속 흘러 '밖으로' 다 빠져나가 텅 비는 그림. 시간·돈·우유가 바닥나면 '다 떨어지다'.", "start_ms": 458536, "end_ms": 468064}, {"item": "7. run out of (No.635)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~이 다 떨어지다, 바닥나다", "start_ms": 470064, "end_ms": 473904}, {"item": "7. run out of (No.635)", "role": "example", "ex_index": 1, "en": "We've run out of milk.", "ko": "우유 다 떨어졌어.", "start_ms": 475904, "end_ms": 487568}, {"item": "7. run out of (No.635)", "role": "example", "ex_index": 2, "en": "I'm running out of time. Hurry!", "ko": "시간이 얼마 안 남았어. 서둘러!", "start_ms": 489568, "end_ms": 504664}, {"item": "7. run out of (No.635)", "role": "example", "ex_index": 3, "en": "My phone ran out of battery.", "ko": "폰 배터리가 다 됐어.", "start_ms": 506664, "end_ms": 518976}, {"item": "↗ OFF", "role": "section", "ex_index": 0, "en": "", "ko": "붙어 있던 것에서 '똑' 떨어져 나감 → ① 분리·제거  ② 출발(땅에서 떨어짐)  ③ 효과가 떨어져 사라짐  ④ 연결이 끊김 = 중단·취소", "start_ms": 520976, "end_ms": 534872}, {"item": "8. take off (No.841 / 283)", "role": "target", "ex_index": 0, "en": "take off", "ko": "", "start_ms": 536872, "end_ms": 538744}, {"item": "8. take off (No.841 / 283)", "role": "thinking", "ex_index": 0, "en": "take(가져가다) + off(표면에서 떨어뜨림)", "ko": "몸에 붙어 있던 옷을 '떼어' 가져가면 '벗다', 비행기가 땅에서 '떨어져' 나가면 '이륙하다', 회사에서 몸을 떼면 '쉬다', 사업이 땅을 박차고 날아오르면 '급성장하다'.", "start_ms": 540744, "end_ms": 551904}, {"item": "8. take off (No.841 / 283)", "role": "meaning", "ex_index": 0, "en": "", "ko": "벗다 / 이륙하다 / (휴가를) 내다 / 급성장하다", "start_ms": 553904, "end_ms": 561344}, {"item": "8. take off (No.841 / 283)", "role": "example", "ex_index": 1, "en": "Please take off your shoes inside.", "ko": "안에서는 신발을 벗어 주세요.", "start_ms": 563344, "end_ms": 576040}, {"item": "8. take off (No.841 / 283)", "role": "example", "ex_index": 2, "en": "Our plane is taking off in ten minutes.", "ko": "우리 비행기 10분 후에 이륙해.", "start_ms": 578040, "end_ms": 593328}, {"item": "8. take off (No.841 / 283)", "role": "example", "ex_index": 3, "en": "I'm taking Friday off.", "ko": "금요일에 휴가 낼 거야.", "start_ms": 595328, "end_ms": 607088}, {"item": "9. kick off (No.731)", "role": "target", "ex_index": 0, "en": "kick off", "ko": "", "start_ms": 609088, "end_ms": 610960}, {"item": "9. kick off (No.731)", "role": "thinking", "ex_index": 0, "en": "kick(차다) + off(시작점에서 떨어져 나감)", "ko": "축구 경기에서 공을 '뻥' 차서 중앙선에서 '떨어져' 나가게 하며 경기가 시작되는 그림. 그래서 행사·회의를 '시작하다'.", "start_ms": 612960, "end_ms": 623304}, {"item": "9. kick off (No.731)", "role": "meaning", "ex_index": 0, "en": "", "ko": "시작하다, 개시하다", "start_ms": 625304, "end_ms": 629192}, {"item": "9. kick off (No.731)", "role": "example", "ex_index": 1, "en": "Let's kick off the meeting with some good news.", "ko": "좋은 소식으로 회의를 시작해 봅시다.", "start_ms": 631192, "end_ms": 645256}, {"item": "9. kick off (No.731)", "role": "example", "ex_index": 2, "en": "The festival kicks off on Friday.", "ko": "축제는 금요일에 시작해.", "start_ms": 647256, "end_ms": 660720}, {"item": "9. kick off (No.731)", "role": "example", "ex_index": 3, "en": "The game kicks off at 7.", "ko": "경기는 7시에 시작해.", "start_ms": 662720, "end_ms": 674720}, {"item": "10. lay off (No.205)", "role": "target", "ex_index": 0, "en": "lay off", "ko": "", "start_ms": 676720, "end_ms": 678592}, {"item": "10. lay off (No.205)", "role": "thinking", "ex_index": 0, "en": "lay(내려놓다) + off(회사에서 떼어냄)", "ko": "회사라는 몸통에서 직원을 '떼어' 내려놓는 그림. 그래서 '해고하다(정리해고)'. 무언가를 손에서 떼어 내려놓으면 '그만하다, 줄이다'.", "start_ms": 680592, "end_ms": 692736}, {"item": "10. lay off (No.205)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(정리)해고하다 / ~을 그만하다·줄이다", "start_ms": 694736, "end_ms": 700712}, {"item": "10. lay off (No.205)", "role": "example", "ex_index": 1, "en": "The company laid off 200 workers.", "ko": "그 회사가 직원 200명을 해고했어.", "start_ms": 702712, "end_ms": 718288}, {"item": "10. lay off (No.205)", "role": "example", "ex_index": 2, "en": "He got laid off last month.", "ko": "그는 지난달에 정리해고 당했어.", "start_ms": 720288, "end_ms": 733008}, {"item": "10. lay off (No.205)", "role": "example", "ex_index": 3, "en": "You should lay off the coffee for a while.", "ko": "당분간 커피 좀 줄이는 게 좋겠어.", "start_ms": 735008, "end_ms": 748832}, {"item": "11. brush off (No.121)", "role": "target", "ex_index": 0, "en": "brush off", "ko": "", "start_ms": 750832, "end_ms": 752704}, {"item": "11. brush off (No.121)", "role": "thinking", "ex_index": 0, "en": "brush(솔질하다) + off(털어서 떼어냄)", "ko": "어깨에 앉은 먼지를 손으로 '툭툭' 털어 '떼어내는' 그림. 남의 말이나 비판을 그렇게 털어버리면 '무시하다, 대수롭지 않게 넘기다'.", "start_ms": 754704, "end_ms": 764544}, {"item": "11. brush off (No.121)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(말·비판을) 무시하다, 털어버리다 / (먼지를) 털다", "start_ms": 766544, "end_ms": 774224}, {"item": "11. brush off (No.121)", "role": "example", "ex_index": 1, "en": "She brushed off my question and changed the subject.", "ko": "그녀는 내 질문을 무시하고 화제를 바꿨어.", "start_ms": 776224, "end_ms": 793984}, {"item": "11. brush off (No.121)", "role": "example", "ex_index": 2, "en": "He just brushed off the criticism.", "ko": "그는 비판을 그냥 털어버렸어.", "start_ms": 795984, "end_ms": 809040}, {"item": "11. brush off (No.121)", "role": "example", "ex_index": 3, "en": "Don't brush me off. This is important.", "ko": "나 무시하지 마. 이거 중요한 거야.", "start_ms": 811040, "end_ms": 825872}, {"item": "12. pull off (No.119 / 821)", "role": "target", "ex_index": 0, "en": "pull off", "ko": "", "start_ms": 827872, "end_ms": 829744}, {"item": "12. pull off (No.119 / 821)", "role": "thinking", "ex_index": 0, "en": "pull(당기다) + off(붙어 있던 것을 떼어냄)", "ko": "꽉 붙어서 안 떨어지는 스티커를 끝까지 당겨 '떼어내는' 데 성공한 그림. 어려운 일을 해내면 '해내다, 성공하다'. 차를 길에서 떼어 옆으로 대면 '차를 세우다'.", "start_ms": 831744, "end_ms": 845112}, {"item": "12. pull off (No.119 / 821)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(어려운 일을) 해내다 / (길가에) 차를 대다", "start_ms": 847112, "end_ms": 852128}, {"item": "12. pull off (No.119 / 821)", "role": "example", "ex_index": 1, "en": "I can't believe we pulled it off!", "ko": "우리가 그걸 해냈다니 믿기지 않아!", "start_ms": 854128, "end_ms": 867976}, {"item": "12. pull off (No.119 / 821)", "role": "example", "ex_index": 2, "en": "Not many people can pull off that hairstyle.", "ko": "그 헤어스타일을 소화할 수 있는 사람은 많지 않아.", "start_ms": 869976, "end_ms": 885552}, {"item": "12. pull off (No.119 / 821)", "role": "example", "ex_index": 3, "en": "Let's pull off the road and rest.", "ko": "길가에 차 대고 좀 쉬자.", "start_ms": 887552, "end_ms": 900848}, {"item": "13. see off (No.276)", "role": "target", "ex_index": 0, "en": "see off", "ko": "", "start_ms": 902848, "end_ms": 904720}, {"item": "13. see off (No.276)", "role": "thinking", "ex_index": 0, "en": "see(보다) + off(떠나가는 것을)", "ko": "기차가 플랫폼에서 '떨어져' 멀어질 때까지 '지켜봐 주는' 그림. 그래서 '배웅하다'. 목적어가 가운데: see him off.", "start_ms": 906720, "end_ms": 916584}, {"item": "13. see off (No.276)", "role": "meaning", "ex_index": 0, "en": "", "ko": "배웅하다", "start_ms": 918584, "end_ms": 920576}, {"item": "13. see off (No.276)", "role": "example", "ex_index": 1, "en": "We went to the airport to see him off.", "ko": "우리는 그를 배웅하러 공항에 갔어.", "start_ms": 922576, "end_ms": 936280}, {"item": "13. see off (No.276)", "role": "example", "ex_index": 2, "en": "My mom saw me off at the station.", "ko": "엄마가 역에서 날 배웅해 줬어.", "start_ms": 938280, "end_ms": 952032}, {"item": "13. see off (No.276)", "role": "example", "ex_index": 3, "en": "Thanks for seeing me off.", "ko": "배웅해 줘서 고마워.", "start_ms": 954032, "end_ms": 965672}, {"item": "14. break off (No.277)", "role": "target", "ex_index": 0, "en": "break off", "ko": "", "start_ms": 967672, "end_ms": 969544}, {"item": "14. break off (No.277)", "role": "thinking", "ex_index": 0, "en": "break(부러뜨리다) + off(떼어냄)", "ko": "초콜릿 바에서 한 조각을 '똑' 부러뜨려 떼어내는 그림. 관계나 대화를 그렇게 뚝 끊으면 '(관계를) 끊다, (말을) 중단하다'.", "start_ms": 971544, "end_ms": 982512}, {"item": "14. break off (No.277)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(관계·약혼을) 끊다 / (말을) 갑자기 멈추다 / 떼어내다", "start_ms": 984512, "end_ms": 991352}, {"item": "14. break off (No.277)", "role": "example", "ex_index": 1, "en": "She broke off the engagement.", "ko": "그녀가 파혼했어.", "start_ms": 993352, "end_ms": 1005424}, {"item": "14. break off (No.277)", "role": "example", "ex_index": 2, "en": "He broke off in the middle of the sentence.", "ko": "그는 말하다가 중간에 갑자기 멈췄어.", "start_ms": 1007424, "end_ms": 1021656}, {"item": "14. break off (No.277)", "role": "example", "ex_index": 3, "en": "Can you break off a piece for me?", "ko": "나한테 한 조각 떼어 줄래?", "start_ms": 1023656, "end_ms": 1035920}, {"item": "15. wear off (No.280)", "role": "target", "ex_index": 0, "en": "wear off", "ko": "", "start_ms": 1037920, "end_ms": 1039792}, {"item": "15. wear off (No.280)", "role": "thinking", "ex_index": 0, "en": "wear(닳다) + off(닳아서 떨어져 나감)", "ko": "벽에 칠한 페인트가 계속 닳아서 조금씩 '떨어져' 나가 사라지는 그림. 약효·마취·신기함이 점점 닳아 없어지면 '(효과가) 사라지다'.", "start_ms": 1041792, "end_ms": 1053840}, {"item": "15. wear off (No.280)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(효과·느낌이) 서서히 사라지다, 약해지다", "start_ms": 1055840, "end_ms": 1061144}, {"item": "15. wear off (No.280)", "role": "example", "ex_index": 1, "en": "The painkiller is wearing off.", "ko": "진통제 약효가 떨어지고 있어.", "start_ms": 1063144, "end_ms": 1076464}, {"item": "15. wear off (No.280)", "role": "example", "ex_index": 2, "en": "The excitement wore off after a week.", "ko": "일주일 지나니까 설렘이 사라졌어.", "start_ms": 1078464, "end_ms": 1093080}, {"item": "15. wear off (No.280)", "role": "example", "ex_index": 3, "en": "Don't worry, the smell will wear off.", "ko": "걱정 마, 냄새는 곧 빠질 거야.", "start_ms": 1095080, "end_ms": 1111640}, {"item": "16. call off (No.854)", "role": "target", "ex_index": 0, "en": "call off", "ko": "", "start_ms": 1113640, "end_ms": 1115512}, {"item": "16. call off (No.854)", "role": "thinking", "ex_index": 0, "en": "call(외치다) + off(연결에서 떼어냄)", "ko": "예정된 일정에서 '그거 빼!' 하고 외쳐 일정표에서 '떼어내는' 그림. 그래서 '취소하다'. (cancel과 같은 뜻, 회화에서 더 자주 씀)", "start_ms": 1117512, "end_ms": 1129920}, {"item": "16. call off (No.854)", "role": "meaning", "ex_index": 0, "en": "", "ko": "취소하다, 중지하다", "start_ms": 1131920, "end_ms": 1135784}, {"item": "16. call off (No.854)", "role": "example", "ex_index": 1, "en": "The game was called off because of the rain.", "ko": "비 때문에 경기가 취소됐어.", "start_ms": 1137784, "end_ms": 1151536}, {"item": "16. call off (No.854)", "role": "example", "ex_index": 2, "en": "They called off the wedding.", "ko": "그들은 결혼식을 취소했어.", "start_ms": 1153536, "end_ms": 1165776}, {"item": "16. call off (No.854)", "role": "example", "ex_index": 3, "en": "Let's not call it off yet.", "ko": "아직 취소하지는 말자.", "start_ms": 1167776, "end_ms": 1179704}, {"item": "17. go off (No.853)", "role": "target", "ex_index": 0, "en": "go off", "ko": "", "start_ms": 1181704, "end_ms": 1183576}, {"item": "17. go off (No.853)", "role": "thinking", "ex_index": 0, "en": "go(가다) + off(제자리에서 떨어져 나감 / 확 터져 나감)", "ko": "고정되어 있던 것이 '팍' 튀어 나가는 그림. 알람이 울려 퍼지면 '울리다', 폭탄이 터지면 '터지다', 음식이 정상 상태에서 떨어져 나가면 '상하다', 전기가 끊기면 '꺼지다'.", "start_ms": 1185576, "end_ms": 1198608}, {"item": "17. go off (No.853)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(알람이) 울리다 / 터지다 / (음식이) 상하다 / (전기가) 꺼지다", "start_ms": 1200608, "end_ms": 1209920}, {"item": "17. go off (No.853)", "role": "example", "ex_index": 1, "en": "My alarm didn't go off this morning.", "ko": "오늘 아침에 알람이 안 울렸어.", "start_ms": 1211920, "end_ms": 1225000}, {"item": "17. go off (No.853)", "role": "example", "ex_index": 2, "en": "This milk has gone off.", "ko": "이 우유 상했어.", "start_ms": 1227000, "end_ms": 1238640}, {"item": "17. go off (No.853)", "role": "example", "ex_index": 3, "en": "The lights suddenly went off.", "ko": "갑자기 불이 꺼졌어.", "start_ms": 1240640, "end_ms": 1253312}, {"item": "⇠ AWAY", "role": "section", "ex_index": 0, "en": "", "ko": "멀리 떨어져 감 → ① 거리를 둠·피함  ② 점점 멀어져 사라짐(소멸)  ③ 멈추지 않고 계속 ~해댐(흘러가듯 쭉)", "start_ms": 1255312, "end_ms": 1267552}, {"item": "18. go away (No.843)", "role": "target", "ex_index": 0, "en": "go away", "ko": "", "start_ms": 1269552, "end_ms": 1271424}, {"item": "18. go away (No.843)", "role": "thinking", "ex_index": 0, "en": "go(가다) + away(멀리)", "ko": "여기서 '멀리' 가버리는 그림. 사람이 가버리면 '저리 가', 통증·문제가 멀어져 사라지면 '없어지다', 휴가로 멀리 떠나면 '여행 가다'.", "start_ms": 1273424, "end_ms": 1284848}, {"item": "18. go away (No.843)", "role": "meaning", "ex_index": 0, "en": "", "ko": "가버리다·떠나다 / (통증·문제가) 사라지다", "start_ms": 1286848, "end_ms": 1293664}, {"item": "18. go away (No.843)", "role": "example", "ex_index": 1, "en": "Go away! I'm busy.", "ko": "저리 가! 나 바빠.", "start_ms": 1295664, "end_ms": 1309104}, {"item": "18. go away (No.843)", "role": "example", "ex_index": 2, "en": "The headache finally went away.", "ko": "두통이 드디어 사라졌어.", "start_ms": 1311104, "end_ms": 1324016}, {"item": "18. go away (No.843)", "role": "example", "ex_index": 3, "en": "We're going away for the weekend.", "ko": "우리 주말에 여행 떠나.", "start_ms": 1326016, "end_ms": 1338064}, {"item": "19. keep away (No.313)", "role": "target", "ex_index": 0, "en": "keep away", "ko": "", "start_ms": 1340064, "end_ms": 1341936}, {"item": "19. keep away (No.313)", "role": "thinking", "ex_index": 0, "en": "keep(계속 유지) + away(떨어진 거리)", "ko": "어떤 대상과의 '거리'를 계속 유지하는 그림. 가까이 가지 않게 하니 '멀리하다, 접근하지 않게 하다'.", "start_ms": 1343936, "end_ms": 1352576}, {"item": "19. keep away (No.313)", "role": "meaning", "ex_index": 0, "en": "", "ko": "멀리하다, 가까이 가지 않다(않게 하다)", "start_ms": 1354576, "end_ms": 1359520}, {"item": "19. keep away (No.313)", "role": "example", "ex_index": 1, "en": "Keep away from the edge!", "ko": "가장자리에서 떨어져!", "start_ms": 1361520, "end_ms": 1373856}, {"item": "19. keep away (No.313)", "role": "example", "ex_index": 2, "en": "Keep medicine away from children.", "ko": "약은 아이들 손에 닿지 않게 두세요.", "start_ms": 1375856, "end_ms": 1390928}, {"item": "19. keep away (No.313)", "role": "example", "ex_index": 3, "en": "An apple a day keeps the doctor away.", "ko": "하루 사과 하나면 의사가 필요 없다.", "start_ms": 1392928, "end_ms": 1407496}];
+  const MAIN_END_MS = 1409496;
+
+  const audio = document.getElementById("audio");
+  const playBtn = document.getElementById("playBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const rewindBtn = document.getElementById("rewindBtn");
+  const forwardBtn = document.getElementById("forwardBtn");
+  const scrubber = document.getElementById("scrubber");
+  const curTimeEl = document.getElementById("curTime");
+  const durTimeEl = document.getElementById("durTime");
+  const transcriptEl = document.getElementById("transcript");
+  const rateBtns = Array.from(document.querySelectorAll(".rate-btn"));
+
+  const ROLE_LABEL = { section: "핵심", target: "표현", thinking: "사고", meaning: "뜻", example: "예문", example_alt: "새 예문" };
+
+  function fmt(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  function makeLineBtn(row) {
+    const btn = document.createElement("button");
+    btn.className = row.role === "example_alt" ? "line alt-row" : `line ${row.role}`;
+    btn.dataset.start = row.start_ms / 1000;
+    const roleLabel = row.role === "example" ? `예문 ${row.ex_index}`
+      : row.role === "example_alt" ? `새 예문 ${row.ex_index}` : ROLE_LABEL[row.role];
+    btn.innerHTML = `
+      <span class="role ${row.role}">${roleLabel}</span>
+      <span class="text-col">
+        <span class="en">${row.en}</span>
+        <span class="ko">${row.ko}</span>
+      </span>
+      <span class="replay-btn" aria-hidden="true">↻</span>
+    `;
+    btn.addEventListener("click", () => {
+      audio.currentTime = row.start_ms / 1000;
+      audio.play();
+    });
+    return btn;
+  }
+
+  let lastItem = null;
+  let altGroupEl = null;
+  const rowEls = TRANSCRIPT.map((row) => {
+    if (row.item !== lastItem) {
+      const label = document.createElement("div");
+      label.className = "item-num";
+      label.textContent = row.item;
+      transcriptEl.appendChild(label);
+      lastItem = row.item;
+      altGroupEl = null;
+    }
+    if (row.role === "example_alt") {
+      if (!altGroupEl) {
+        const toggle = document.createElement("button");
+        toggle.className = "alt-toggle";
+        toggle.type = "button";
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.innerHTML = `🔄 이 표현, 다른 패턴으로 다시 공부하기 <span class="chev">▾</span>`;
+        const thisGroup = document.createElement("div");
+        thisGroup.className = "alt-group";
+        thisGroup.hidden = true;
+        toggle.addEventListener("click", () => {
+          thisGroup.hidden = !thisGroup.hidden;
+          toggle.setAttribute("aria-expanded", String(!thisGroup.hidden));
+        });
+        transcriptEl.appendChild(toggle);
+        transcriptEl.appendChild(thisGroup);
+        altGroupEl = thisGroup;
+      }
+      const btn = makeLineBtn(row);
+      altGroupEl.appendChild(btn);
+      return btn;
+    }
+    const btn = makeLineBtn(row);
+    transcriptEl.appendChild(btn);
+    return btn;
+  });
+
+  let currentIndex = -1;
+
+  audio.addEventListener("loadedmetadata", () => { durTimeEl.textContent = fmt(audio.duration); });
+
+  let userSeeking = false;
+  // "다른 패턴" 예문은 파일 맨 끝에 있어서, 이어듣기로 자연스럽게 흘러 들어가면 안 되고
+  // 항목의 토글을 눌러 직접 이동했을 때만 들려야 한다. 한 틱 만에 MAIN_END_MS를 훌쩍
+  // 넘기는 큰 점프는 의도적 탐색(탭/스크러버)이고, 조금씩 넘는 건 자연 재생이므로 그때만 멈춘다.
+  let prevMs = 0;
+  audio.addEventListener("timeupdate", () => {
+    const ms0 = audio.currentTime * 1000;
+    if (prevMs < MAIN_END_MS && ms0 >= MAIN_END_MS && (ms0 - prevMs) < 2000) {
+      audio.pause();
+      audio.currentTime = MAIN_END_MS / 1000;
+      prevMs = MAIN_END_MS;
+      return;
+    }
+    prevMs = ms0;
+
+    curTimeEl.textContent = fmt(audio.currentTime);
+    if (!userSeeking && audio.duration) {
+      scrubber.value = String((audio.currentTime / audio.duration) * 1000);
+    }
+    const ms = audio.currentTime * 1000;
+    let idx = TRANSCRIPT.findIndex((r) => ms >= r.start_ms && ms < r.end_ms);
+    if (idx === -1 && TRANSCRIPT.length) {
+      idx = ms >= TRANSCRIPT[TRANSCRIPT.length - 1].end_ms ? TRANSCRIPT.length - 1 : currentIndex;
+    }
+    if (idx !== currentIndex && idx >= 0) {
+      if (currentIndex >= 0) rowEls[currentIndex].classList.remove("current");
+      rowEls[idx].classList.add("current");
+      rowEls[idx].scrollIntoView({ behavior: "smooth", block: "center" });
+      currentIndex = idx;
+    }
+  });
+
+  audio.addEventListener("play", () => { playBtn.textContent = "⏸"; playBtn.setAttribute("aria-label", "일시정지"); });
+  audio.addEventListener("pause", () => { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "재생"); });
+  audio.addEventListener("ended", () => { playBtn.textContent = "▶"; });
+
+  playBtn.addEventListener("click", () => { if (audio.paused) audio.play(); else audio.pause(); });
+  restartBtn.addEventListener("click", () => { audio.currentTime = 0; audio.play(); });
+  rewindBtn.addEventListener("click", () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+  forwardBtn.addEventListener("click", () => { audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10); });
+
+  scrubber.addEventListener("input", () => {
+    userSeeking = true;
+    if (audio.duration) { curTimeEl.textContent = fmt((Number(scrubber.value) / 1000) * audio.duration); }
+  });
+  scrubber.addEventListener("change", () => {
+    if (audio.duration) { audio.currentTime = (Number(scrubber.value) / 1000) * audio.duration; }
+    userSeeking = false;
+  });
+
+  rateBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      audio.playbackRate = Number(btn.dataset.rate);
+      rateBtns.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    });
+  });
+</script>
+</body>
+</html>
