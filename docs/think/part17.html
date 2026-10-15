@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>구동사·숙어 Part 10 · 영어식 사고</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap" />
+<style>
+  :root {
+    --bg: #f2f4f6;
+    --surface: #ffffff;
+    --surface-2: #e7ebee;
+    --border: #d7dde2;
+    --text: #1b2430;
+    --text-muted: #5b6773;
+    --accent: #3d6bb3;
+    --accent-ink: #ffffff;
+    --target: #2a5aa0;
+    --meaning: #1f8a7d;
+    --example: #6b6f76;
+    --example-alt: #8a4fc2;
+    --current-bg: #e7eefb;
+    --shadow: 0 1px 2px rgba(20, 26, 33, 0.06), 0 8px 24px rgba(20, 26, 33, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121820;
+      --surface: #1a2229;
+      --surface-2: #212a33;
+      --border: #2c3742;
+      --text: #edf1f4;
+      --text-muted: #93a1ac;
+      --accent: #6f9ceb;
+      --accent-ink: #0d1520;
+      --target: #7aa8ef;
+      --meaning: #63d9c8;
+      --example: #9aa2ab;
+      --example-alt: #c298f0;
+      --current-bg: #1b2a3f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #121820;
+    --surface: #1a2229;
+    --surface-2: #212a33;
+    --border: #2c3742;
+    --text: #edf1f4;
+    --text-muted: #93a1ac;
+    --accent: #6f9ceb;
+    --accent-ink: #0d1520;
+    --target: #7aa8ef;
+    --meaning: #63d9c8;
+    --example: #9aa2ab;
+    --current-bg: #1b2a3f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Sora", "Noto Sans KR", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 18px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  header.masthead { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-family: "Sora", sans-serif; font-size: 26px; font-weight: 700; margin: 0; text-wrap: balance; }
+  .subline { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+  .part-nav {
+    display: flex; gap: 8px; flex-wrap: wrap; font-size: 13px;
+  }
+  .part-nav a, .part-nav span {
+    padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); text-decoration: none; color: var(--text-muted);
+  }
+  .part-nav a.current, .part-nav span.current { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 12px;
+    z-index: 5;
+  }
+
+  .episode-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .episode-title { font-weight: 600; font-size: 15px; }
+  .episode-meta { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .scrubber {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px;
+    background: var(--surface-2); cursor: pointer; accent-color: var(--accent);
+  }
+  .scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .controls-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
+  .icon-btn {
+    background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
+    width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 15px; transition: transform 0.12s ease, background 0.12s ease;
+  }
+  .icon-btn:hover { background: var(--current-bg); }
+  .icon-btn:active { transform: scale(0.94); }
+  .icon-btn.play { width: 60px; height: 60px; background: var(--accent); color: var(--accent-ink); border: none; font-size: 20px; }
+  .icon-btn:focus-visible, .rate-btn:focus-visible, .line:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .rate-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .rate-btn {
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text-muted);
+    font-family: "Sora", sans-serif; font-weight: 600; font-size: 13px; padding: 7px 13px; border-radius: 999px;
+    cursor: pointer; font-variant-numeric: tabular-nums;
+  }
+  .rate-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+  .transcript-heading { display: flex; align-items: center; justify-content: space-between; }
+  .transcript-heading h2 { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin: 0; }
+  .legend { display: flex; gap: 12px; font-size: 12px; color: var(--text-muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.target { background: var(--target); }
+  .dot.meaning { background: var(--meaning); }
+  .dot.example { background: var(--example); }
+
+  .transcript { display: flex; flex-direction: column; gap: 10px; }
+  .item-num {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--text);
+    padding: 14px 2px 0; border-top: 1px solid var(--border); margin-top: 4px;
+  }
+  .item-num:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+  .line {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: start; gap: 12px;
+    padding: 12px 14px; border-radius: 14px; border: 1px solid transparent; cursor: pointer;
+    background: transparent; text-align: left; font-family: inherit; color: inherit;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .line:hover { background: var(--surface-2); }
+  .line.current { background: var(--current-bg); border-color: var(--accent); }
+
+  .role { font-size: 11px; font-weight: 700; letter-spacing: 0.03em; padding-top: 3px; }
+  .role.target { color: var(--target); }
+  .role.meaning { color: var(--meaning); }
+  .role.example { color: var(--example); }
+  .role.example_alt { color: var(--example-alt); }
+  .role.section { color: #b7791f; }
+  .role.thinking { color: #2f855a; }
+  .line .hl { color: #d62828; font-weight: 700; }
+  @media (prefers-color-scheme: dark) { .line .hl { color: #ff6b6b; } }
+  .line.section { background: color-mix(in srgb, #f6c344 14%, transparent); }
+  .line.section .ko, .line.thinking .ko { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .line.thinking .en { font-size: 13.5px; color: #2b6cb0; font-family: "Noto Sans KR", sans-serif; }
+
+  .alt-toggle {
+    display: flex; align-items: center; gap: 6px; margin: 2px 14px 2px 56px;
+    padding: 7px 12px; border-radius: 999px; border: 1px dashed var(--example-alt);
+    background: transparent; color: var(--example-alt); font-size: 12.5px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .alt-toggle:hover { background: color-mix(in srgb, var(--example-alt) 12%, transparent); }
+  .alt-toggle .chev { transition: transform 0.15s ease; }
+  .alt-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+  .alt-group { display: flex; flex-direction: column; gap: 10px; }
+  .alt-group[hidden] { display: none; }
+  .line.alt-row { border: 1px dashed var(--border); }
+
+  .text-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .en { font-family: "Literata", "Noto Serif KR", serif; font-size: 15.5px; line-height: 1.5; }
+  .ko { font-family: "Noto Sans KR", sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+
+  .replay-btn {
+    align-self: center; background: none; border: none; color: var(--text-muted); font-size: 16px;
+    cursor: pointer; padding: 4px; border-radius: 8px; opacity: 0.55;
+  }
+  .line:hover .replay-btn, .line.current .replay-btn { opacity: 1; color: var(--accent); }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 12px; padding-top: 8px; }
+
+  @media (max-width: 420px) {
+    .line { grid-template-columns: 44px 1fr auto; }
+    .role { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">영어식 사고 · 구동사·숙어 · 10/13</div>
+    <h1>구동사·숙어 Part 10</h1>
+    <p class="subline">표현 → Think in English(원어민 설명, 빨간 글씨가 핵심) → 뜻 → 예문(영어·해석·영어·영어) 순서로 익혀요. 줄을 탭하면 그 지점부터 다시 들을 수 있어요.</p>
+  </header>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<a href="part2.html">구동 2</a>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<a href="part8.html">구동 8</a>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a>
+<a href="part16.html">구동 9</a>
+<span class="current">구동 10</span>
+<a href="part18.html">구동 11</a>
+<a href="part19.html">구동 12</a>
+<a href="part20.html">구동 13</a>
+<a href="part21.html">문장 8</a></nav>
+
+  <div class="player">
+    <audio id="audio" preload="metadata" src="audio/part17.mp3"></audio>
+
+    <div class="episode-row">
+      <span class="episode-title">16개 표현</span>
+      <span class="episode-meta"><span id="curTime">0:00</span> / <span id="durTime">--:--</span></span>
+    </div>
+
+    <input type="range" class="scrubber" id="scrubber" min="0" max="1000" value="0" aria-label="재생 위치" />
+
+    <div class="controls-row">
+      <button class="icon-btn" id="restartBtn" title="처음부터" aria-label="처음부터 다시 듣기">⏮</button>
+      <button class="icon-btn" id="rewindBtn" title="10초 뒤로" aria-label="10초 뒤로">⟲10</button>
+      <button class="icon-btn play" id="playBtn" aria-label="재생">▶</button>
+      <button class="icon-btn" id="forwardBtn" title="10초 앞으로" aria-label="10초 앞으로">10⟳</button>
+    </div>
+
+    <div class="rate-row" role="group" aria-label="재생 속도">
+      <button class="rate-btn" data-rate="0.75" aria-pressed="false">0.75×</button>
+      <button class="rate-btn" data-rate="1" aria-pressed="true">1.0×</button>
+      <button class="rate-btn" data-rate="1.25" aria-pressed="false">1.25×</button>
+      <button class="rate-btn" data-rate="1.5" aria-pressed="false">1.5×</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="transcript-heading">
+      <h2>표현 &amp; 예문 (16개)</h2>
+      <div class="legend">
+        <span><i class="dot target"></i>표현</span>
+        <span><i class="dot meaning"></i>뜻</span>
+        <span><i class="dot example"></i>예문</span>
+      </div>
+    </div>
+    <div class="transcript" id="transcript"></div>
+  </section>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<a href="part2.html">구동 2</a>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<a href="part8.html">구동 8</a>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a>
+<a href="part16.html">구동 9</a>
+<span class="current">구동 10</span>
+<a href="part18.html">구동 11</a>
+<a href="part19.html">구동 12</a>
+<a href="part20.html">구동 13</a>
+<a href="part21.html">문장 8</a></nav>
+
+  <footer>문장을 탭하면 그 지점부터 다시 재생됩니다 · 19.6분 · 안 외워지는 표현은 탭해서 반복 재생하세요</footer>
+</div>
+
+<script>
+  const TRANSCRIPT = [{"item": "➕ ⬇ DOWN · ↗ OFF (추가분)", "role": "section", "ex_index": 0, "en": "", "ko": "DOWN = 아래로 가라앉아 자리 잡음·눌림  |  OFF = 붙어 있던 곳에서 떨어져 나감(분리·연기·끝까지 털어 냄)", "start_ms": 0, "end_ms": 15216}, {"item": "1. settle down (No.933)", "role": "target", "ex_index": 0, "en": "settle down", "ko": "", "start_ms": 17216, "end_ms": 19088}, {"item": "1. settle down (No.933)", "role": "thinking", "ex_index": 0, "en": "settle(자리 잡다) + down(아래로 가라앉음)", "ko": "When we \"settle down,\" we <b class=\"hl\">become calm and still after a lot of movement</b>. Picture dust slowly falling to the ground. A noisy class settles down, and so do worries. People also settle down when they <b class=\"hl\">start a stable life</b>, often with a home and family.", "start_ms": 21088, "end_ms": 37744}, {"item": "1. settle down (No.933)", "role": "meaning", "ex_index": 0, "en": "", "ko": "진정하다 / 정착하다, 자리 잡다", "start_ms": 39744, "end_ms": 45264}, {"item": "1. settle down (No.933)", "role": "example", "ex_index": 1, "en": "Settle down, everyone. Class is starting.", "ko": "모두 조용히 해. 수업 시작한다.", "start_ms": 47264, "end_ms": 63248}, {"item": "1. settle down (No.933)", "role": "example", "ex_index": 2, "en": "They want to settle down and have kids.", "ko": "그들은 정착해서 아이를 갖고 싶어 해.", "start_ms": 65248, "end_ms": 79144}, {"item": "1. settle down (No.933)", "role": "example", "ex_index": 3, "en": "Things will settle down soon.", "ko": "곧 상황이 진정될 거야.", "start_ms": 81144, "end_ms": 93048}, {"item": "2. come down with (No.917)", "role": "target", "ex_index": 0, "en": "come down with", "ko": "", "start_ms": 95048, "end_ms": 96488}, {"item": "2. come down with (No.917)", "role": "thinking", "ex_index": 0, "en": "come down(아래로 내려와 쓰러짐) + with(~을 안고)", "ko": "When we \"come down with\" an illness, we <b class=\"hl\">start to get sick, usually with something minor</b>. Picture your energy dropping down as a cold takes over. We often say, \"I think I'm <b class=\"hl\">coming down with something</b>\" when we feel the first signs.", "start_ms": 98488, "end_ms": 112432}, {"item": "2. come down with (No.917)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(병에) 걸리다", "start_ms": 114432, "end_ms": 117096}, {"item": "2. come down with (No.917)", "role": "example", "ex_index": 1, "en": "I think I'm coming down with a cold.", "ko": "감기 걸리려나 봐.", "start_ms": 119096, "end_ms": 131504}, {"item": "2. come down with (No.917)", "role": "example", "ex_index": 2, "en": "Half the office came down with the flu.", "ko": "사무실 절반이 독감에 걸렸어.", "start_ms": 133504, "end_ms": 148264}, {"item": "2. come down with (No.917)", "role": "example", "ex_index": 3, "en": "She came down with a fever last night.", "ko": "그녀는 어젯밤 열이 났어.", "start_ms": 150264, "end_ms": 163992}, {"item": "3. hold off (No.857)", "role": "target", "ex_index": 0, "en": "hold off", "ko": "", "start_ms": 165992, "end_ms": 167864}, {"item": "3. hold off (No.857)", "role": "thinking", "ex_index": 0, "en": "hold(붙잡고 있다) + off(떨어진 곳에)", "ko": "When we \"hold off,\" we <b class=\"hl\">wait before doing something</b>. Picture holding a door shut so it doesn't open yet. You hold off on a big purchase until prices drop. Rain can also hold off, which means it <b class=\"hl\">doesn't start yet</b>.", "start_ms": 169864, "end_ms": 183904}, {"item": "3. hold off (No.857)", "role": "meaning", "ex_index": 0, "en": "", "ko": "미루다, 보류하다 / 막아 내다", "start_ms": 185904, "end_ms": 191736}, {"item": "3. hold off (No.857)", "role": "example", "ex_index": 1, "en": "Let's hold off on buying a car.", "ko": "차 사는 건 좀 미루자.", "start_ms": 193736, "end_ms": 205880}, {"item": "3. hold off (No.857)", "role": "example", "ex_index": 2, "en": "Can you hold off for a few minutes?", "ko": "몇 분만 기다려 줄래?", "start_ms": 207880, "end_ms": 219928}, {"item": "3. hold off (No.857)", "role": "example", "ex_index": 3, "en": "The rain held off until the evening.", "ko": "비가 저녁까지는 오지 않았어.", "start_ms": 221928, "end_ms": 235008}, {"item": "4. show off (No.891)", "role": "target", "ex_index": 0, "en": "show off", "ko": "", "start_ms": 237008, "end_ms": 238880}, {"item": "4. show off (No.891)", "role": "thinking", "ex_index": 0, "en": "show(보여 주다) + off(내게서 떨어져 밖으로 확 펼침)", "ko": "When we \"show off,\" we <b class=\"hl\">try to make people notice how good, rich, or skilled we are</b>. Picture someone waving their new watch in everyone's face. It's usually <b class=\"hl\">a little negative</b>, but you can also proudly show off something nice, like a new baby.", "start_ms": 240880, "end_ms": 254896}, {"item": "4. show off (No.891)", "role": "meaning", "ex_index": 0, "en": "", "ko": "자랑하다, 뽐내다", "start_ms": 256896, "end_ms": 260712}, {"item": "4. show off (No.891)", "role": "example", "ex_index": 1, "en": "He loves showing off his new car.", "ko": "그는 새 차 자랑하는 걸 좋아해.", "start_ms": 262712, "end_ms": 275768}, {"item": "4. show off (No.891)", "role": "example", "ex_index": 2, "en": "Stop showing off!", "ko": "그만 잘난 척해!", "start_ms": 277768, "end_ms": 289240}, {"item": "4. show off (No.891)", "role": "example", "ex_index": 3, "en": "She showed off her dance moves at the party.", "ko": "그녀는 파티에서 춤 실력을 뽐냈어.", "start_ms": 291240, "end_ms": 306024}, {"item": "5. pay off (No.911)", "role": "target", "ex_index": 0, "en": "pay off", "ko": "", "start_ms": 308024, "end_ms": 309896}, {"item": "5. pay off (No.911)", "role": "thinking", "ex_index": 0, "en": "pay(값을 치르다) + off(완전히 떨어져 나감)", "ko": "When we \"pay off\" a debt, we <b class=\"hl\">pay all of it until nothing is left</b>. The loan is finally off your back. Hard work can also pay off, which means it <b class=\"hl\">brings good results in the end</b>. Your effort was worth it.", "start_ms": 311896, "end_ms": 324328}, {"item": "5. pay off (No.911)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(빚을) 다 갚다 / (노력이) 성과를 거두다", "start_ms": 326328, "end_ms": 331176}, {"item": "5. pay off (No.911)", "role": "example", "ex_index": 1, "en": "I finally paid off my student loan.", "ko": "드디어 학자금 대출을 다 갚았어.", "start_ms": 333176, "end_ms": 347960}, {"item": "5. pay off (No.911)", "role": "example", "ex_index": 2, "en": "All your hard work will pay off.", "ko": "네가 고생한 거 다 보상받을 거야.", "start_ms": 349960, "end_ms": 364096}, {"item": "5. pay off (No.911)", "role": "example", "ex_index": 3, "en": "The risk paid off.", "ko": "그 모험은 성공했어.", "start_ms": 366096, "end_ms": 377928}, {"item": "6. top off (No.927)", "role": "target", "ex_index": 0, "en": "top off", "ko": "", "start_ms": 379928, "end_ms": 381800}, {"item": "6. top off (No.927)", "role": "thinking", "ex_index": 0, "en": "top(꼭대기) + off(끝까지 마무리)", "ko": "When we \"top off\" a glass or a tank, we <b class=\"hl\">fill it all the way to the top</b>. We also top off a great day with something special, which means we <b class=\"hl\">finish it in a perfect way</b>, like dessert at the end of a meal.", "start_ms": 383800, "end_ms": 395440}, {"item": "6. top off (No.927)", "role": "meaning", "ex_index": 0, "en": "", "ko": "가득 채우다 / 마무리하다", "start_ms": 397440, "end_ms": 401856}, {"item": "6. top off (No.927)", "role": "example", "ex_index": 1, "en": "Can you top off my coffee?", "ko": "커피 좀 더 채워 줄래요?", "start_ms": 403856, "end_ms": 415496}, {"item": "6. top off (No.927)", "role": "example", "ex_index": 2, "en": "We topped off the night with dessert.", "ko": "디저트로 그날 밤을 마무리했어.", "start_ms": 417496, "end_ms": 430816}, {"item": "6. top off (No.927)", "role": "example", "ex_index": 3, "en": "Let me top off the gas tank.", "ko": "기름 가득 채울게.", "start_ms": 432816, "end_ms": 444864}, {"item": "7. put off (No.951)", "role": "target", "ex_index": 0, "en": "put off", "ko": "", "start_ms": 446864, "end_ms": 448736}, {"item": "7. put off (No.951)", "role": "thinking", "ex_index": 0, "en": "put(놓다) + off(지금에서 떨어진 곳으로)", "ko": "When we \"put something off,\" we <b class=\"hl\">move it to a later time because we don't want to do it now</b>. Picture pushing a task far away from today. Something can also put you off, which means it <b class=\"hl\">makes you dislike it</b>, like a rude waiter.", "start_ms": 450736, "end_ms": 463312}, {"item": "7. put off (No.951)", "role": "meaning", "ex_index": 0, "en": "", "ko": "미루다, 연기하다 / 정떨어지게 하다", "start_ms": 465312, "end_ms": 470784}, {"item": "7. put off (No.951)", "role": "example", "ex_index": 1, "en": "Stop putting off your homework.", "ko": "숙제 좀 그만 미뤄.", "start_ms": 472784, "end_ms": 484760}, {"item": "7. put off (No.951)", "role": "example", "ex_index": 2, "en": "The meeting was put off until Friday.", "ko": "회의가 금요일로 연기됐어.", "start_ms": 486760, "end_ms": 500464}, {"item": "7. put off (No.951)", "role": "example", "ex_index": 3, "en": "His rude attitude really put me off.", "ko": "그의 무례한 태도에 정말 정떨어졌어.", "start_ms": 502464, "end_ms": 517392}, {"item": "8. come off as (No.874)", "role": "target", "ex_index": 0, "en": "come off as", "ko": "", "start_ms": 519392, "end_ms": 521264}, {"item": "8. come off as (No.874)", "role": "thinking", "ex_index": 0, "en": "come off(밖으로 드러나 보임) + as(~처럼)", "ko": "When we \"come off as\" something, it's <b class=\"hl\">how other people see us, not how we really are</b>. You might be shy, but you come off as cold. We often use it when we're <b class=\"hl\">worried about giving the wrong impression</b>.", "start_ms": 523264, "end_ms": 534544}, {"item": "8. come off as (No.874)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~처럼 보이다, ~한 인상을 주다", "start_ms": 536544, "end_ms": 540672}, {"item": "8. come off as (No.874)", "role": "example", "ex_index": 1, "en": "I don't want to come off as rude.", "ko": "무례하게 보이고 싶지 않아.", "start_ms": 542672, "end_ms": 554624}, {"item": "8. come off as (No.874)", "role": "example", "ex_index": 2, "en": "He comes off as shy, but he's really funny.", "ko": "그는 수줍어 보이지만 사실 정말 웃겨.", "start_ms": 556624, "end_ms": 573736}, {"item": "8. come off as (No.874)", "role": "example", "ex_index": 3, "en": "Did I come off as angry?", "ko": "내가 화난 것처럼 보였어?", "start_ms": 575736, "end_ms": 587664}, {"item": "➕ ➡ OUT (추가분)", "role": "section", "ex_index": 0, "en": "", "ko": "안 → 밖으로 → ① 밖으로 꺼내 드러냄  ② 무리에서 빼냄  ③ 끝까지 다 해서 바닥남·해결", "start_ms": 589664, "end_ms": 600872}, {"item": "9. leave out (No.879)", "role": "target", "ex_index": 0, "en": "leave out", "ko": "", "start_ms": 602872, "end_ms": 604744}, {"item": "9. leave out (No.879)", "role": "thinking", "ex_index": 0, "en": "leave(두고 가다) + out(무리 밖에)", "ko": "When we \"leave something out,\" we <b class=\"hl\">don't include it</b>, either by mistake or on purpose. You can leave out a detail, an ingredient, or a person. If you feel left out, you feel <b class=\"hl\">like everyone forgot about you</b>.", "start_ms": 606744, "end_ms": 619752}, {"item": "9. leave out (No.879)", "role": "meaning", "ex_index": 0, "en": "", "ko": "빠뜨리다, 빼다, 제외하다", "start_ms": 621752, "end_ms": 627320}, {"item": "9. leave out (No.879)", "role": "example", "ex_index": 1, "en": "Don't leave out any details.", "ko": "세부 사항 하나도 빠뜨리지 마.", "start_ms": 629320, "end_ms": 641656}, {"item": "9. leave out (No.879)", "role": "example", "ex_index": 2, "en": "I felt left out at the party.", "ko": "파티에서 소외된 느낌이었어.", "start_ms": 643656, "end_ms": 656520}, {"item": "9. leave out (No.879)", "role": "example", "ex_index": 3, "en": "You can leave out the sugar.", "ko": "설탕은 빼도 돼.", "start_ms": 658520, "end_ms": 669992}, {"item": "10. make out (No.881)", "role": "target", "ex_index": 0, "en": "make out", "ko": "", "start_ms": 671992, "end_ms": 673864}, {"item": "10. make out (No.881)", "role": "thinking", "ex_index": 0, "en": "make(만들어 내다) + out(흐릿한 것에서 밖으로 끄집어냄)", "ko": "When we \"make something out,\" we <b class=\"hl\">manage to see, hear, or understand it with difficulty</b>. Picture squinting at a sign in the fog until the words appear. We usually use it in the negative: \"I <b class=\"hl\">can't make out</b> what he's saying.\"", "start_ms": 675864, "end_ms": 689832}, {"item": "10. make out (No.881)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(겨우) 알아보다, 알아듣다, 이해하다", "start_ms": 691832, "end_ms": 697112}, {"item": "10. make out (No.881)", "role": "example", "ex_index": 1, "en": "I can't make out what he's saying.", "ko": "그가 뭐라는지 알아들을 수가 없어.", "start_ms": 699112, "end_ms": 711928}, {"item": "10. make out (No.881)", "role": "example", "ex_index": 2, "en": "Can you make out that sign?", "ko": "저 표지판 보여?", "start_ms": 713928, "end_ms": 725280}, {"item": "10. make out (No.881)", "role": "example", "ex_index": 3, "en": "I couldn't make out his handwriting.", "ko": "그의 글씨를 알아볼 수 없었어.", "start_ms": 727280, "end_ms": 740096}, {"item": "11. cross out (No.884)", "role": "target", "ex_index": 0, "en": "cross out", "ko": "", "start_ms": 742096, "end_ms": 743968}, {"item": "11. cross out (No.884)", "role": "thinking", "ex_index": 0, "en": "cross(줄을 긋다) + out(목록에서 밖으로)", "ko": "When we \"cross something out,\" we <b class=\"hl\">draw a line through words to show they're wrong or done</b>. It's what you do on a to-do list or a test. The words are still there, but they're <b class=\"hl\">officially removed</b>.", "start_ms": 745968, "end_ms": 757560}, {"item": "11. cross out (No.884)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(줄을 그어) 지우다", "start_ms": 759560, "end_ms": 762368}, {"item": "11. cross out (No.884)", "role": "example", "ex_index": 1, "en": "Cross out the wrong answers.", "ko": "틀린 답은 줄 그어 지워.", "start_ms": 764368, "end_ms": 777016}, {"item": "11. cross out (No.884)", "role": "example", "ex_index": 2, "en": "I crossed out his name from the list.", "ko": "명단에서 그의 이름을 지웠어.", "start_ms": 779016, "end_ms": 793248}, {"item": "11. cross out (No.884)", "role": "example", "ex_index": 3, "en": "She crossed out a word and wrote another.", "ko": "그녀는 한 단어를 지우고 다른 걸 썼어.", "start_ms": 795248, "end_ms": 811328}, {"item": "12. pick out (No.890)", "role": "target", "ex_index": 0, "en": "pick out", "ko": "", "start_ms": 813328, "end_ms": 815200}, {"item": "12. pick out (No.890)", "role": "thinking", "ex_index": 0, "en": "pick(골라 집다) + out(무리 밖으로 꺼냄)", "ko": "When we \"pick something out,\" we <b class=\"hl\">choose one thing from a group</b>. Picture reaching into a box and taking out the best one. You pick out clothes, gifts, or furniture. You can also pick someone out of a crowd when you <b class=\"hl\">recognize them quickly</b>.", "start_ms": 817200, "end_ms": 831048}, {"item": "12. pick out (No.890)", "role": "meaning", "ex_index": 0, "en": "", "ko": "고르다 / (무리 속에서) 알아보다", "start_ms": 833048, "end_ms": 837224}, {"item": "12. pick out (No.890)", "role": "example", "ex_index": 1, "en": "Help me pick out a gift for Mom.", "ko": "엄마 선물 고르는 것 좀 도와줘.", "start_ms": 839224, "end_ms": 852376}, {"item": "12. pick out (No.890)", "role": "example", "ex_index": 2, "en": "She picked out a red dress.", "ko": "그녀는 빨간 드레스를 골랐어.", "start_ms": 854376, "end_ms": 866928}, {"item": "12. pick out (No.890)", "role": "example", "ex_index": 3, "en": "I could pick you out in any crowd.", "ko": "어떤 인파 속에서도 널 알아볼 수 있어.", "start_ms": 868928, "end_ms": 883856}, {"item": "13. figure out (No.892)", "role": "target", "ex_index": 0, "en": "figure out", "ko": "", "start_ms": 885856, "end_ms": 887728}, {"item": "13. figure out (No.892)", "role": "thinking", "ex_index": 0, "en": "figure(계산하다, 그림을 그리다) + out(답을 밖으로 꺼냄)", "ko": "When we \"figure something out,\" we <b class=\"hl\">think about it until we understand it or solve it</b>. Picture working on a puzzle until the answer comes out. It's one of the most common phrases in daily English: \"<b class=\"hl\">We'll figure it out</b>\" means don't worry, we'll find a way.", "start_ms": 889728, "end_ms": 903528}, {"item": "13. figure out (No.892)", "role": "meaning", "ex_index": 0, "en": "", "ko": "알아내다, 이해하다, 해결하다", "start_ms": 905528, "end_ms": 910952}, {"item": "13. figure out (No.892)", "role": "example", "ex_index": 1, "en": "I can't figure out how this works.", "ko": "이게 어떻게 돌아가는지 모르겠어.", "start_ms": 912952, "end_ms": 925960}, {"item": "13. figure out (No.892)", "role": "example", "ex_index": 2, "en": "We'll figure it out together.", "ko": "우리 같이 방법을 찾아보자.", "start_ms": 927960, "end_ms": 940128}, {"item": "13. figure out (No.892)", "role": "example", "ex_index": 3, "en": "Did you figure out the answer?", "ko": "답 알아냈어?", "start_ms": 942128, "end_ms": 953432}, {"item": "14. check out (No.894)", "role": "target", "ex_index": 0, "en": "check out", "ko": "", "start_ms": 955432, "end_ms": 957304}, {"item": "14. check out (No.894)", "role": "thinking", "ex_index": 0, "en": "check(확인하다) + out(밖으로 나와 직접 봄)", "ko": "When we \"check something out,\" we <b class=\"hl\">look at it because it's interesting</b>. \"Check this out!\" means <b class=\"hl\">look at this!</b> At a hotel, you check out when you <b class=\"hl\">leave and pay</b>. At a library, you check out books to borrow them.", "start_ms": 959304, "end_ms": 971784}, {"item": "14. check out (No.894)", "role": "meaning", "ex_index": 0, "en": "", "ko": "확인하다, 구경하다 / (호텔에서) 체크아웃하다 / (책을) 빌리다", "start_ms": 973784, "end_ms": 982448}, {"item": "14. check out (No.894)", "role": "example", "ex_index": 1, "en": "Check out this video!", "ko": "이 영상 좀 봐!", "start_ms": 984448, "end_ms": 995920}, {"item": "14. check out (No.894)", "role": "example", "ex_index": 2, "en": "We need to check out by 11.", "ko": "11시까지 체크아웃해야 해.", "start_ms": 997920, "end_ms": 1010280}, {"item": "14. check out (No.894)", "role": "example", "ex_index": 3, "en": "I checked out three books from the library.", "ko": "도서관에서 책 세 권을 빌렸어.", "start_ms": 1012280, "end_ms": 1026656}, {"item": "15. fill out (No.903)", "role": "target", "ex_index": 0, "en": "fill out", "ko": "", "start_ms": 1028656, "end_ms": 1030528}, {"item": "15. fill out (No.903)", "role": "thinking", "ex_index": 0, "en": "fill(채우다) + out(빈칸 끝까지 다)", "ko": "When we \"fill out\" a form, we <b class=\"hl\">write information in all the empty spaces</b>. Picture filling every blank box, from top to bottom. We fill out applications, surveys, and paperwork. In British English, people often say <b class=\"hl\">\"fill in\"</b> instead.", "start_ms": 1032528, "end_ms": 1048848}, {"item": "15. fill out (No.903)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(서류를) 작성하다, 기입하다", "start_ms": 1050848, "end_ms": 1055552}, {"item": "15. fill out (No.903)", "role": "example", "ex_index": 1, "en": "Please fill out this form.", "ko": "이 양식을 작성해 주세요.", "start_ms": 1057552, "end_ms": 1069504}, {"item": "15. fill out (No.903)", "role": "example", "ex_index": 2, "en": "I filled out the application online.", "ko": "온라인으로 지원서를 작성했어.", "start_ms": 1071504, "end_ms": 1085808}, {"item": "15. fill out (No.903)", "role": "example", "ex_index": 3, "en": "It took an hour to fill out all the paperwork.", "ko": "서류를 다 작성하는 데 한 시간 걸렸어.", "start_ms": 1087808, "end_ms": 1102904}, {"item": "16. point out (No.904)", "role": "target", "ex_index": 0, "en": "point out", "ko": "", "start_ms": 1104904, "end_ms": 1106776}, {"item": "16. point out (No.904)", "role": "thinking", "ex_index": 0, "en": "point(손가락으로 가리키다) + out(보이게 밖으로)", "ko": "When we \"point something out,\" we <b class=\"hl\">make someone notice something they missed</b>. Picture pointing your finger at it. You can point out a mistake, a fact, or a building. It's a <b class=\"hl\">polite way to show or correct</b> something.", "start_ms": 1108776, "end_ms": 1121352}, {"item": "16. point out (No.904)", "role": "meaning", "ex_index": 0, "en": "", "ko": "지적하다, 짚어 주다", "start_ms": 1123352, "end_ms": 1127264}, {"item": "16. point out (No.904)", "role": "example", "ex_index": 1, "en": "Thanks for pointing out my mistake.", "ko": "내 실수 짚어 줘서 고마워.", "start_ms": 1129264, "end_ms": 1141960}, {"item": "16. point out (No.904)", "role": "example", "ex_index": 2, "en": "She pointed out that we were late.", "ko": "그녀는 우리가 늦었다고 지적했어.", "start_ms": 1143960, "end_ms": 1157160}, {"item": "16. point out (No.904)", "role": "example", "ex_index": 3, "en": "Can you point out where we are on the map?", "ko": "지도에서 우리가 어디 있는지 짚어 줄래?", "start_ms": 1159160, "end_ms": 1172984}];
+  const MAIN_END_MS = 1174984;
+
+  const audio = document.getElementById("audio");
+  const playBtn = document.getElementById("playBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const rewindBtn = document.getElementById("rewindBtn");
+  const forwardBtn = document.getElementById("forwardBtn");
+  const scrubber = document.getElementById("scrubber");
+  const curTimeEl = document.getElementById("curTime");
+  const durTimeEl = document.getElementById("durTime");
+  const transcriptEl = document.getElementById("transcript");
+  const rateBtns = Array.from(document.querySelectorAll(".rate-btn"));
+
+  const ROLE_LABEL = { section: "핵심", target: "표현", thinking: "Think", meaning: "뜻", example: "예문", example_alt: "새 예문" };
+
+  function fmt(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  function makeLineBtn(row) {
+    const btn = document.createElement("button");
+    btn.className = row.role === "example_alt" ? "line alt-row" : `line ${row.role}`;
+    btn.dataset.start = row.start_ms / 1000;
+    const roleLabel = row.role === "example" ? `예문 ${row.ex_index}`
+      : row.role === "example_alt" ? `새 예문 ${row.ex_index}` : ROLE_LABEL[row.role];
+    btn.innerHTML = `
+      <span class="role ${row.role}">${roleLabel}</span>
+      <span class="text-col">
+        <span class="en">${row.en}</span>
+        <span class="ko">${row.ko}</span>
+      </span>
+      <span class="replay-btn" aria-hidden="true">↻</span>
+    `;
+    btn.addEventListener("click", () => {
+      audio.currentTime = row.start_ms / 1000;
+      audio.play();
+    });
+    return btn;
+  }
+
+  let lastItem = null;
+  let altGroupEl = null;
+  const rowEls = TRANSCRIPT.map((row) => {
+    if (row.item !== lastItem) {
+      const label = document.createElement("div");
+      label.className = "item-num";
+      label.textContent = row.item;
+      transcriptEl.appendChild(label);
+      lastItem = row.item;
+      altGroupEl = null;
+    }
+    if (row.role === "example_alt") {
+      if (!altGroupEl) {
+        const toggle = document.createElement("button");
+        toggle.className = "alt-toggle";
+        toggle.type = "button";
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.innerHTML = `🔄 이 표현, 다른 패턴으로 다시 공부하기 <span class="chev">▾</span>`;
+        const thisGroup = document.createElement("div");
+        thisGroup.className = "alt-group";
+        thisGroup.hidden = true;
+        toggle.addEventListener("click", () => {
+          thisGroup.hidden = !thisGroup.hidden;
+          toggle.setAttribute("aria-expanded", String(!thisGroup.hidden));
+        });
+        transcriptEl.appendChild(toggle);
+        transcriptEl.appendChild(thisGroup);
+        altGroupEl = thisGroup;
+      }
+      const btn = makeLineBtn(row);
+      altGroupEl.appendChild(btn);
+      return btn;
+    }
+    const btn = makeLineBtn(row);
+    transcriptEl.appendChild(btn);
+    return btn;
+  });
+
+  let currentIndex = -1;
+
+  audio.addEventListener("loadedmetadata", () => { durTimeEl.textContent = fmt(audio.duration); });
+
+  let userSeeking = false;
+  // "다른 패턴" 예문은 파일 맨 끝에 있어서, 이어듣기로 자연스럽게 흘러 들어가면 안 되고
+  // 항목의 토글을 눌러 직접 이동했을 때만 들려야 한다. 한 틱 만에 MAIN_END_MS를 훌쩍
+  // 넘기는 큰 점프는 의도적 탐색(탭/스크러버)이고, 조금씩 넘는 건 자연 재생이므로 그때만 멈춘다.
+  let prevMs = 0;
+  audio.addEventListener("timeupdate", () => {
+    const ms0 = audio.currentTime * 1000;
+    if (prevMs < MAIN_END_MS && ms0 >= MAIN_END_MS && (ms0 - prevMs) < 2000) {
+      audio.pause();
+      audio.currentTime = MAIN_END_MS / 1000;
+      prevMs = MAIN_END_MS;
+      return;
+    }
+    prevMs = ms0;
+
+    curTimeEl.textContent = fmt(audio.currentTime);
+    if (!userSeeking && audio.duration) {
+      scrubber.value = String((audio.currentTime / audio.duration) * 1000);
+    }
+    const ms = audio.currentTime * 1000;
+    let idx = TRANSCRIPT.findIndex((r) => ms >= r.start_ms && ms < r.end_ms);
+    if (idx === -1 && TRANSCRIPT.length) {
+      idx = ms >= TRANSCRIPT[TRANSCRIPT.length - 1].end_ms ? TRANSCRIPT.length - 1 : currentIndex;
+    }
+    if (idx !== currentIndex && idx >= 0) {
+      if (currentIndex >= 0) rowEls[currentIndex].classList.remove("current");
+      rowEls[idx].classList.add("current");
+      rowEls[idx].scrollIntoView({ behavior: "smooth", block: "center" });
+      currentIndex = idx;
+    }
+  });
+
+  audio.addEventListener("play", () => { playBtn.textContent = "⏸"; playBtn.setAttribute("aria-label", "일시정지"); });
+  audio.addEventListener("pause", () => { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "재생"); });
+  audio.addEventListener("ended", () => { playBtn.textContent = "▶"; });
+
+  playBtn.addEventListener("click", () => { if (audio.paused) audio.play(); else audio.pause(); });
+  restartBtn.addEventListener("click", () => { audio.currentTime = 0; audio.play(); });
+  rewindBtn.addEventListener("click", () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+  forwardBtn.addEventListener("click", () => { audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10); });
+
+  scrubber.addEventListener("input", () => {
+    userSeeking = true;
+    if (audio.duration) { curTimeEl.textContent = fmt((Number(scrubber.value) / 1000) * audio.duration); }
+  });
+  scrubber.addEventListener("change", () => {
+    if (audio.duration) { audio.currentTime = (Number(scrubber.value) / 1000) * audio.duration; }
+    userSeeking = false;
+  });
+
+  rateBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      audio.playbackRate = Number(btn.dataset.rate);
+      rateBtns.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    });
+  });
+</script>
+</body>
+</html>

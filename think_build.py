@@ -96,7 +96,9 @@ async def synth(text: str, voice: str, out_path: Path) -> AudioSegment:
 
 
 def part_hash(part: dict) -> str:
-    raw = BUILD_VERSION + json.dumps(part, ensure_ascii=False, sort_keys=True)
+    # series_total(전체 파트 수)은 화면 표기용이라 해시에서 뺀다 → 파트가 늘어도 기존 오디오는 재사용
+    key = {k: v for k, v in part.items() if k != "series_total"}
+    raw = BUILD_VERSION + json.dumps(key, ensure_ascii=False, sort_keys=True)
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
 
 
@@ -186,6 +188,22 @@ async def build(parts: list[dict], part_num: int) -> None:
     print(f"Saved: part{part_num}.html ({title}, audio {mb:.1f} MB, {duration_min:.1f}분)")
 
 
+NAV_RE = re.compile(r'(<nav class="part-nav">).*?(</nav>)', re.S)
+EYEBROW_RE = re.compile(r'(<div class="eyebrow">).*?(</div>)', re.S)
+
+
+def refresh_page(parts: list[dict], part_num: int) -> None:
+    """빌드를 건너뛴 파트도 파트 이동 링크와 'n/전체' 표기만 최신으로 고친다(오디오는 그대로)."""
+    path = DOCS_DIR / f"part{part_num}.html"
+    part = parts[part_num - 1]
+    html = path.read_text(encoding="utf-8")
+    eyebrow = f"영어식 사고 · {part['series']} · {part['series_part']}/{part['series_total']}"
+    new = NAV_RE.sub(lambda m: m.group(1) + part_nav_html(parts, part_num) + m.group(2), html)
+    new = EYEBROW_RE.sub(lambda m: m.group(1) + eyebrow + m.group(2), new, count=1)
+    if new != html:
+        path.write_text(new, encoding="utf-8")
+
+
 def build_index(parts: list[dict]) -> None:
     groups: dict[str, list[str]] = {}
     for p, part in enumerate(parts, start=1):
@@ -242,6 +260,7 @@ def main() -> None:
         html_exists = (DOCS_DIR / f"part{part_num}.html").exists()
         if not force and html_exists and manifest.get(str(part_num)) == h:
             print(f"=== Part {part_num}: 변경 없음, 건너뜀 ===")
+            refresh_page(parts, part_num)
             continue
         print(f"=== Part {part_num} ({part_label(parts[part_num - 1])}) ===")
         asyncio.run(build(parts, part_num))

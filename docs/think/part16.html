@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>구동사·숙어 Part 9 · 영어식 사고</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap" />
+<style>
+  :root {
+    --bg: #f2f4f6;
+    --surface: #ffffff;
+    --surface-2: #e7ebee;
+    --border: #d7dde2;
+    --text: #1b2430;
+    --text-muted: #5b6773;
+    --accent: #3d6bb3;
+    --accent-ink: #ffffff;
+    --target: #2a5aa0;
+    --meaning: #1f8a7d;
+    --example: #6b6f76;
+    --example-alt: #8a4fc2;
+    --current-bg: #e7eefb;
+    --shadow: 0 1px 2px rgba(20, 26, 33, 0.06), 0 8px 24px rgba(20, 26, 33, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121820;
+      --surface: #1a2229;
+      --surface-2: #212a33;
+      --border: #2c3742;
+      --text: #edf1f4;
+      --text-muted: #93a1ac;
+      --accent: #6f9ceb;
+      --accent-ink: #0d1520;
+      --target: #7aa8ef;
+      --meaning: #63d9c8;
+      --example: #9aa2ab;
+      --example-alt: #c298f0;
+      --current-bg: #1b2a3f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #121820;
+    --surface: #1a2229;
+    --surface-2: #212a33;
+    --border: #2c3742;
+    --text: #edf1f4;
+    --text-muted: #93a1ac;
+    --accent: #6f9ceb;
+    --accent-ink: #0d1520;
+    --target: #7aa8ef;
+    --meaning: #63d9c8;
+    --example: #9aa2ab;
+    --current-bg: #1b2a3f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Sora", "Noto Sans KR", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 18px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  header.masthead { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-family: "Sora", sans-serif; font-size: 26px; font-weight: 700; margin: 0; text-wrap: balance; }
+  .subline { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+  .part-nav {
+    display: flex; gap: 8px; flex-wrap: wrap; font-size: 13px;
+  }
+  .part-nav a, .part-nav span {
+    padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); text-decoration: none; color: var(--text-muted);
+  }
+  .part-nav a.current, .part-nav span.current { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 12px;
+    z-index: 5;
+  }
+
+  .episode-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .episode-title { font-weight: 600; font-size: 15px; }
+  .episode-meta { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .scrubber {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px;
+    background: var(--surface-2); cursor: pointer; accent-color: var(--accent);
+  }
+  .scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .controls-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
+  .icon-btn {
+    background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
+    width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 15px; transition: transform 0.12s ease, background 0.12s ease;
+  }
+  .icon-btn:hover { background: var(--current-bg); }
+  .icon-btn:active { transform: scale(0.94); }
+  .icon-btn.play { width: 60px; height: 60px; background: var(--accent); color: var(--accent-ink); border: none; font-size: 20px; }
+  .icon-btn:focus-visible, .rate-btn:focus-visible, .line:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .rate-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .rate-btn {
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text-muted);
+    font-family: "Sora", sans-serif; font-weight: 600; font-size: 13px; padding: 7px 13px; border-radius: 999px;
+    cursor: pointer; font-variant-numeric: tabular-nums;
+  }
+  .rate-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+  .transcript-heading { display: flex; align-items: center; justify-content: space-between; }
+  .transcript-heading h2 { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin: 0; }
+  .legend { display: flex; gap: 12px; font-size: 12px; color: var(--text-muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.target { background: var(--target); }
+  .dot.meaning { background: var(--meaning); }
+  .dot.example { background: var(--example); }
+
+  .transcript { display: flex; flex-direction: column; gap: 10px; }
+  .item-num {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--text);
+    padding: 14px 2px 0; border-top: 1px solid var(--border); margin-top: 4px;
+  }
+  .item-num:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+  .line {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: start; gap: 12px;
+    padding: 12px 14px; border-radius: 14px; border: 1px solid transparent; cursor: pointer;
+    background: transparent; text-align: left; font-family: inherit; color: inherit;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .line:hover { background: var(--surface-2); }
+  .line.current { background: var(--current-bg); border-color: var(--accent); }
+
+  .role { font-size: 11px; font-weight: 700; letter-spacing: 0.03em; padding-top: 3px; }
+  .role.target { color: var(--target); }
+  .role.meaning { color: var(--meaning); }
+  .role.example { color: var(--example); }
+  .role.example_alt { color: var(--example-alt); }
+  .role.section { color: #b7791f; }
+  .role.thinking { color: #2f855a; }
+  .line .hl { color: #d62828; font-weight: 700; }
+  @media (prefers-color-scheme: dark) { .line .hl { color: #ff6b6b; } }
+  .line.section { background: color-mix(in srgb, #f6c344 14%, transparent); }
+  .line.section .ko, .line.thinking .ko { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .line.thinking .en { font-size: 13.5px; color: #2b6cb0; font-family: "Noto Sans KR", sans-serif; }
+
+  .alt-toggle {
+    display: flex; align-items: center; gap: 6px; margin: 2px 14px 2px 56px;
+    padding: 7px 12px; border-radius: 999px; border: 1px dashed var(--example-alt);
+    background: transparent; color: var(--example-alt); font-size: 12.5px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .alt-toggle:hover { background: color-mix(in srgb, var(--example-alt) 12%, transparent); }
+  .alt-toggle .chev { transition: transform 0.15s ease; }
+  .alt-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+  .alt-group { display: flex; flex-direction: column; gap: 10px; }
+  .alt-group[hidden] { display: none; }
+  .line.alt-row { border: 1px dashed var(--border); }
+
+  .text-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .en { font-family: "Literata", "Noto Serif KR", serif; font-size: 15.5px; line-height: 1.5; }
+  .ko { font-family: "Noto Sans KR", sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+
+  .replay-btn {
+    align-self: center; background: none; border: none; color: var(--text-muted); font-size: 16px;
+    cursor: pointer; padding: 4px; border-radius: 8px; opacity: 0.55;
+  }
+  .line:hover .replay-btn, .line.current .replay-btn { opacity: 1; color: var(--accent); }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 12px; padding-top: 8px; }
+
+  @media (max-width: 420px) {
+    .line { grid-template-columns: 44px 1fr auto; }
+    .role { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">영어식 사고 · 구동사·숙어 · 9/13</div>
+    <h1>구동사·숙어 Part 9</h1>
+    <p class="subline">표현 → Think in English(원어민 설명, 빨간 글씨가 핵심) → 뜻 → 예문(영어·해석·영어·영어) 순서로 익혀요. 줄을 탭하면 그 지점부터 다시 들을 수 있어요.</p>
+  </header>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<a href="part2.html">구동 2</a>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<a href="part8.html">구동 8</a>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a>
+<span class="current">구동 9</span>
+<a href="part17.html">구동 10</a>
+<a href="part18.html">구동 11</a>
+<a href="part19.html">구동 12</a>
+<a href="part20.html">구동 13</a>
+<a href="part21.html">문장 8</a></nav>
+
+  <div class="player">
+    <audio id="audio" preload="metadata" src="audio/part16.mp3"></audio>
+
+    <div class="episode-row">
+      <span class="episode-title">17개 표현</span>
+      <span class="episode-meta"><span id="curTime">0:00</span> / <span id="durTime">--:--</span></span>
+    </div>
+
+    <input type="range" class="scrubber" id="scrubber" min="0" max="1000" value="0" aria-label="재생 위치" />
+
+    <div class="controls-row">
+      <button class="icon-btn" id="restartBtn" title="처음부터" aria-label="처음부터 다시 듣기">⏮</button>
+      <button class="icon-btn" id="rewindBtn" title="10초 뒤로" aria-label="10초 뒤로">⟲10</button>
+      <button class="icon-btn play" id="playBtn" aria-label="재생">▶</button>
+      <button class="icon-btn" id="forwardBtn" title="10초 앞으로" aria-label="10초 앞으로">10⟳</button>
+    </div>
+
+    <div class="rate-row" role="group" aria-label="재생 속도">
+      <button class="rate-btn" data-rate="0.75" aria-pressed="false">0.75×</button>
+      <button class="rate-btn" data-rate="1" aria-pressed="true">1.0×</button>
+      <button class="rate-btn" data-rate="1.25" aria-pressed="false">1.25×</button>
+      <button class="rate-btn" data-rate="1.5" aria-pressed="false">1.5×</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="transcript-heading">
+      <h2>표현 &amp; 예문 (17개)</h2>
+      <div class="legend">
+        <span><i class="dot target"></i>표현</span>
+        <span><i class="dot meaning"></i>뜻</span>
+        <span><i class="dot example"></i>예문</span>
+      </div>
+    </div>
+    <div class="transcript" id="transcript"></div>
+  </section>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<a href="part2.html">구동 2</a>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<a href="part8.html">구동 8</a>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a>
+<span class="current">구동 9</span>
+<a href="part17.html">구동 10</a>
+<a href="part18.html">구동 11</a>
+<a href="part19.html">구동 12</a>
+<a href="part20.html">구동 13</a>
+<a href="part21.html">문장 8</a></nav>
+
+  <footer>문장을 탭하면 그 지점부터 다시 재생됩니다 · 20.8분 · 안 외워지는 표현은 탭해서 반복 재생하세요</footer>
+</div>
+
+<script>
+  const TRANSCRIPT = [{"item": "➕ ⬆ UP (추가분)", "role": "section", "ex_index": 0, "en": "", "ko": "위로 ↑ → ① 집어 올림  ② 드러나 나타남  ③ 끝까지 채움 = 완료·완성  ④ 바짝 다가가 맞섬·따라붙음", "start_ms": 0, "end_ms": 13128}, {"item": "1. pick up (No.869 / 910)", "role": "target", "ex_index": 0, "en": "pick up", "ko": "", "start_ms": 15128, "end_ms": 17000}, {"item": "1. pick up (No.869 / 910)", "role": "thinking", "ex_index": 0, "en": "pick(집다) + up(위로 들어 올림)", "ko": "When we \"pick something up,\" we <b class=\"hl\">lift it from a lower place with our hands</b>. The same picture works for people: you pick someone up when you <b class=\"hl\">give them a ride</b>. You can also pick up a skill <b class=\"hl\">without really studying</b>, just by being around it. And when the phone rings, you pick up.", "start_ms": 19000, "end_ms": 34192}, {"item": "1. pick up (No.869 / 910)", "role": "meaning", "ex_index": 0, "en": "", "ko": "집어 들다 / 데리러 가다 / (기술을) 익히다 / 전화를 받다", "start_ms": 36192, "end_ms": 43992}, {"item": "1. pick up (No.869 / 910)", "role": "example", "ex_index": 1, "en": "Can you pick me up at the station?", "ko": "역으로 나 데리러 와 줄래?", "start_ms": 45992, "end_ms": 58016}, {"item": "1. pick up (No.869 / 910)", "role": "example", "ex_index": 2, "en": "I picked up some Spanish while traveling.", "ko": "여행하면서 스페인어를 좀 익혔어.", "start_ms": 60016, "end_ms": 74440}, {"item": "1. pick up (No.869 / 910)", "role": "example", "ex_index": 3, "en": "He didn't pick up when I called.", "ko": "내가 전화했는데 그가 안 받았어.", "start_ms": 76440, "end_ms": 89088}, {"item": "2. mess up (No.872)", "role": "target", "ex_index": 0, "en": "mess up", "ko": "", "start_ms": 91088, "end_ms": 92960}, {"item": "2. mess up (No.872)", "role": "thinking", "ex_index": 0, "en": "mess(엉망) + up(완전히, 끝까지)", "ko": "When we \"mess up,\" we <b class=\"hl\">make a mistake and ruin something</b>. Picture a clean room turned upside down. You can mess up a test, a plan, or even someone's hair. It's a very casual, everyday way to say <b class=\"hl\">\"I did it wrong.\"</b>", "start_ms": 94960, "end_ms": 109312}, {"item": "2. mess up (No.872)", "role": "meaning", "ex_index": 0, "en": "", "ko": "망치다, 실수하다 / 엉망으로 만들다", "start_ms": 111312, "end_ms": 117240}, {"item": "2. mess up (No.872)", "role": "example", "ex_index": 1, "en": "I really messed up the presentation.", "ko": "발표를 완전히 망쳤어.", "start_ms": 119240, "end_ms": 132608}, {"item": "2. mess up (No.872)", "role": "example", "ex_index": 2, "en": "Don't mess up my hair!", "ko": "내 머리 헝클지 마!", "start_ms": 134608, "end_ms": 146176}, {"item": "2. mess up (No.872)", "role": "example", "ex_index": 3, "en": "Everyone messes up sometimes.", "ko": "누구나 가끔 실수해.", "start_ms": 148176, "end_ms": 160872}, {"item": "3. add up (No.873)", "role": "target", "ex_index": 0, "en": "add up", "ko": "", "start_ms": 162872, "end_ms": 164744}, {"item": "3. add up (No.873)", "role": "thinking", "ex_index": 0, "en": "add(더하다) + up(쌓아 올려 합계)", "ko": "When numbers \"add up,\" we <b class=\"hl\">put them together to get a total</b>. Small things can add up to <b class=\"hl\">something big over time</b>, like coffee money. When a story \"doesn't add up,\" the pieces <b class=\"hl\">don't fit together</b>, so it seems false.", "start_ms": 166744, "end_ms": 180016}, {"item": "3. add up (No.873)", "role": "meaning", "ex_index": 0, "en": "", "ko": "합산하다 / (이야기가) 말이 되다", "start_ms": 182016, "end_ms": 186696}, {"item": "3. add up (No.873)", "role": "example", "ex_index": 1, "en": "Can you add up these numbers?", "ko": "이 숫자들 좀 합산해 줄래?", "start_ms": 188696, "end_ms": 200576}, {"item": "3. add up (No.873)", "role": "example", "ex_index": 2, "en": "Small costs add up quickly.", "ko": "작은 비용도 금방 쌓여.", "start_ms": 202576, "end_ms": 215776}, {"item": "3. add up (No.873)", "role": "example", "ex_index": 3, "en": "His story just doesn't add up.", "ko": "그의 이야기는 앞뒤가 안 맞아.", "start_ms": 217776, "end_ms": 230856}, {"item": "4. loosen up (No.876)", "role": "target", "ex_index": 0, "en": "loosen up", "ko": "", "start_ms": 232856, "end_ms": 234728}, {"item": "4. loosen up (No.876)", "role": "thinking", "ex_index": 0, "en": "loosen(느슨하게 하다) + up(완전히)", "ko": "When we \"loosen up,\" we <b class=\"hl\">let go of tension in our body or mind</b>. Picture a tight knot becoming loose. Friends tell you to loosen up when you're <b class=\"hl\">too serious or nervous</b>. Athletes also loosen up their muscles before a game.", "start_ms": 236728, "end_ms": 250504}, {"item": "4. loosen up (No.876)", "role": "meaning", "ex_index": 0, "en": "", "ko": "긴장을 풀다 / 몸을 풀다", "start_ms": 252504, "end_ms": 255960}, {"item": "4. loosen up (No.876)", "role": "example", "ex_index": 1, "en": "Loosen up! It's just a party.", "ko": "긴장 풀어! 그냥 파티잖아.", "start_ms": 257960, "end_ms": 272672}, {"item": "4. loosen up (No.876)", "role": "example", "ex_index": 2, "en": "Let's loosen up before we run.", "ko": "뛰기 전에 몸 좀 풀자.", "start_ms": 274672, "end_ms": 286768}, {"item": "4. loosen up (No.876)", "role": "example", "ex_index": 3, "en": "He loosened up after a few drinks.", "ko": "그는 몇 잔 마시고 나서 긴장이 풀렸어.", "start_ms": 288768, "end_ms": 302640}, {"item": "5. brush up on (No.877)", "role": "target", "ex_index": 0, "en": "brush up on", "ko": "", "start_ms": 304640, "end_ms": 306512}, {"item": "5. brush up on (No.877)", "role": "thinking", "ex_index": 0, "en": "brush(솔질하다) + up(다시 반짝이게) + on(그 대상에)", "ko": "When we \"brush up on\" something, we <b class=\"hl\">practice a skill we used to know but got rusty at</b>. Picture brushing dust off an old tool so it shines again. People often brush up on a language <b class=\"hl\">before a trip</b> or on math before an exam.", "start_ms": 308512, "end_ms": 321688}, {"item": "5. brush up on (No.877)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(잊었던 실력을) 다시 공부하다, 복습하다", "start_ms": 323688, "end_ms": 329088}, {"item": "5. brush up on (No.877)", "role": "example", "ex_index": 1, "en": "I need to brush up on my English before the trip.", "ko": "여행 전에 영어 좀 다시 다듬어야 해.", "start_ms": 331088, "end_ms": 346304}, {"item": "5. brush up on (No.877)", "role": "example", "ex_index": 2, "en": "She's brushing up on her driving skills.", "ko": "그녀는 운전 실력을 다시 연습하고 있어.", "start_ms": 348304, "end_ms": 362944}, {"item": "5. brush up on (No.877)", "role": "example", "ex_index": 3, "en": "Brush up on the basics first.", "ko": "기초부터 먼저 복습해.", "start_ms": 364944, "end_ms": 377376}, {"item": "6. take up (No.900)", "role": "target", "ex_index": 0, "en": "take up", "ko": "", "start_ms": 379376, "end_ms": 381248}, {"item": "6. take up (No.900)", "role": "thinking", "ex_index": 0, "en": "take(가져가다) + up(집어 올려 내 것으로)", "ko": "When we \"take up\" a hobby, we <b class=\"hl\">start doing it regularly</b>. You pick it up and make it part of your life. Things can also take up space or time, which means they <b class=\"hl\">use or fill it</b>. A big sofa takes up a lot of room.", "start_ms": 383248, "end_ms": 396184}, {"item": "6. take up (No.900)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(취미를) 시작하다 / (시간·공간을) 차지하다", "start_ms": 398184, "end_ms": 404424}, {"item": "6. take up (No.900)", "role": "example", "ex_index": 1, "en": "I took up yoga last year.", "ko": "작년에 요가를 시작했어.", "start_ms": 406424, "end_ms": 418400}, {"item": "6. take up (No.900)", "role": "example", "ex_index": 2, "en": "This sofa takes up too much space.", "ko": "이 소파는 자리를 너무 많이 차지해.", "start_ms": 420400, "end_ms": 434968}, {"item": "6. take up (No.900)", "role": "example", "ex_index": 3, "en": "I don't want to take up your time.", "ko": "시간 뺏고 싶지 않아요.", "start_ms": 436968, "end_ms": 448728}, {"item": "7. pop up (No.916)", "role": "target", "ex_index": 0, "en": "pop up", "ko": "", "start_ms": 450728, "end_ms": 452600}, {"item": "7. pop up (No.916)", "role": "thinking", "ex_index": 0, "en": "pop(퐁 튀어나오다) + up(위로 불쑥)", "ko": "When something \"pops up,\" it <b class=\"hl\">appears suddenly, without warning</b>. Picture toast jumping out of a toaster. Messages pop up on your screen, problems pop up at work, and new shops <b class=\"hl\">pop up all over town</b>.", "start_ms": 454600, "end_ms": 467320}, {"item": "7. pop up (No.916)", "role": "meaning", "ex_index": 0, "en": "", "ko": "갑자기 나타나다, 불쑥 생기다 / (창이) 뜨다", "start_ms": 469320, "end_ms": 475584}, {"item": "7. pop up (No.916)", "role": "example", "ex_index": 1, "en": "A message popped up on my screen.", "ko": "화면에 메시지가 떴어.", "start_ms": 477584, "end_ms": 490688}, {"item": "7. pop up (No.916)", "role": "example", "ex_index": 2, "en": "New cafes keep popping up around here.", "ko": "이 근처에 새 카페가 계속 생겨.", "start_ms": 492688, "end_ms": 507232}, {"item": "7. pop up (No.916)", "role": "example", "ex_index": 3, "en": "If any problems pop up, call me.", "ko": "문제가 생기면 전화해.", "start_ms": 509232, "end_ms": 521640}, {"item": "8. stock up on (No.925)", "role": "target", "ex_index": 0, "en": "stock up on", "ko": "", "start_ms": 523640, "end_ms": 525512}, {"item": "8. stock up on (No.925)", "role": "thinking", "ex_index": 0, "en": "stock(재고) + up(가득 채움) + on(그 물건으로)", "ko": "When we \"stock up on\" something, we <b class=\"hl\">buy a lot of it to use later</b>. Picture filling the shelves of a store room. People stock up on water before a storm or on snacks before a long weekend. It's about <b class=\"hl\">being ready in advance</b>.", "start_ms": 527512, "end_ms": 540592}, {"item": "8. stock up on (No.925)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(미리) 잔뜩 사 두다, 비축하다", "start_ms": 542592, "end_ms": 547440}, {"item": "8. stock up on (No.925)", "role": "example", "ex_index": 1, "en": "Let's stock up on water before the storm.", "ko": "폭풍 오기 전에 물 좀 사 두자.", "start_ms": 549440, "end_ms": 563432}, {"item": "8. stock up on (No.925)", "role": "example", "ex_index": 2, "en": "I stocked up on snacks for the weekend.", "ko": "주말용 간식을 잔뜩 사 놨어.", "start_ms": 565432, "end_ms": 579760}, {"item": "8. stock up on (No.925)", "role": "example", "ex_index": 3, "en": "People are stocking up on masks.", "ko": "사람들이 마스크를 비축하고 있어.", "start_ms": 581760, "end_ms": 595152}, {"item": "9. make up (No.948)", "role": "target", "ex_index": 0, "en": "make up", "ko": "", "start_ms": 597152, "end_ms": 599024}, {"item": "9. make up (No.948)", "role": "thinking", "ex_index": 0, "en": "make(만들다) + up(조각을 쌓아 완성)", "ko": "\"Make up\" is about <b class=\"hl\">putting pieces together into one whole</b>. You can make up a story, which means you <b class=\"hl\">invent it</b>. Parts make up a group, so women might make up half a team. And after a fight, two people make up when they <b class=\"hl\">become friends again</b>.", "start_ms": 601024, "end_ms": 615064}, {"item": "9. make up (No.948)", "role": "meaning", "ex_index": 0, "en": "", "ko": "지어내다 / 구성하다 / 화해하다 / 화장하다", "start_ms": 617064, "end_ms": 624312}, {"item": "9. make up (No.948)", "role": "example", "ex_index": 1, "en": "Stop making up excuses.", "ko": "핑계 좀 그만 지어내.", "start_ms": 626312, "end_ms": 638384}, {"item": "9. make up (No.948)", "role": "example", "ex_index": 2, "en": "Women make up half of our team.", "ko": "우리 팀의 절반은 여성이야.", "start_ms": 640384, "end_ms": 652552}, {"item": "9. make up (No.948)", "role": "example", "ex_index": 3, "en": "They fought, but they made up the next day.", "ko": "그들은 싸웠지만 다음 날 화해했어.", "start_ms": 654552, "end_ms": 669000}, {"item": "10. make up for (No.882)", "role": "target", "ex_index": 0, "en": "make up for", "ko": "", "start_ms": 671000, "end_ms": 672872}, {"item": "10. make up for (No.882)", "role": "thinking", "ex_index": 0, "en": "make up(빈 곳을 채워 완성) + for(~에 대한 대가로)", "ko": "When we \"make up for\" something, we <b class=\"hl\">do something good to balance out something bad</b>. Picture filling a hole so the ground is flat again. You make up for being late by buying lunch, or you <b class=\"hl\">make up for lost time</b> by working extra hard.", "start_ms": 674872, "end_ms": 689296}, {"item": "10. make up for (No.882)", "role": "meaning", "ex_index": 0, "en": "", "ko": "보상하다, 만회하다", "start_ms": 691296, "end_ms": 695040}, {"item": "10. make up for (No.882)", "role": "example", "ex_index": 1, "en": "How can I make up for being late?", "ko": "늦은 거 어떻게 만회하면 될까?", "start_ms": 697040, "end_ms": 709544}, {"item": "10. make up for (No.882)", "role": "example", "ex_index": 2, "en": "I'm working hard to make up for lost time.", "ko": "잃어버린 시간을 만회하려고 열심히 하고 있어.", "start_ms": 711544, "end_ms": 726328}, {"item": "10. make up for (No.882)", "role": "example", "ex_index": 3, "en": "Nothing can make up for that mistake.", "ko": "그 실수는 무엇으로도 메울 수 없어.", "start_ms": 728328, "end_ms": 741576}, {"item": "11. make up with (No.946)", "role": "target", "ex_index": 0, "en": "make up with", "ko": "", "start_ms": 743576, "end_ms": 745448}, {"item": "11. make up with (No.946)", "role": "thinking", "ex_index": 0, "en": "make up(깨진 것을 다시 붙여 완성) + with(그 사람과)", "ko": "When we \"make up with\" someone, we <b class=\"hl\">end a fight and become friends again</b>. The relationship was broken, and now you <b class=\"hl\">put it back together</b>. Couples and siblings often make up with each other after an argument.", "start_ms": 747448, "end_ms": 759928}, {"item": "11. make up with (No.946)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~와 화해하다", "start_ms": 761928, "end_ms": 764280}, {"item": "11. make up with (No.946)", "role": "example", "ex_index": 1, "en": "Did you make up with your sister?", "ko": "언니랑 화해했어?", "start_ms": 766280, "end_ms": 777704}, {"item": "11. make up with (No.946)", "role": "example", "ex_index": 2, "en": "I want to make up with him before he leaves.", "ko": "그가 떠나기 전에 화해하고 싶어.", "start_ms": 779704, "end_ms": 793456}, {"item": "11. make up with (No.946)", "role": "example", "ex_index": 3, "en": "They made up with each other over dinner.", "ko": "그들은 저녁을 먹으며 서로 화해했어.", "start_ms": 795456, "end_ms": 809232}, {"item": "12. stand up for (No.943)", "role": "target", "ex_index": 0, "en": "stand up for", "ko": "", "start_ms": 811232, "end_ms": 813104}, {"item": "12. stand up for (No.943)", "role": "thinking", "ex_index": 0, "en": "stand up(일어서다) + for(~을 위해)", "ko": "When we \"stand up for\" someone, we <b class=\"hl\">defend them when others attack</b>. Picture standing up from your chair to say, \"Hey, that's not fair!\" You can also stand up for yourself or for <b class=\"hl\">what you believe is right</b>.", "start_ms": 815104, "end_ms": 828184}, {"item": "12. stand up for (No.943)", "role": "meaning", "ex_index": 0, "en": "", "ko": "옹호하다, 편을 들어 지키다", "start_ms": 830184, "end_ms": 834240}, {"item": "12. stand up for (No.943)", "role": "example", "ex_index": 1, "en": "Thanks for standing up for me.", "ko": "내 편 들어줘서 고마워.", "start_ms": 836240, "end_ms": 848144}, {"item": "12. stand up for (No.943)", "role": "example", "ex_index": 2, "en": "You have to stand up for yourself.", "ko": "너 자신은 스스로 지켜야 해.", "start_ms": 850144, "end_ms": 862696}, {"item": "12. stand up for (No.943)", "role": "example", "ex_index": 3, "en": "She always stands up for what she believes.", "ko": "그녀는 늘 자기 신념을 지켜.", "start_ms": 864696, "end_ms": 879528}, {"item": "13. stand up to (No.949)", "role": "target", "ex_index": 0, "en": "stand up to", "ko": "", "start_ms": 881528, "end_ms": 883400}, {"item": "13. stand up to (No.949)", "role": "thinking", "ex_index": 0, "en": "stand up(일어서다) + to(상대를 향해 마주)", "ko": "When we \"stand up to\" someone, we <b class=\"hl\">face a stronger person and refuse to back down</b>. You stand up tall and look straight at them. People stand up to bullies, bosses, or anyone who <b class=\"hl\">tries to push them around</b>.", "start_ms": 885400, "end_ms": 898384}, {"item": "13. stand up to (No.949)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(강한 상대에게) 맞서다", "start_ms": 900384, "end_ms": 903480}, {"item": "13. stand up to (No.949)", "role": "example", "ex_index": 1, "en": "He finally stood up to his boss.", "ko": "그는 마침내 상사에게 맞섰어.", "start_ms": 905480, "end_ms": 918992}, {"item": "13. stand up to (No.949)", "role": "example", "ex_index": 2, "en": "It takes courage to stand up to bullies.", "ko": "괴롭히는 애들에게 맞서려면 용기가 필요해.", "start_ms": 920992, "end_ms": 936160}, {"item": "13. stand up to (No.949)", "role": "example", "ex_index": 3, "en": "Stand up to them. Don't let them push you around.", "ko": "맞서. 그 사람들한테 휘둘리지 마.", "start_ms": 938160, "end_ms": 954936}, {"item": "14. keep up with (No.950)", "role": "target", "ex_index": 0, "en": "keep up with", "ko": "", "start_ms": 956936, "end_ms": 958808}, {"item": "14. keep up with (No.950)", "role": "thinking", "ex_index": 0, "en": "keep up(뒤처지지 않게 따라붙음) + with(~와 나란히)", "ko": "When we \"keep up with\" something, we <b class=\"hl\">move at the same speed so we don't fall behind</b>. Picture running next to a fast friend. You can keep up with a person, with your classes, or with <b class=\"hl\">news and trends that change quickly</b>.", "start_ms": 960808, "end_ms": 973480}, {"item": "14. keep up with (No.950)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~에 뒤처지지 않다, 따라가다", "start_ms": 975480, "end_ms": 979080}, {"item": "14. keep up with (No.950)", "role": "example", "ex_index": 1, "en": "I can't keep up with you. Slow down!", "ko": "너 못 따라가겠어. 천천히 가!", "start_ms": 981080, "end_ms": 998048}, {"item": "14. keep up with (No.950)", "role": "example", "ex_index": 2, "en": "It's hard to keep up with the news.", "ko": "뉴스를 다 따라가기 힘들어.", "start_ms": 1000048, "end_ms": 1012456}, {"item": "14. keep up with (No.950)", "role": "example", "ex_index": 3, "en": "She works hard to keep up with her classmates.", "ko": "그녀는 반 친구들을 따라가려고 열심히 해.", "start_ms": 1014456, "end_ms": 1029936}, {"item": "15. put up with (No.886)", "role": "target", "ex_index": 0, "en": "put up with", "ko": "", "start_ms": 1031936, "end_ms": 1033808}, {"item": "15. put up with (No.886)", "role": "thinking", "ex_index": 0, "en": "put up(떠받쳐 들고 있음) + with(~을 안고 함께)", "ko": "When we \"put up with\" something, we <b class=\"hl\">accept something annoying without complaining too much</b>. Picture holding a heavy bag and refusing to drop it. You put up with noisy neighbors or a difficult coworker <b class=\"hl\">because you have no choice</b>.", "start_ms": 1035808, "end_ms": 1049464}, {"item": "15. put up with (No.886)", "role": "meaning", "ex_index": 0, "en": "", "ko": "참다, 견디다", "start_ms": 1051464, "end_ms": 1054536}, {"item": "15. put up with (No.886)", "role": "example", "ex_index": 1, "en": "I can't put up with this noise anymore.", "ko": "이 소음 더는 못 참겠어.", "start_ms": 1056536, "end_ms": 1069712}, {"item": "15. put up with (No.886)", "role": "example", "ex_index": 2, "en": "How do you put up with him?", "ko": "그 사람을 어떻게 견뎌?", "start_ms": 1071712, "end_ms": 1083568}, {"item": "15. put up with (No.886)", "role": "example", "ex_index": 3, "en": "We had to put up with a long delay.", "ko": "우리는 긴 지연을 참아야 했어.", "start_ms": 1085568, "end_ms": 1098840}, {"item": "16. come up with (No.908)", "role": "target", "ex_index": 0, "en": "come up with", "ko": "", "start_ms": 1100840, "end_ms": 1102712}, {"item": "16. come up with (No.908)", "role": "thinking", "ex_index": 0, "en": "come up(수면 위로 떠오름) + with(~을 가지고)", "ko": "When we \"come up with\" something, we <b class=\"hl\">think of a new idea, plan, or answer</b>. Picture an idea rising up from deep in your mind. We use it for creative thinking: you come up with a name, <b class=\"hl\">a solution, or an excuse</b>.", "start_ms": 1104712, "end_ms": 1119352}, {"item": "16. come up with (No.908)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(아이디어·해결책을) 생각해 내다, 마련하다", "start_ms": 1121352, "end_ms": 1127232}, {"item": "16. come up with (No.908)", "role": "example", "ex_index": 1, "en": "She came up with a great idea.", "ko": "그녀가 좋은 아이디어를 냈어.", "start_ms": 1129232, "end_ms": 1142120}, {"item": "16. come up with (No.908)", "role": "example", "ex_index": 2, "en": "We need to come up with a plan.", "ko": "우리는 계획을 세워야 해.", "start_ms": 1144120, "end_ms": 1156072}, {"item": "16. come up with (No.908)", "role": "example", "ex_index": 3, "en": "I couldn't come up with an answer.", "ko": "답이 떠오르지 않았어.", "start_ms": 1158072, "end_ms": 1170384}, {"item": "17. check up on (No.895)", "role": "target", "ex_index": 0, "en": "check up on", "ko": "", "start_ms": 1172384, "end_ms": 1174256}, {"item": "17. check up on (No.895)", "role": "thinking", "ex_index": 0, "en": "check(확인하다) + up(가까이 다가가) + on(그 사람에게)", "ko": "When we \"check up on\" someone, we <b class=\"hl\">go and see if they're okay</b>. Parents check up on kids, and nurses check up on patients. It shows <b class=\"hl\">care, but it can feel like watching</b> if you do it too often.", "start_ms": 1176256, "end_ms": 1186456}, {"item": "17. check up on (No.895)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(잘 있는지) 상태를 확인하다, 살펴보다", "start_ms": 1188456, "end_ms": 1193544}, {"item": "17. check up on (No.895)", "role": "example", "ex_index": 1, "en": "I'm just calling to check up on you.", "ko": "그냥 너 잘 있나 확인하려고 전화했어.", "start_ms": 1195544, "end_ms": 1208432}, {"item": "17. check up on (No.895)", "role": "example", "ex_index": 2, "en": "The nurse checks up on him every hour.", "ko": "간호사가 매시간 그의 상태를 살펴.", "start_ms": 1210432, "end_ms": 1225720}, {"item": "17. check up on (No.895)", "role": "example", "ex_index": 3, "en": "Stop checking up on me. I'm fine.", "ko": "그만 확인해. 나 괜찮아.", "start_ms": 1227720, "end_ms": 1243416}];
+  const MAIN_END_MS = 1245416;
+
+  const audio = document.getElementById("audio");
+  const playBtn = document.getElementById("playBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const rewindBtn = document.getElementById("rewindBtn");
+  const forwardBtn = document.getElementById("forwardBtn");
+  const scrubber = document.getElementById("scrubber");
+  const curTimeEl = document.getElementById("curTime");
+  const durTimeEl = document.getElementById("durTime");
+  const transcriptEl = document.getElementById("transcript");
+  const rateBtns = Array.from(document.querySelectorAll(".rate-btn"));
+
+  const ROLE_LABEL = { section: "핵심", target: "표현", thinking: "Think", meaning: "뜻", example: "예문", example_alt: "새 예문" };
+
+  function fmt(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  function makeLineBtn(row) {
+    const btn = document.createElement("button");
+    btn.className = row.role === "example_alt" ? "line alt-row" : `line ${row.role}`;
+    btn.dataset.start = row.start_ms / 1000;
+    const roleLabel = row.role === "example" ? `예문 ${row.ex_index}`
+      : row.role === "example_alt" ? `새 예문 ${row.ex_index}` : ROLE_LABEL[row.role];
+    btn.innerHTML = `
+      <span class="role ${row.role}">${roleLabel}</span>
+      <span class="text-col">
+        <span class="en">${row.en}</span>
+        <span class="ko">${row.ko}</span>
+      </span>
+      <span class="replay-btn" aria-hidden="true">↻</span>
+    `;
+    btn.addEventListener("click", () => {
+      audio.currentTime = row.start_ms / 1000;
+      audio.play();
+    });
+    return btn;
+  }
+
+  let lastItem = null;
+  let altGroupEl = null;
+  const rowEls = TRANSCRIPT.map((row) => {
+    if (row.item !== lastItem) {
+      const label = document.createElement("div");
+      label.className = "item-num";
+      label.textContent = row.item;
+      transcriptEl.appendChild(label);
+      lastItem = row.item;
+      altGroupEl = null;
+    }
+    if (row.role === "example_alt") {
+      if (!altGroupEl) {
+        const toggle = document.createElement("button");
+        toggle.className = "alt-toggle";
+        toggle.type = "button";
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.innerHTML = `🔄 이 표현, 다른 패턴으로 다시 공부하기 <span class="chev">▾</span>`;
+        const thisGroup = document.createElement("div");
+        thisGroup.className = "alt-group";
+        thisGroup.hidden = true;
+        toggle.addEventListener("click", () => {
+          thisGroup.hidden = !thisGroup.hidden;
+          toggle.setAttribute("aria-expanded", String(!thisGroup.hidden));
+        });
+        transcriptEl.appendChild(toggle);
+        transcriptEl.appendChild(thisGroup);
+        altGroupEl = thisGroup;
+      }
+      const btn = makeLineBtn(row);
+      altGroupEl.appendChild(btn);
+      return btn;
+    }
+    const btn = makeLineBtn(row);
+    transcriptEl.appendChild(btn);
+    return btn;
+  });
+
+  let currentIndex = -1;
+
+  audio.addEventListener("loadedmetadata", () => { durTimeEl.textContent = fmt(audio.duration); });
+
+  let userSeeking = false;
+  // "다른 패턴" 예문은 파일 맨 끝에 있어서, 이어듣기로 자연스럽게 흘러 들어가면 안 되고
+  // 항목의 토글을 눌러 직접 이동했을 때만 들려야 한다. 한 틱 만에 MAIN_END_MS를 훌쩍
+  // 넘기는 큰 점프는 의도적 탐색(탭/스크러버)이고, 조금씩 넘는 건 자연 재생이므로 그때만 멈춘다.
+  let prevMs = 0;
+  audio.addEventListener("timeupdate", () => {
+    const ms0 = audio.currentTime * 1000;
+    if (prevMs < MAIN_END_MS && ms0 >= MAIN_END_MS && (ms0 - prevMs) < 2000) {
+      audio.pause();
+      audio.currentTime = MAIN_END_MS / 1000;
+      prevMs = MAIN_END_MS;
+      return;
+    }
+    prevMs = ms0;
+
+    curTimeEl.textContent = fmt(audio.currentTime);
+    if (!userSeeking && audio.duration) {
+      scrubber.value = String((audio.currentTime / audio.duration) * 1000);
+    }
+    const ms = audio.currentTime * 1000;
+    let idx = TRANSCRIPT.findIndex((r) => ms >= r.start_ms && ms < r.end_ms);
+    if (idx === -1 && TRANSCRIPT.length) {
+      idx = ms >= TRANSCRIPT[TRANSCRIPT.length - 1].end_ms ? TRANSCRIPT.length - 1 : currentIndex;
+    }
+    if (idx !== currentIndex && idx >= 0) {
+      if (currentIndex >= 0) rowEls[currentIndex].classList.remove("current");
+      rowEls[idx].classList.add("current");
+      rowEls[idx].scrollIntoView({ behavior: "smooth", block: "center" });
+      currentIndex = idx;
+    }
+  });
+
+  audio.addEventListener("play", () => { playBtn.textContent = "⏸"; playBtn.setAttribute("aria-label", "일시정지"); });
+  audio.addEventListener("pause", () => { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "재생"); });
+  audio.addEventListener("ended", () => { playBtn.textContent = "▶"; });
+
+  playBtn.addEventListener("click", () => { if (audio.paused) audio.play(); else audio.pause(); });
+  restartBtn.addEventListener("click", () => { audio.currentTime = 0; audio.play(); });
+  rewindBtn.addEventListener("click", () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+  forwardBtn.addEventListener("click", () => { audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10); });
+
+  scrubber.addEventListener("input", () => {
+    userSeeking = true;
+    if (audio.duration) { curTimeEl.textContent = fmt((Number(scrubber.value) / 1000) * audio.duration); }
+  });
+  scrubber.addEventListener("change", () => {
+    if (audio.duration) { audio.currentTime = (Number(scrubber.value) / 1000) * audio.duration; }
+    userSeeking = false;
+  });
+
+  rateBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      audio.playbackRate = Number(btn.dataset.rate);
+      rateBtns.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    });
+  });
+</script>
+</body>
+</html>

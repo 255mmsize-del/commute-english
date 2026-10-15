@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>구동사·숙어 Part 11 · 영어식 사고</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap" />
+<style>
+  :root {
+    --bg: #f2f4f6;
+    --surface: #ffffff;
+    --surface-2: #e7ebee;
+    --border: #d7dde2;
+    --text: #1b2430;
+    --text-muted: #5b6773;
+    --accent: #3d6bb3;
+    --accent-ink: #ffffff;
+    --target: #2a5aa0;
+    --meaning: #1f8a7d;
+    --example: #6b6f76;
+    --example-alt: #8a4fc2;
+    --current-bg: #e7eefb;
+    --shadow: 0 1px 2px rgba(20, 26, 33, 0.06), 0 8px 24px rgba(20, 26, 33, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121820;
+      --surface: #1a2229;
+      --surface-2: #212a33;
+      --border: #2c3742;
+      --text: #edf1f4;
+      --text-muted: #93a1ac;
+      --accent: #6f9ceb;
+      --accent-ink: #0d1520;
+      --target: #7aa8ef;
+      --meaning: #63d9c8;
+      --example: #9aa2ab;
+      --example-alt: #c298f0;
+      --current-bg: #1b2a3f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #121820;
+    --surface: #1a2229;
+    --surface-2: #212a33;
+    --border: #2c3742;
+    --text: #edf1f4;
+    --text-muted: #93a1ac;
+    --accent: #6f9ceb;
+    --accent-ink: #0d1520;
+    --target: #7aa8ef;
+    --meaning: #63d9c8;
+    --example: #9aa2ab;
+    --current-bg: #1b2a3f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Sora", "Noto Sans KR", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 18px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  header.masthead { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-family: "Sora", sans-serif; font-size: 26px; font-weight: 700; margin: 0; text-wrap: balance; }
+  .subline { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+  .part-nav {
+    display: flex; gap: 8px; flex-wrap: wrap; font-size: 13px;
+  }
+  .part-nav a, .part-nav span {
+    padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); text-decoration: none; color: var(--text-muted);
+  }
+  .part-nav a.current, .part-nav span.current { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 12px;
+    z-index: 5;
+  }
+
+  .episode-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .episode-title { font-weight: 600; font-size: 15px; }
+  .episode-meta { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .scrubber {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px;
+    background: var(--surface-2); cursor: pointer; accent-color: var(--accent);
+  }
+  .scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .controls-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
+  .icon-btn {
+    background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
+    width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 15px; transition: transform 0.12s ease, background 0.12s ease;
+  }
+  .icon-btn:hover { background: var(--current-bg); }
+  .icon-btn:active { transform: scale(0.94); }
+  .icon-btn.play { width: 60px; height: 60px; background: var(--accent); color: var(--accent-ink); border: none; font-size: 20px; }
+  .icon-btn:focus-visible, .rate-btn:focus-visible, .line:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .rate-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .rate-btn {
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text-muted);
+    font-family: "Sora", sans-serif; font-weight: 600; font-size: 13px; padding: 7px 13px; border-radius: 999px;
+    cursor: pointer; font-variant-numeric: tabular-nums;
+  }
+  .rate-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+  .transcript-heading { display: flex; align-items: center; justify-content: space-between; }
+  .transcript-heading h2 { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin: 0; }
+  .legend { display: flex; gap: 12px; font-size: 12px; color: var(--text-muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.target { background: var(--target); }
+  .dot.meaning { background: var(--meaning); }
+  .dot.example { background: var(--example); }
+
+  .transcript { display: flex; flex-direction: column; gap: 10px; }
+  .item-num {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--text);
+    padding: 14px 2px 0; border-top: 1px solid var(--border); margin-top: 4px;
+  }
+  .item-num:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
+  .line {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: start; gap: 12px;
+    padding: 12px 14px; border-radius: 14px; border: 1px solid transparent; cursor: pointer;
+    background: transparent; text-align: left; font-family: inherit; color: inherit;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .line:hover { background: var(--surface-2); }
+  .line.current { background: var(--current-bg); border-color: var(--accent); }
+
+  .role { font-size: 11px; font-weight: 700; letter-spacing: 0.03em; padding-top: 3px; }
+  .role.target { color: var(--target); }
+  .role.meaning { color: var(--meaning); }
+  .role.example { color: var(--example); }
+  .role.example_alt { color: var(--example-alt); }
+  .role.section { color: #b7791f; }
+  .role.thinking { color: #2f855a; }
+  .line .hl { color: #d62828; font-weight: 700; }
+  @media (prefers-color-scheme: dark) { .line .hl { color: #ff6b6b; } }
+  .line.section { background: color-mix(in srgb, #f6c344 14%, transparent); }
+  .line.section .ko, .line.thinking .ko { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .line.thinking .en { font-size: 13.5px; color: #2b6cb0; font-family: "Noto Sans KR", sans-serif; }
+
+  .alt-toggle {
+    display: flex; align-items: center; gap: 6px; margin: 2px 14px 2px 56px;
+    padding: 7px 12px; border-radius: 999px; border: 1px dashed var(--example-alt);
+    background: transparent; color: var(--example-alt); font-size: 12.5px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .alt-toggle:hover { background: color-mix(in srgb, var(--example-alt) 12%, transparent); }
+  .alt-toggle .chev { transition: transform 0.15s ease; }
+  .alt-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+  .alt-group { display: flex; flex-direction: column; gap: 10px; }
+  .alt-group[hidden] { display: none; }
+  .line.alt-row { border: 1px dashed var(--border); }
+
+  .text-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .en { font-family: "Literata", "Noto Serif KR", serif; font-size: 15.5px; line-height: 1.5; }
+  .ko { font-family: "Noto Sans KR", sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+
+  .replay-btn {
+    align-self: center; background: none; border: none; color: var(--text-muted); font-size: 16px;
+    cursor: pointer; padding: 4px; border-radius: 8px; opacity: 0.55;
+  }
+  .line:hover .replay-btn, .line.current .replay-btn { opacity: 1; color: var(--accent); }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 12px; padding-top: 8px; }
+
+  @media (max-width: 420px) {
+    .line { grid-template-columns: 44px 1fr auto; }
+    .role { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">영어식 사고 · 구동사·숙어 · 11/13</div>
+    <h1>구동사·숙어 Part 11</h1>
+    <p class="subline">표현 → Think in English(원어민 설명, 빨간 글씨가 핵심) → 뜻 → 예문(영어·해석·영어·영어) 순서로 익혀요. 줄을 탭하면 그 지점부터 다시 들을 수 있어요.</p>
+  </header>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<a href="part2.html">구동 2</a>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<a href="part8.html">구동 8</a>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a>
+<a href="part16.html">구동 9</a>
+<a href="part17.html">구동 10</a>
+<span class="current">구동 11</span>
+<a href="part19.html">구동 12</a>
+<a href="part20.html">구동 13</a>
+<a href="part21.html">문장 8</a></nav>
+
+  <div class="player">
+    <audio id="audio" preload="metadata" src="audio/part18.mp3"></audio>
+
+    <div class="episode-row">
+      <span class="episode-title">17개 표현</span>
+      <span class="episode-meta"><span id="curTime">0:00</span> / <span id="durTime">--:--</span></span>
+    </div>
+
+    <input type="range" class="scrubber" id="scrubber" min="0" max="1000" value="0" aria-label="재생 위치" />
+
+    <div class="controls-row">
+      <button class="icon-btn" id="restartBtn" title="처음부터" aria-label="처음부터 다시 듣기">⏮</button>
+      <button class="icon-btn" id="rewindBtn" title="10초 뒤로" aria-label="10초 뒤로">⟲10</button>
+      <button class="icon-btn play" id="playBtn" aria-label="재생">▶</button>
+      <button class="icon-btn" id="forwardBtn" title="10초 앞으로" aria-label="10초 앞으로">10⟳</button>
+    </div>
+
+    <div class="rate-row" role="group" aria-label="재생 속도">
+      <button class="rate-btn" data-rate="0.75" aria-pressed="false">0.75×</button>
+      <button class="rate-btn" data-rate="1" aria-pressed="true">1.0×</button>
+      <button class="rate-btn" data-rate="1.25" aria-pressed="false">1.25×</button>
+      <button class="rate-btn" data-rate="1.5" aria-pressed="false">1.5×</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="transcript-heading">
+      <h2>표현 &amp; 예문 (17개)</h2>
+      <div class="legend">
+        <span><i class="dot target"></i>표현</span>
+        <span><i class="dot meaning"></i>뜻</span>
+        <span><i class="dot example"></i>예문</span>
+      </div>
+    </div>
+    <div class="transcript" id="transcript"></div>
+  </section>
+
+  <nav class="part-nav"><a href="part1.html">구동 1</a>
+<a href="part2.html">구동 2</a>
+<a href="part3.html">구동 3</a>
+<a href="part4.html">구동 4</a>
+<a href="part5.html">구동 5</a>
+<a href="part6.html">구동 6</a>
+<a href="part7.html">구동 7</a>
+<a href="part8.html">구동 8</a>
+<a href="part9.html">문장 1</a>
+<a href="part10.html">문장 2</a>
+<a href="part11.html">문장 3</a>
+<a href="part12.html">문장 4</a>
+<a href="part13.html">문장 5</a>
+<a href="part14.html">문장 6</a>
+<a href="part15.html">문장 7</a>
+<a href="part16.html">구동 9</a>
+<a href="part17.html">구동 10</a>
+<span class="current">구동 11</span>
+<a href="part19.html">구동 12</a>
+<a href="part20.html">구동 13</a>
+<a href="part21.html">문장 8</a></nav>
+
+  <footer>문장을 탭하면 그 지점부터 다시 재생됩니다 · 20.6분 · 안 외워지는 표현은 탭해서 반복 재생하세요</footer>
+</div>
+
+<script>
+  const TRANSCRIPT = [{"item": "➕ ➡ OUT (추가분)", "role": "section", "ex_index": 0, "en": "", "ko": "안 → 밖으로 → ① 밖으로 꺼내 드러냄  ② 무리에서 빼냄  ③ 끝까지 다 해서 바닥남·해결", "start_ms": 0, "end_ms": 11208}, {"item": "1. pass out (No.909)", "role": "target", "ex_index": 0, "en": "pass out", "ko": "", "start_ms": 13208, "end_ms": 15080}, {"item": "1. pass out (No.909)", "role": "thinking", "ex_index": 0, "en": "pass(지나가다) + out(의식 밖으로 / 사람들에게 밖으로)", "ko": "When someone \"passes out,\" they <b class=\"hl\">suddenly lose consciousness and fall</b>. It can happen from heat, shock, or too much alcohol. We also say it when someone is <b class=\"hl\">so tired they fall asleep instantly</b>. A teacher can pass out papers, which means <b class=\"hl\">hand them to everyone</b>.", "start_ms": 17080, "end_ms": 33376}, {"item": "1. pass out (No.909)", "role": "meaning", "ex_index": 0, "en": "", "ko": "기절하다 / 나눠 주다", "start_ms": 35376, "end_ms": 39120}, {"item": "1. pass out (No.909)", "role": "example", "ex_index": 1, "en": "He passed out from the heat.", "ko": "그는 더위에 쓰러졌어.", "start_ms": 41120, "end_ms": 53072}, {"item": "1. pass out (No.909)", "role": "example", "ex_index": 2, "en": "I was so tired I passed out on the sofa.", "ko": "너무 피곤해서 소파에서 곯아떨어졌어.", "start_ms": 55072, "end_ms": 70480}, {"item": "1. pass out (No.909)", "role": "example", "ex_index": 3, "en": "The teacher passed out the tests.", "ko": "선생님이 시험지를 나눠 줬어.", "start_ms": 72480, "end_ms": 85200}, {"item": "2. work out (No.922)", "role": "target", "ex_index": 0, "en": "work out", "ko": "", "start_ms": 87200, "end_ms": 89072}, {"item": "2. work out (No.922)", "role": "thinking", "ex_index": 0, "en": "work(애써 움직이다) + out(끝까지 → 결과가 밖으로 나옴)", "ko": "\"Work out\" means <b class=\"hl\">putting in effort until you get a result</b>. When you exercise, you work out. When a problem has an answer, you work it out. And when a situation ends well, we say <b class=\"hl\">it worked out</b>. \"It'll all work out\" is a very comforting thing to say.", "start_ms": 91072, "end_ms": 106888}, {"item": "2. work out (No.922)", "role": "meaning", "ex_index": 0, "en": "", "ko": "운동하다 / 해결하다 / (일이) 잘 풀리다", "start_ms": 108888, "end_ms": 115488}, {"item": "2. work out (No.922)", "role": "example", "ex_index": 1, "en": "I work out three times a week.", "ko": "나는 일주일에 세 번 운동해.", "start_ms": 117488, "end_ms": 130736}, {"item": "2. work out (No.922)", "role": "example", "ex_index": 2, "en": "Don't worry. Everything will work out.", "ko": "걱정 마. 다 잘 풀릴 거야.", "start_ms": 132736, "end_ms": 147328}, {"item": "2. work out (No.922)", "role": "example", "ex_index": 3, "en": "We need to work out a solution.", "ko": "해결책을 찾아내야 해.", "start_ms": 149328, "end_ms": 161112}, {"item": "3. sort out (No.952)", "role": "target", "ex_index": 0, "en": "sort out", "ko": "", "start_ms": 163112, "end_ms": 164984}, {"item": "3. sort out (No.952)", "role": "thinking", "ex_index": 0, "en": "sort(분류하다) + out(끝까지 정리해 꺼냄)", "ko": "When we \"sort something out,\" we <b class=\"hl\">organize it or fix a problem</b>. Picture separating a messy pile into neat groups. You sort out your closet, your schedule, or a misunderstanding. It means <b class=\"hl\">making things clear and in order again</b>.", "start_ms": 166984, "end_ms": 181984}, {"item": "3. sort out (No.952)", "role": "meaning", "ex_index": 0, "en": "", "ko": "해결하다, 정리하다", "start_ms": 183984, "end_ms": 187632}, {"item": "3. sort out (No.952)", "role": "example", "ex_index": 1, "en": "Let me sort out this mess.", "ko": "이 난장판 내가 정리할게.", "start_ms": 189632, "end_ms": 201776}, {"item": "3. sort out (No.952)", "role": "example", "ex_index": 2, "en": "Did you sort out the problem with the bank?", "ko": "은행 문제는 해결했어?", "start_ms": 203776, "end_ms": 216616}, {"item": "3. sort out (No.952)", "role": "example", "ex_index": 3, "en": "I need to sort out my closet.", "ko": "옷장 정리 좀 해야겠어.", "start_ms": 218616, "end_ms": 230712}, {"item": "4. be out of (No.956)", "role": "target", "ex_index": 0, "en": "be out of", "ko": "", "start_ms": 232712, "end_ms": 234584}, {"item": "4. be out of (No.956)", "role": "thinking", "ex_index": 0, "en": "be(있다) + out of(~의 밖에)", "ko": "When we \"are out of\" something, we <b class=\"hl\">have none left</b>. The box is empty. \"We're out of milk\" is very common. Stores say items are <b class=\"hl\">out of stock</b>. A person can also be out of the office, meaning <b class=\"hl\">not there right now</b>.", "start_ms": 236584, "end_ms": 250960}, {"item": "4. be out of (No.956)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~이 다 떨어지다 / ~에 없다", "start_ms": 252960, "end_ms": 256464}, {"item": "4. be out of (No.956)", "role": "example", "ex_index": 1, "en": "We're out of milk.", "ko": "우유 다 떨어졌어.", "start_ms": 258464, "end_ms": 270128}, {"item": "4. be out of (No.956)", "role": "example", "ex_index": 2, "en": "Sorry, that item is out of stock.", "ko": "죄송해요, 그 상품은 품절이에요.", "start_ms": 272128, "end_ms": 286528}, {"item": "4. be out of (No.956)", "role": "example", "ex_index": 3, "en": "She's out of the office today.", "ko": "그녀는 오늘 사무실에 없어.", "start_ms": 288528, "end_ms": 300696}, {"item": "5. talk out of (No.923)", "role": "target", "ex_index": 0, "en": "talk out of", "ko": "", "start_ms": 302696, "end_ms": 304568}, {"item": "5. talk out of (No.923)", "role": "thinking", "ex_index": 0, "en": "talk(말하다) + out of(~에서 빠져나오게)", "ko": "When we \"talk someone out of\" something, we <b class=\"hl\">use words to stop them from doing it</b>. They had a plan, and you pull them out of it with good reasons. It's <b class=\"hl\">the opposite of \"talk into\"</b>.", "start_ms": 306568, "end_ms": 316864}, {"item": "5. talk out of (No.923)", "role": "meaning", "ex_index": 0, "en": "", "ko": "설득해서 ~하지 않게 하다, 말리다", "start_ms": 318864, "end_ms": 322920}, {"item": "5. talk out of (No.923)", "role": "example", "ex_index": 1, "en": "She talked me out of quitting my job.", "ko": "그녀가 내가 회사 그만두는 걸 말렸어.", "start_ms": 324920, "end_ms": 339416}, {"item": "5. talk out of (No.923)", "role": "example", "ex_index": 2, "en": "Don't try to talk me out of it.", "ko": "나 말리려고 하지 마.", "start_ms": 341416, "end_ms": 353032}, {"item": "5. talk out of (No.923)", "role": "example", "ex_index": 3, "en": "I talked him out of buying that car.", "ko": "그가 그 차 사는 걸 내가 말렸어.", "start_ms": 355032, "end_ms": 368760}, {"item": "➕ ⇠ AWAY · ↩ BACK · ↻ AROUND (추가분)", "role": "section", "ex_index": 0, "en": "", "ko": "AWAY = 멀리 떨어뜨림·없앰  |  BACK = 뒤로 물러남·억누름  |  AROUND = 빙 둘러 돌아옴·주변에 머묾", "start_ms": 370760, "end_ms": 386912}, {"item": "6. take away (No.856)", "role": "target", "ex_index": 0, "en": "take away", "ko": "", "start_ms": 388912, "end_ms": 390784}, {"item": "6. take away (No.856)", "role": "thinking", "ex_index": 0, "en": "take(가져가다) + away(멀리)", "ko": "When we \"take something away,\" we <b class=\"hl\">remove it from a place or a person</b>. A waiter takes away plates. Something sad can take away your joy. We also talk about what we <b class=\"hl\">take away from an experience</b>, which is the lesson we keep.", "start_ms": 392784, "end_ms": 406872}, {"item": "6. take away (No.856)", "role": "meaning", "ex_index": 0, "en": "", "ko": "가져가다, 치우다, 빼앗다 / (교훈을) 얻다", "start_ms": 408872, "end_ms": 415928}, {"item": "6. take away (No.856)", "role": "example", "ex_index": 1, "en": "Can you take away these dishes?", "ko": "이 접시들 좀 치워 줄래요?", "start_ms": 417928, "end_ms": 430168}, {"item": "6. take away (No.856)", "role": "example", "ex_index": 2, "en": "Nothing can take away my happiness.", "ko": "그 무엇도 내 행복을 빼앗을 수 없어.", "start_ms": 432168, "end_ms": 446736}, {"item": "6. take away (No.856)", "role": "example", "ex_index": 3, "en": "What did you take away from the class?", "ko": "그 수업에서 뭘 얻었어?", "start_ms": 448736, "end_ms": 461480}, {"item": "7. blow away (No.863)", "role": "target", "ex_index": 0, "en": "blow away", "ko": "", "start_ms": 463480, "end_ms": 465352}, {"item": "7. blow away (No.863)", "role": "thinking", "ex_index": 0, "en": "blow(바람이 불다) + away(멀리 날아감)", "ko": "When the wind \"blows something away,\" it <b class=\"hl\">carries it far off</b>. We use the same picture for strong feelings: if a performance blows you away, you are <b class=\"hl\">extremely impressed</b>. It's like your mind was blown off its feet.", "start_ms": 467352, "end_ms": 480240}, {"item": "7. blow away (No.863)", "role": "meaning", "ex_index": 0, "en": "", "ko": "날려 버리다 / 깜짝 놀라게 하다, 감동시키다", "start_ms": 482240, "end_ms": 488072}, {"item": "7. blow away (No.863)", "role": "example", "ex_index": 1, "en": "The wind blew away my hat.", "ko": "바람에 모자가 날아갔어.", "start_ms": 490072, "end_ms": 502576}, {"item": "7. blow away (No.863)", "role": "example", "ex_index": 2, "en": "Her voice blew me away.", "ko": "그녀의 목소리에 완전 반했어.", "start_ms": 504576, "end_ms": 516984}, {"item": "7. blow away (No.863)", "role": "example", "ex_index": 3, "en": "I was blown away by the view.", "ko": "경치를 보고 넋이 나갔어.", "start_ms": 518984, "end_ms": 532352}, {"item": "8. put away (No.870)", "role": "target", "ex_index": 0, "en": "put away", "ko": "", "start_ms": 534352, "end_ms": 536224}, {"item": "8. put away (No.870)", "role": "thinking", "ex_index": 0, "en": "put(놓다) + away(눈앞에서 멀리, 제자리로)", "ko": "When we \"put something away,\" we <b class=\"hl\">return it to its proper place so it's out of sight</b>. You put away dishes, clothes, or your phone. You can also put away money, which means <b class=\"hl\">saving it for later</b>.", "start_ms": 538224, "end_ms": 549840}, {"item": "8. put away (No.870)", "role": "meaning", "ex_index": 0, "en": "", "ko": "치우다, 정리하다 / (돈을) 모아 두다", "start_ms": 551840, "end_ms": 558032}, {"item": "8. put away (No.870)", "role": "example", "ex_index": 1, "en": "Put away your toys.", "ko": "장난감 치워.", "start_ms": 560032, "end_ms": 571384}, {"item": "8. put away (No.870)", "role": "example", "ex_index": 2, "en": "Please put your phones away during class.", "ko": "수업 중에는 휴대폰을 넣어 주세요.", "start_ms": 573384, "end_ms": 587160}, {"item": "8. put away (No.870)", "role": "example", "ex_index": 3, "en": "I put away some money every month.", "ko": "매달 돈을 조금씩 모아 둬.", "start_ms": 589160, "end_ms": 602840}, {"item": "9. walk away (No.913)", "role": "target", "ex_index": 0, "en": "walk away", "ko": "", "start_ms": 604840, "end_ms": 606712}, {"item": "9. walk away (No.913)", "role": "thinking", "ex_index": 0, "en": "walk(걷다) + away(멀리 떠나감)", "ko": "When we \"walk away,\" we <b class=\"hl\">leave a person or situation instead of staying</b>. Picture turning around and walking off. Sometimes it's rude, but sometimes it's smart: you can <b class=\"hl\">walk away from a bad deal</b> or an argument.", "start_ms": 608712, "end_ms": 622920}, {"item": "9. walk away (No.913)", "role": "meaning", "ex_index": 0, "en": "", "ko": "떠나 버리다, 손을 떼다", "start_ms": 624920, "end_ms": 628592}, {"item": "9. walk away (No.913)", "role": "example", "ex_index": 1, "en": "Don't just walk away from me!", "ko": "그냥 가 버리지 마!", "start_ms": 630592, "end_ms": 642328}, {"item": "9. walk away (No.913)", "role": "example", "ex_index": 2, "en": "Sometimes it's better to walk away.", "ko": "가끔은 그냥 떠나는 게 나아.", "start_ms": 644328, "end_ms": 657816}, {"item": "9. walk away (No.913)", "role": "example", "ex_index": 3, "en": "He walked away from a great job.", "ko": "그는 좋은 직장을 박차고 나왔어.", "start_ms": 659816, "end_ms": 672992}, {"item": "10. give away (No.928)", "role": "target", "ex_index": 0, "en": "give away", "ko": "", "start_ms": 674992, "end_ms": 676864}, {"item": "10. give away (No.928)", "role": "thinking", "ex_index": 0, "en": "give(주다) + away(내 손에서 멀리)", "ko": "When we \"give something away,\" we <b class=\"hl\">give it for free</b>. Stores give away samples. But you can also give away <b class=\"hl\">a secret or the ending of a movie</b>, by accident. Your face can give away your feelings, too.", "start_ms": 678864, "end_ms": 691152}, {"item": "10. give away (No.928)", "role": "meaning", "ex_index": 0, "en": "", "ko": "공짜로 주다 / (비밀을) 누설하다", "start_ms": 693152, "end_ms": 697328}, {"item": "10. give away (No.928)", "role": "example", "ex_index": 1, "en": "They're giving away free samples.", "ko": "무료 샘플을 나눠 주고 있어.", "start_ms": 699328, "end_ms": 712720}, {"item": "10. give away (No.928)", "role": "example", "ex_index": 2, "en": "Don't give away the ending!", "ko": "결말 말하지 마!", "start_ms": 714720, "end_ms": 726048}, {"item": "10. give away (No.928)", "role": "example", "ex_index": 3, "en": "His face gave away his feelings.", "ko": "얼굴에 감정이 다 드러났어.", "start_ms": 728048, "end_ms": 741752}, {"item": "11. get away with (No.896)", "role": "target", "ex_index": 0, "en": "get away with", "ko": "", "start_ms": 743752, "end_ms": 745624}, {"item": "11. get away with (No.896)", "role": "thinking", "ex_index": 0, "en": "get away(빠져나가 멀리 도망침) + with(~을 가진 채)", "ko": "When we \"get away with\" something, we <b class=\"hl\">do something wrong and don't get punished</b>. Picture a thief running away with the money. Parents say, \"<b class=\"hl\">You won't get away with this!</b>\" when they're angry.", "start_ms": 747624, "end_ms": 759480}, {"item": "11. get away with (No.896)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(잘못하고도) 무사히 넘어가다", "start_ms": 761480, "end_ms": 764912}, {"item": "11. get away with (No.896)", "role": "example", "ex_index": 1, "en": "You won't get away with this!", "ko": "이러고도 무사할 줄 알아?", "start_ms": 766912, "end_ms": 778768}, {"item": "11. get away with (No.896)", "role": "example", "ex_index": 2, "en": "He always gets away with being late.", "ko": "그는 늘 지각해도 그냥 넘어가.", "start_ms": 780768, "end_ms": 794472}, {"item": "11. get away with (No.896)", "role": "example", "ex_index": 3, "en": "She cheated and got away with it.", "ko": "그녀는 부정행위를 하고도 안 걸렸어.", "start_ms": 796472, "end_ms": 810752}, {"item": "12. stay away from (No.861)", "role": "target", "ex_index": 0, "en": "stay away from", "ko": "", "start_ms": 812752, "end_ms": 814624}, {"item": "12. stay away from (No.861)", "role": "thinking", "ex_index": 0, "en": "stay(머물다) + away(멀리 떨어져) + from(~으로부터)", "ko": "When we \"stay away from\" something, we <b class=\"hl\">keep a safe distance from it</b>. You stay away from danger, bad food, or people who hurt you. It's a strong way to say <b class=\"hl\">avoid it completely</b>.", "start_ms": 816624, "end_ms": 827376}, {"item": "12. stay away from (No.861)", "role": "meaning", "ex_index": 0, "en": "", "ko": "~을 멀리하다, 가까이 가지 않다", "start_ms": 829376, "end_ms": 833360}, {"item": "12. stay away from (No.861)", "role": "example", "ex_index": 1, "en": "Stay away from my sister!", "ko": "내 여동생한테 가까이 오지 마!", "start_ms": 835360, "end_ms": 847864}, {"item": "12. stay away from (No.861)", "role": "example", "ex_index": 2, "en": "I try to stay away from junk food.", "ko": "정크 푸드는 멀리하려고 해.", "start_ms": 849864, "end_ms": 863256}, {"item": "12. stay away from (No.861)", "role": "example", "ex_index": 3, "en": "Stay away from the edge.", "ko": "가장자리에서 떨어져.", "start_ms": 865256, "end_ms": 876968}, {"item": "13. cut back on (No.883)", "role": "target", "ex_index": 0, "en": "cut back on", "ko": "", "start_ms": 878968, "end_ms": 880840}, {"item": "13. cut back on (No.883)", "role": "thinking", "ex_index": 0, "en": "cut(자르다) + back(뒤로 줄여) + on(그 대상을)", "ko": "When we \"cut back on\" something, we <b class=\"hl\">use or do less of it</b>. Picture trimming a plant so it's smaller. People cut back on sugar, spending, or screen time when they want to <b class=\"hl\">be healthier or save money</b>.", "start_ms": 882840, "end_ms": 894960}, {"item": "13. cut back on (No.883)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(양을) 줄이다", "start_ms": 896960, "end_ms": 899528}, {"item": "13. cut back on (No.883)", "role": "example", "ex_index": 1, "en": "I'm trying to cut back on coffee.", "ko": "커피를 줄이려고 하고 있어.", "start_ms": 901528, "end_ms": 913720}, {"item": "13. cut back on (No.883)", "role": "example", "ex_index": 2, "en": "We need to cut back on spending.", "ko": "지출을 줄여야 해.", "start_ms": 915720, "end_ms": 927576}, {"item": "13. cut back on (No.883)", "role": "example", "ex_index": 3, "en": "The doctor told him to cut back on salt.", "ko": "의사가 그에게 소금을 줄이라고 했어.", "start_ms": 929576, "end_ms": 943544}, {"item": "14. hold back (No.939)", "role": "target", "ex_index": 0, "en": "hold back", "ko": "", "start_ms": 945544, "end_ms": 947416}, {"item": "14. hold back (No.939)", "role": "thinking", "ex_index": 0, "en": "hold(붙잡다) + back(뒤에)", "ko": "When we \"hold back,\" we <b class=\"hl\">stop ourselves from showing or doing something</b>. You hold back tears, laughter, or the truth. Fear can also hold you back, which means it <b class=\"hl\">stops you from moving forward</b> in life.", "start_ms": 949416, "end_ms": 962232}, {"item": "14. hold back (No.939)", "role": "meaning", "ex_index": 0, "en": "", "ko": "억누르다, 참다 / 막다 / 숨기다", "start_ms": 964232, "end_ms": 969632}, {"item": "14. hold back (No.939)", "role": "example", "ex_index": 1, "en": "She couldn't hold back her tears.", "ko": "그녀는 눈물을 참을 수 없었어.", "start_ms": 971632, "end_ms": 984832}, {"item": "14. hold back (No.939)", "role": "example", "ex_index": 2, "en": "Don't hold back. Tell me everything.", "ko": "숨기지 말고 다 말해 줘.", "start_ms": 986832, "end_ms": 1001352}, {"item": "14. hold back (No.939)", "role": "example", "ex_index": 3, "en": "Fear is holding you back.", "ko": "두려움이 너를 붙잡고 있어.", "start_ms": 1003352, "end_ms": 1015400}, {"item": "15. come around (No.885)", "role": "target", "ex_index": 0, "en": "come around", "ko": "", "start_ms": 1017400, "end_ms": 1019272}, {"item": "15. come around (No.885)", "role": "thinking", "ex_index": 0, "en": "come(오다) + around(빙 돌아서)", "ko": "When someone \"comes around,\" they <b class=\"hl\">finally change their mind and agree</b>. Picture someone walking a long way around before arriving at your side. It also means to <b class=\"hl\">visit someone's home</b>, as in \"Come around for dinner.\"", "start_ms": 1021272, "end_ms": 1034448}, {"item": "15. come around (No.885)", "role": "meaning", "ex_index": 0, "en": "", "ko": "생각을 바꾸다, 동의하게 되다 / 들르다", "start_ms": 1036448, "end_ms": 1041536}, {"item": "15. come around (No.885)", "role": "example", "ex_index": 1, "en": "Don't worry. He'll come around.", "ko": "걱정 마. 그도 결국 마음을 바꿀 거야.", "start_ms": 1043536, "end_ms": 1058176}, {"item": "15. come around (No.885)", "role": "example", "ex_index": 2, "en": "She finally came around to my idea.", "ko": "그녀가 마침내 내 생각에 동의했어.", "start_ms": 1060176, "end_ms": 1074624}, {"item": "15. come around (No.885)", "role": "example", "ex_index": 3, "en": "Come around for dinner sometime.", "ko": "언제 저녁 먹으러 들러.", "start_ms": 1076624, "end_ms": 1088768}, {"item": "16. stick around (No.905)", "role": "target", "ex_index": 0, "en": "stick around", "ko": "", "start_ms": 1090768, "end_ms": 1092640}, {"item": "16. stick around (No.905)", "role": "thinking", "ex_index": 0, "en": "stick(붙어 있다) + around(근처에)", "ko": "When we \"stick around,\" we <b class=\"hl\">stay in a place a little longer instead of leaving</b>. It's casual and friendly. \"Stick around!\" means <b class=\"hl\">don't go yet</b>. You can also wonder if a new trend will stick around.", "start_ms": 1094640, "end_ms": 1106904}, {"item": "16. stick around (No.905)", "role": "meaning", "ex_index": 0, "en": "", "ko": "(떠나지 않고) 머무르다, 기다리다", "start_ms": 1108904, "end_ms": 1112648}, {"item": "16. stick around (No.905)", "role": "example", "ex_index": 1, "en": "Stick around. The fun is just starting.", "ko": "좀 더 있어. 이제 막 재밌어지려고 해.", "start_ms": 1114648, "end_ms": 1132432}, {"item": "16. stick around (No.905)", "role": "example", "ex_index": 2, "en": "I can't stick around. I have to go.", "ko": "오래 못 있어. 가야 해.", "start_ms": 1134432, "end_ms": 1150536}, {"item": "16. stick around (No.905)", "role": "example", "ex_index": 3, "en": "Will you stick around after the show?", "ko": "공연 끝나고도 남아 있을 거야?", "start_ms": 1152536, "end_ms": 1165184}, {"item": "17. pass around (No.941)", "role": "target", "ex_index": 0, "en": "pass around", "ko": "", "start_ms": 1167184, "end_ms": 1169056}, {"item": "17. pass around (No.941)", "role": "thinking", "ex_index": 0, "en": "pass(건네다) + around(빙 돌아가며)", "ko": "When we \"pass something around,\" we <b class=\"hl\">hand it from person to person in a group</b>. Picture a plate of cookies going around a table. Information can be passed around too, like <b class=\"hl\">a rumor spreading through an office</b>.", "start_ms": 1171056, "end_ms": 1183392}, {"item": "17. pass around (No.941)", "role": "meaning", "ex_index": 0, "en": "", "ko": "돌리다, 돌려 보다 / (소문을) 퍼뜨리다", "start_ms": 1185392, "end_ms": 1190912}, {"item": "17. pass around (No.941)", "role": "example", "ex_index": 1, "en": "Please pass around these handouts.", "ko": "이 유인물 좀 돌려 주세요.", "start_ms": 1192912, "end_ms": 1205584}, {"item": "17. pass around (No.941)", "role": "example", "ex_index": 2, "en": "We passed around the photos.", "ko": "우리는 사진을 돌려 봤어.", "start_ms": 1207584, "end_ms": 1220016}, {"item": "17. pass around (No.941)", "role": "example", "ex_index": 3, "en": "The rumor was passed around the office.", "ko": "그 소문이 사무실에 쫙 돌았어.", "start_ms": 1222016, "end_ms": 1236008}];
+  const MAIN_END_MS = 1238008;
+
+  const audio = document.getElementById("audio");
+  const playBtn = document.getElementById("playBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const rewindBtn = document.getElementById("rewindBtn");
+  const forwardBtn = document.getElementById("forwardBtn");
+  const scrubber = document.getElementById("scrubber");
+  const curTimeEl = document.getElementById("curTime");
+  const durTimeEl = document.getElementById("durTime");
+  const transcriptEl = document.getElementById("transcript");
+  const rateBtns = Array.from(document.querySelectorAll(".rate-btn"));
+
+  const ROLE_LABEL = { section: "핵심", target: "표현", thinking: "Think", meaning: "뜻", example: "예문", example_alt: "새 예문" };
+
+  function fmt(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  function makeLineBtn(row) {
+    const btn = document.createElement("button");
+    btn.className = row.role === "example_alt" ? "line alt-row" : `line ${row.role}`;
+    btn.dataset.start = row.start_ms / 1000;
+    const roleLabel = row.role === "example" ? `예문 ${row.ex_index}`
+      : row.role === "example_alt" ? `새 예문 ${row.ex_index}` : ROLE_LABEL[row.role];
+    btn.innerHTML = `
+      <span class="role ${row.role}">${roleLabel}</span>
+      <span class="text-col">
+        <span class="en">${row.en}</span>
+        <span class="ko">${row.ko}</span>
+      </span>
+      <span class="replay-btn" aria-hidden="true">↻</span>
+    `;
+    btn.addEventListener("click", () => {
+      audio.currentTime = row.start_ms / 1000;
+      audio.play();
+    });
+    return btn;
+  }
+
+  let lastItem = null;
+  let altGroupEl = null;
+  const rowEls = TRANSCRIPT.map((row) => {
+    if (row.item !== lastItem) {
+      const label = document.createElement("div");
+      label.className = "item-num";
+      label.textContent = row.item;
+      transcriptEl.appendChild(label);
+      lastItem = row.item;
+      altGroupEl = null;
+    }
+    if (row.role === "example_alt") {
+      if (!altGroupEl) {
+        const toggle = document.createElement("button");
+        toggle.className = "alt-toggle";
+        toggle.type = "button";
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.innerHTML = `🔄 이 표현, 다른 패턴으로 다시 공부하기 <span class="chev">▾</span>`;
+        const thisGroup = document.createElement("div");
+        thisGroup.className = "alt-group";
+        thisGroup.hidden = true;
+        toggle.addEventListener("click", () => {
+          thisGroup.hidden = !thisGroup.hidden;
+          toggle.setAttribute("aria-expanded", String(!thisGroup.hidden));
+        });
+        transcriptEl.appendChild(toggle);
+        transcriptEl.appendChild(thisGroup);
+        altGroupEl = thisGroup;
+      }
+      const btn = makeLineBtn(row);
+      altGroupEl.appendChild(btn);
+      return btn;
+    }
+    const btn = makeLineBtn(row);
+    transcriptEl.appendChild(btn);
+    return btn;
+  });
+
+  let currentIndex = -1;
+
+  audio.addEventListener("loadedmetadata", () => { durTimeEl.textContent = fmt(audio.duration); });
+
+  let userSeeking = false;
+  // "다른 패턴" 예문은 파일 맨 끝에 있어서, 이어듣기로 자연스럽게 흘러 들어가면 안 되고
+  // 항목의 토글을 눌러 직접 이동했을 때만 들려야 한다. 한 틱 만에 MAIN_END_MS를 훌쩍
+  // 넘기는 큰 점프는 의도적 탐색(탭/스크러버)이고, 조금씩 넘는 건 자연 재생이므로 그때만 멈춘다.
+  let prevMs = 0;
+  audio.addEventListener("timeupdate", () => {
+    const ms0 = audio.currentTime * 1000;
+    if (prevMs < MAIN_END_MS && ms0 >= MAIN_END_MS && (ms0 - prevMs) < 2000) {
+      audio.pause();
+      audio.currentTime = MAIN_END_MS / 1000;
+      prevMs = MAIN_END_MS;
+      return;
+    }
+    prevMs = ms0;
+
+    curTimeEl.textContent = fmt(audio.currentTime);
+    if (!userSeeking && audio.duration) {
+      scrubber.value = String((audio.currentTime / audio.duration) * 1000);
+    }
+    const ms = audio.currentTime * 1000;
+    let idx = TRANSCRIPT.findIndex((r) => ms >= r.start_ms && ms < r.end_ms);
+    if (idx === -1 && TRANSCRIPT.length) {
+      idx = ms >= TRANSCRIPT[TRANSCRIPT.length - 1].end_ms ? TRANSCRIPT.length - 1 : currentIndex;
+    }
+    if (idx !== currentIndex && idx >= 0) {
+      if (currentIndex >= 0) rowEls[currentIndex].classList.remove("current");
+      rowEls[idx].classList.add("current");
+      rowEls[idx].scrollIntoView({ behavior: "smooth", block: "center" });
+      currentIndex = idx;
+    }
+  });
+
+  audio.addEventListener("play", () => { playBtn.textContent = "⏸"; playBtn.setAttribute("aria-label", "일시정지"); });
+  audio.addEventListener("pause", () => { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "재생"); });
+  audio.addEventListener("ended", () => { playBtn.textContent = "▶"; });
+
+  playBtn.addEventListener("click", () => { if (audio.paused) audio.play(); else audio.pause(); });
+  restartBtn.addEventListener("click", () => { audio.currentTime = 0; audio.play(); });
+  rewindBtn.addEventListener("click", () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+  forwardBtn.addEventListener("click", () => { audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10); });
+
+  scrubber.addEventListener("input", () => {
+    userSeeking = true;
+    if (audio.duration) { curTimeEl.textContent = fmt((Number(scrubber.value) / 1000) * audio.duration); }
+  });
+  scrubber.addEventListener("change", () => {
+    if (audio.duration) { audio.currentTime = (Number(scrubber.value) / 1000) * audio.duration; }
+    userSeeking = false;
+  });
+
+  rateBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      audio.playbackRate = Number(btn.dataset.rate);
+      rateBtns.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    });
+  });
+</script>
+</body>
+</html>

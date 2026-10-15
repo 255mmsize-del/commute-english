@@ -27,6 +27,9 @@ SECTION_SEP = "   |   핵심 이미지: "
 PART_SIZE = 20
 HEADER_ROWS = 3  # 제목 / 안내 / 열 머리글
 THINK_COL = 3  # D열: 영어식 사고 (빨간 굵은 글씨 강조 포함)
+# 섹션 제목이 이 표시로 시작하면 '추가분'(새로 붙인 항목). 추가분은 기존 파트를 흔들지 않도록
+# 따로 나눠 전체 파트 목록 맨 뒤에 붙인다 → 기존 파트의 오디오는 다시 만들지 않는다.
+ADDED_MARK = "➕"
 
 
 def runs_to_markup(text: str, runs: list[dict]) -> str:
@@ -59,10 +62,13 @@ def fetch_think_markup(sh: gspread.Spreadsheet, tab_name: str) -> dict[int, str]
 def parse_tab(values: list[list[str]], think_markup: dict[int, str] | None = None) -> list[dict]:
     items: list[dict] = []
     section_title, section_core = "", ""
+    batch = 1
     for row_idx, row in enumerate(values):
         if row_idx < HEADER_ROWS:
             continue
         row = row + [""] * (8 - len(row))
+        if row[0].strip() and not row[1].strip() and row[0].startswith(ADDED_MARK):
+            batch = 2
         if row[0].strip() and not row[1].strip():
             title, _, core = row[0].partition(SECTION_SEP)
             section_title, section_core = title.strip(), core.strip()
@@ -86,22 +92,32 @@ def parse_tab(values: list[list[str]], think_markup: dict[int, str] | None = Non
             "thinking": (think_markup or {}).get(row_idx, row[3]).strip(),
             "meaning": row[4].strip(),
             "examples": examples,
+            "batch": batch,
         })
     return items
 
 
 def main() -> None:
     sh = gspread.authorize(get_credentials()).open_by_key(SPREADSHEET_ID)
-    parts: list[dict] = []
+    by_batch: dict[int, list[dict]] = {}
     for tab_name, series_label in SERIES:
         items = parse_tab(sh.worksheet(tab_name).get_all_values(), fetch_think_markup(sh, tab_name))
-        # 파트 수는 PART_SIZE 기준으로 정하되, 마지막 파트가 너무 작지 않게 고르게 나눈다
-        n_parts = max(1, -(-len(items) // PART_SIZE))
-        bounds = [round(k * len(items) / n_parts) for k in range(n_parts + 1)]
-        chunks = [items[bounds[k]:bounds[k + 1]] for k in range(n_parts)]
-        for k, chunk in enumerate(chunks, start=1):
-            parts.append({"series": series_label, "series_part": k, "series_total": len(chunks), "items": chunk})
-        print(f"{series_label}: {len(items)}개 -> {len(chunks)}개 파트")
+        series_parts: list[dict] = []
+        for batch in sorted({it["batch"] for it in items}):
+            batch_items = [{k: v for k, v in it.items() if k != "batch"} for it in items if it["batch"] == batch]
+            # 파트 수는 PART_SIZE 기준으로 정하되, 마지막 파트가 너무 작지 않게 고르게 나눈다
+            n_parts = max(1, -(-len(batch_items) // PART_SIZE))
+            bounds = [round(k * len(batch_items) / n_parts) for k in range(n_parts + 1)]
+            for k in range(n_parts):
+                part = {"series": series_label, "series_part": len(series_parts) + 1,
+                        "items": batch_items[bounds[k]:bounds[k + 1]]}
+                series_parts.append(part)
+                by_batch.setdefault(batch, []).append(part)
+        for part in series_parts:
+            part["series_total"] = len(series_parts)
+        print(f"{series_label}: {len(items)}개 -> {len(series_parts)}개 파트")
+    # 기존분(1) 파트 전체 → 추가분(2) 파트 순서. 파트 번호가 바뀌지 않아 기존 오디오를 재사용한다.
+    parts = [part for batch in sorted(by_batch) for part in by_batch[batch]]
 
     out_path = Path(__file__).resolve().parent / "think_all_items.json"
     out_path.write_text(json.dumps(parts, ensure_ascii=False, indent=1), encoding="utf-8")
