@@ -736,7 +736,11 @@ function makeQ(type, k) {
   }
   if (type === "order") { const s = sentenceOf(it, 10); if (!s) return null; q.sent = s; q.tiles = shuffle(s.en.split(/\s+/).map(w => ({ w }))); q.picked = []; }
   if (type === "speak") { const s = sentenceOf(it, 14) || { en: ttsText(it.en), ko: firstLine(meaningOf(it)) }; if (!s.en || words(s.en).length < 1) return null; q.sent = s; }
-  if (type === "type") { const t = ttsText(it.en); if (!t || t.split(" ").length > 5) return null; q.target = t; }
+  if (type === "type") {   // 표현이 든 문장을 듣고 빈칸(그 표현)을 받아쓰기. 알맞은 문장이 없으면 표현만 듣기
+    const b = blankOf(it);
+    if (b && b.ans.split(/\s+/).length <= 5) { q.blank = b; q.target = b.ans; q.sentEn = (b.before + b.ans + b.after).trim(); }
+    else { const t = ttsText(it.en); if (!t || t.split(" ").length > 5) return null; q.target = t; }
+  }
   return q;
 }
 function firstOK(types, k) { for (const t of types) { const q = makeQ(t, k); if (q) return q; } return makeQ("mean", k); }
@@ -756,10 +760,10 @@ function autoQ(q) {
   if (!q) return;
   if (q.type === "speak") { if (ST.set.auto) setTimeout(() => sayEn(q.sent.en), 300); return; }
   if (q.type === "listen" || q.type === "type" || (ST.set.auto && (q.type === "learn" || q.type === "mean")))
-    setTimeout(() => sayEn(ALL[q.key].en, { repeat: q.type === "mean" ? 1 : undefined }), 300);
+    setTimeout(() => sayEn(q.sentEn || ALL[q.key].en, { repeat: q.type === "mean" ? 1 : undefined }), 300);
 }
 
-const QTITLE = { learn: "새 표현", mean: "알맞은 뜻을 고르세요", en: "이 뜻의 영어 표현은?", listen: "들리는 표현을 고르세요", blank: "빈칸에 들어갈 표현은?", order: "단어를 순서대로 눌러 문장을 만드세요", type: "듣고 영어로 쓰세요", speak: "문장을 듣고 따라 말해 보세요" };
+const QTITLE = { learn: "새 표현", mean: "알맞은 뜻을 고르세요", en: "이 뜻의 영어 표현은?", listen: "들리는 표현을 고르세요", blank: "빈칸에 들어갈 표현은?", order: "단어를 순서대로 눌러 문장을 만드세요", type: "듣고 빈칸을 영어로 쓰세요", speak: "문장을 듣고 따라 말해 보세요" };
 /* Think in English 설명 상자 + 영어 설명 듣기(보통·천천히) */
 const thinkBox = (t, cls = "") => `<div class="thinkbox ${cls}"><span class="label">Think in English</span><p>${marked(t)}</p>
   <div class="think-say"><button class="pill" data-say="${esc(plain(t))}" data-once="1" aria-label="설명 영어로 듣기">${IC.speak}설명 듣기</button><button class="pill" data-say="${esc(plain(t))}" data-slow="1" data-once="1">${IC.turtle}천천히</button></div></div>`;
@@ -800,6 +804,10 @@ function vLesson() {
       <div class="tiles">${q.tiles.map((t, i) => `<button class="tile ${q.picked.includes(i) ? "used" : ""}" data-tile="${i}" ${L.answered ? "disabled" : ""}>${esc(t.w)}</button>`).join("")}</div>`;
   }
   if (q.type === "type") {
+    if (q.blank) return `${head}<div class="panel prompt"><button class="big-say xl" data-say="${esc(q.sentEn)}" aria-label="문장 다시 듣기">${IC.speak}</button><button class="big-say slow" data-say="${esc(q.sentEn)}" data-slow="1">${IC.turtle}천천히</button>
+        <span class="sent">${esc(q.blank.before)}<u>${L.answered ? esc(q.blank.ans) : "&nbsp;".repeat(Math.max(6, q.target.length + 2))}</u>${esc(q.blank.after)}</span>
+        <span class="sub">${esc(q.blank.ko)}</span><span class="sub">힌트: ${esc(firstLine(meaningOf(it)))} · 빈칸 ${q.target.length}글자</span></div>
+      <form class="typing" data-typeform><input id="typed" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="빈칸에 들어갈 말을 들리는 대로" value="${esc(q.given || "")}" ${L.answered ? "disabled" : ""}></form>`;
     return `${head}<div class="panel prompt"><button class="big-say xl" data-say="${esc(it.en)}" aria-label="다시 듣기">${IC.speak}</button><span class="sub">힌트: ${esc(firstLine(meaningOf(it)))} · ${q.target.length}글자</span></div>
       <form class="typing" data-typeform><input id="typed" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="들리는 대로 입력" value="${esc(q.given || "")}" ${L.answered ? "disabled" : ""}></form>`;
   }
@@ -830,7 +838,7 @@ function lessonFooter() {
     fbEl.innerHTML = `<div class="fb"><div class="in">${btn}</div></div>`; return;
   }
   const ok = q.ok; const sent = q.type === "order" || q.type === "speak";
-  const ansEn = sent ? q.sent.en : it.en, ansKo = sent ? q.sent.ko : firstLine(meaningOf(it));
+  const ansEn = sent ? q.sent.en : q.sentEn || it.en, ansKo = sent ? q.sent.ko : q.blank && q.type === "type" ? q.blank.ko : firstLine(meaningOf(it));
   const extra = it.src === "w" ? (it.note ? `<p>${esc(it.note)}</p>` : `<p>${esc(it.mean)}</p>`) : `<p class="t">${marked(it.think)}</p>`;
   const ttl = ok ? (q.type === "speak" ? `잘 말했어요${q.result ? " · " + q.result.pct + "점" : ""}` : L.combo >= 3 ? `정답! ${L.combo} 콤보` : "정답!")
     : q.type === "speak" ? "조금 더 연습해 봐요" : q.type === "type" ? `오답 · 입력: ${esc(q.given || "(비어 있음)")}` : "오답이에요";
@@ -1223,7 +1231,7 @@ const normT = s => words(s).join(" ");
 function checkCurrent() {
   const L = cur().L; if (!L || L.answered) return; const q = L.qs[L.i];
   if (q.type === "order") { if (!q.picked.length) return; return answer(normT(q.picked.map(i => q.tiles[i].w).join(" ")) === normT(q.sent.en)); }
-  if (q.type === "type") { q.given = document.getElementById("typed")?.value || ""; answer(normT(q.given) === normT(q.target)); sayEn(ALL[q.key].en, { repeat: 1 }); }
+  if (q.type === "type") { q.given = document.getElementById("typed")?.value || ""; answer(normT(q.given) === normT(q.target)); sayEn(q.sentEn || ALL[q.key].en, { repeat: 1 }); }
 }
 async function lessonSpeak() {
   const st = cur(); const L = st.L; const q = L.qs[L.i];
