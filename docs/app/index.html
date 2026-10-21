@@ -523,11 +523,10 @@ const voiceHelp = () => VOICES.some(p => pickVoice(p.id).how !== "exact")
   : `<p class="note" style="margin:4px 0 10px">음성을 누르면 미리 들려줘요. 모두 그 나라 원어민 음성이에요.</p>`;
 function setVoice(id) { ST.set.voice = id; touchSet(); sayEn(VOICE_SAMPLE, { repeat: 1 }); }
 const ttsText = t => plain(t).replace(/^[AB]:\s*/gm, "").replace(/\+\s*[가-힣/·\-]+/g, "").replace(/[가-힣]+/g, "").replace(/[~()[\]]/g, " ").replace(/\s+/g, " ").trim();
-function utter(text, lang, rate) {
+function utter(text, lang, rate, pv = pickVoice(ST.set.voice)) {
   return new Promise(res => {
     if (!TTS || !text) return res();
-    const u = new SpeechSynthesisUtterance(text); u.rate = rate;
-    const pv = pickVoice(ST.set.voice); u.pitch = pv.pitch;
+    const u = new SpeechSynthesisUtterance(text); u.rate = rate; u.pitch = pv.pitch;
     if (pv.v) { u.voice = pv.v; u.lang = pv.v.lang.replace("_", "-"); } else u.lang = lang;
     let done = false; const fin = () => { if (!done) { done = true; res(); } };
     u.onend = u.onerror = fin; setTimeout(fin, 1500 + text.length * 170 / rate);
@@ -536,14 +535,33 @@ function utter(text, lang, rate) {
 }
 const wait = ms => new Promise(r => setTimeout(r, ms));
 function stopSpeak() { speakToken++; if (TTS) speechSynthesis.cancel(); document.querySelectorAll(".playing").forEach(b => b.classList.remove("playing")); }
+// A/B 대화는 A=여성, B=남성 음성으로 나눠 읽는다. 여성 3·남성 3 중 한 쌍을 대화마다(문장 내용으로) 골라 섞되,
+// 같은 대화는 늘 같은 쌍. 기기에 남성 음성이 없으면 A와 다른 음성을 음 낮춰 쓴다.
+function dialogVoices(text) {
+  const h = [...text].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const pool = g => VOICES.filter(p => p.g === g).map(p => pickVoice(p.id)).filter(r => r.v && (vgender(r.v) === g || (g === "m" && r.pitch !== 1) || !vgender(r.v)));
+  const fs = pool("f"), ms = pool("m");
+  const a = fs.length ? fs[h % fs.length] : pickVoice(ST.set.voice);
+  let b = ms.filter(r => r.v !== a.v); b = b.length ? b[(h >> 3) % b.length] : null;
+  if (!b) { const o = VLIST.find(v => v !== a.v && vgender(v) !== "f") || VLIST.find(v => v !== a.v) || a.v; b = { v: o, pitch: vgender(o) === "m" ? 1 : 0.8 }; }
+  return { A: a, B: b };
+}
+const splitLong = t => (t.length > 140 ? t.match(/[^.!?]+[.!?]+["'”]?|[^.!?]+$/g).map(x => x.trim()).filter(Boolean) : [t]);
 async function sayEn(text, opt = {}) {
   stopSpeak(); const my = speakToken; const t = ttsText(text); if (!t) return;
   const times = opt.repeat ?? ST.set.repeat; const rate = opt.rate ?? ST.set.rate;
   opt.btn?.classList.add("playing");
-  const parts = t.length > 140 ? t.match(/[^.!?]+[.!?]+["'”]?|[^.!?]+$/g).map(x => x.trim()).filter(Boolean) : [t];
+  const lines = plain(text).split("\n").map(l => l.trim()).filter(Boolean);
+  const dlg = lines.length > 1 && lines.every(l => /^[AB]:/.test(l));
+  const vs = dlg ? dialogVoices(t) : null;
+  const turns = dlg ? lines.map(l => ({ who: l[0], parts: splitLong(ttsText(l)) })).filter(x => x.parts[0]) : [{ parts: splitLong(t) }];
   for (let i = 0; i < times && my === speakToken; i++) {
-    for (let j = 0; j < parts.length && my === speakToken; j++) { await utter(parts[j], "en-US", rate); if (j < parts.length - 1) await wait(250); }
-    if (i < times - 1) await wait(600);
+    for (let k = 0; k < turns.length && my === speakToken; k++) {
+      const { who, parts } = turns[k];
+      for (let j = 0; j < parts.length && my === speakToken; j++) { await utter(parts[j], "en-US", rate, who ? vs[who] : undefined); if (j < parts.length - 1) await wait(250); }
+      if (k < turns.length - 1) await wait(450);   // 화자 바뀔 때 쉼
+    }
+    if (i < times - 1) await wait(700);
   }
   if (my === speakToken) opt.btn?.classList.remove("playing");
 }
