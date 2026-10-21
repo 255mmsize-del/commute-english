@@ -1,0 +1,45 @@
+name: Vocab Note App Sync
+
+# '나의 영어 노트' 앱(docs/app)을 영어단어장 구글시트 최신 내용으로 다시 만든다. 시트는 읽기만 한다.
+on:
+  schedule:
+    # 한국 시간(KST, UTC+9) 기준 매일 오전 5:00 (UTC 전날 20:00)
+    - cron: "0 20 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: app-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install gspread google-auth tzdata
+
+      - name: Read the 3 sheet tabs (read-only) into app_data.json
+        run: python app_fetch.py app_data.json
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+
+      - name: Build docs/app
+        run: python app_build.py app_data.json
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add app_data.json docs/app
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "영어 노트 앱 데이터 갱신"
+          git pull --rebase
+          git push
