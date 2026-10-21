@@ -93,6 +93,7 @@ mark { background: none; color: var(--hl); font-weight: 700; }
 .seg.vgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
 .seg.vgrid button { border-radius: 12px; padding: 7px 4px; display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0; }
 .seg.vgrid b { font-size: 13px; font-weight: 600; }
+.seg.vgrid small.vget { color: var(--hl); white-space: normal; font-size: 10px; line-height: 1.25; }
 .seg.vgrid small { font-size: 10.5px; opacity: .8; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 99px; padding: 7px 13px; font-size: 13px; }
 .pill svg { width: 16px; height: 16px; }
@@ -451,42 +452,57 @@ function toast(msg, icon = IC.check) {
 /* ===================== 소리: 음성(반복·속도)·효과음·음성 인식 ===================== */
 const TTS = "speechSynthesis" in window;
 let speakToken = 0;
-// 음성 6종(여성 3·남성 3). 기기마다 음성 목록이 달라 이름으로 성별·지역을 찾고, 성별을 알 수 없는 음성(안드로이드 등)은 음높이로 구분.
-// 예전엔 목록의 첫 영어 음성을 썼는데, 아이폰은 그게 장난감 음성(Albert·Bad News…)이고 안드로이드는 목록이 늦게 와서 한국어 음성이 영어를 읽었다.
+// 음성 6칸(여성 미국·영국·호주 / 남성 미국·영국·호주). 기기에 설치된 영어 음성을 칸마다 '서로 다른 음성'으로 배정한다.
+// 1) 성별·나라가 맞는 음성 → 2) 같은 성별의 다른 나라 원어민(아일랜드·인도·남아공…) → 3) 남은 다른 음성 → 4) 그래도 없으면 겹침.
+// 아이폰 기본 설치는 Samantha·Daniel·Karen·Moira·Rishi·Tessa 정도라, 칸에 맞는 음성이 없으면 내려받기 추천 이름을 보여준다.
+// 음성은 그 나라 음성(lang 포함)으로 읽혀 현지 발음·억양이 그대로 난다. 장난감 음성(Albert·Bad News…)은 뺀다.
 const BAD_VOICE = /^(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Deranged|Good News|Hysterical|Jester|Organ|Pipe Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Kathy|Ralph|Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley)\b/i;
+const GF = /\b(samantha|ava|allison|susan|zoe|nicky|joelle|noelle|aria|jenny|michelle|zira|ana|emma|serena|kate|stephanie|martha|libby|sonia|hazel|mia|maisie|karen|catherine|natasha|matilda|hayley|moira|tessa|fiona|veena|sangeeta|isha|neerja|google us english)\b|uk english female|x-(sfg|iob|iog|tpc|tpf|gba|gbc|gbg|afa|aua|auc)/i;
+const GM = /\b(alex|tom|aaron|evan|nathan|guy|david|mark|christopher|eric|roger|steffan|andrew|brian|davis|tony|jason|daniel|arthur|oliver|george|ryan|thomas|alfie|gordon|lee|william|darren|duncan|rishi|ravi|prabhat|jamie)\b|uk english male|x-(iol|iom|tpd|gbb|gbd|rjs|aud)/i;
 const VOICES = [
-  { id: "us-f", label: "미국 여성", g: "f", loc: "en-us", re: /\b(samantha|ava|allison|susan|zoe|nicky|joelle|aria|jenny|michelle|zira|ana|emma|google us english)\b|x-(sfg|iob|iog|tpc|tpf)/i },
-  { id: "gb-f", label: "영국 여성", g: "f", loc: "en-gb", re: /\b(serena|kate|stephanie|martha|libby|sonia|hazel|mia|maisie)\b|uk english female|x-(gba|gbc|gbg)/i },
-  { id: "au-f", label: "호주 여성", g: "f", loc: "en-au", re: /\b(karen|catherine|natasha|matilda|hayley)\b|x-(afa|aua|auc)/i },
-  { id: "us-m", label: "미국 남성", g: "m", loc: "en-us", re: /\b(alex|tom|aaron|evan|nathan|guy|david|mark|christopher|eric|roger|steffan|andrew|brian|davis|tony|jason)\b|x-(iol|iom|tpd)/i },
-  { id: "gb-m", label: "영국 남성", g: "m", loc: "en-gb", re: /\b(daniel|arthur|oliver|george|ryan|thomas|alfie)\b|uk english male|x-(gbb|gbd|rjs)/i },
-  { id: "au-m", label: "호주 남성", g: "m", loc: "en-au", re: /\b(gordon|lee|william|darren|duncan)\b|x-aud/i },
+  { id: "us-f", label: "미국 여성", g: "f", loc: "en-us", get: "Ava·Allison·Samantha" },
+  { id: "gb-f", label: "영국 여성", g: "f", loc: "en-gb", get: "Martha·Kate·Serena" },
+  { id: "au-f", label: "호주 여성", g: "f", loc: "en-au", get: "Karen·Catherine·Matilda" },
+  { id: "us-m", label: "미국 남성", g: "m", loc: "en-us", get: "Aaron·Evan·Nathan" },
+  { id: "gb-m", label: "영국 남성", g: "m", loc: "en-gb", get: "Arthur·Daniel·Oliver" },
+  { id: "au-m", label: "호주 남성", g: "m", loc: "en-au", get: "Lee·Gordon" },
 ];
-let VLIST = [];
+const LOC_KO = { us: "미국", gb: "영국", au: "호주", ie: "아일랜드", in: "인도", za: "남아공", nz: "뉴질랜드", ca: "캐나다", sg: "싱가포르", ph: "필리핀" };
+let VLIST = [], VMAP = {};
 const vloc = v => v.lang.replace("_", "-").toLowerCase();
-function loadVoices() { if (TTS) VLIST = speechSynthesis.getVoices().filter(v => /^en-/.test(vloc(v)) && !BAD_VOICE.test(v.name)); pickCache = {}; }
-const vqual = v => (/enhanced|premium|natural|neural|online|고품질|향상/i.test(v.name) ? 2 : 0) + (/^google/i.test(v.name) ? 1 : 0) + (/^en-us/.test(vloc(v)) ? 0.5 : 0);
-const vgender = v => (VOICES.find(p => p.re.test(v.name)) || {}).g || "";
-let pickCache = {};
-function pickVoice(id) {
-  if (!VLIST.length) loadVoices();
-  if (pickCache[id]) return pickCache[id];
-  const p = VOICES.find(x => x.id === id) || VOICES[0];
-  const best = a => a.sort((x, y) => vqual(y) - vqual(x))[0];
-  const inLoc = v => vloc(v).startsWith(p.loc);
-  let v = best(VLIST.filter(x => p.re.test(x.name) && inLoc(x))) || best(VLIST.filter(x => p.re.test(x.name)));   // 이름·지역 일치
-  let r = v ? { v, pitch: 1, exact: true } : null;
-  if (!r) v = best(VLIST.filter(x => vgender(x) === p.g && inLoc(x))) || best(VLIST.filter(x => vgender(x) === p.g));  // 같은 성별
-  if (!r && v) r = { v, pitch: 1, exact: true };
-  if (!r) {   // 성별을 모르는 음성 → 같은 지역 음성 + 음높이(남성 낮게, 여성 조금 높게)
-    v = best(VLIST.filter(x => !vgender(x) && inLoc(x))) || best(VLIST.filter(x => !vgender(x))) || best(VLIST.slice());
-    r = { v: v || null, pitch: p.g === "m" ? 0.78 : 1, exact: p.g !== "m" };   // 성별 모르는 기본 음성은 대개 여성
-  }
-  return VLIST.length ? (pickCache[id] = r) : r;
+const vgender = v => (GF.test(v.name) ? "f" : GM.test(v.name) ? "m" : "");
+const vqual = v => (/enhanced|premium|natural|neural|online|고품질|향상/i.test(v.name + " " + v.voiceURI) ? 2 : 0) + (/^google/i.test(v.name) ? 1 : 0);
+function loadVoices() {
+  if (!TTS) return;
+  const seen = new Set();   // 같은 이름(기본·고품질)이 둘 다 있으면 좋은 쪽만
+  VLIST = speechSynthesis.getVoices().filter(v => /^en-/.test(vloc(v)) && !BAD_VOICE.test(v.name))
+    .sort((a, b) => vqual(b) - vqual(a)).filter(v => { const k = v.name.replace(/\s*\(.*\)$/, "") + vloc(v); if (seen.has(k)) return false; seen.add(k); return true; });
+  VMAP = {}; const used = new Set();
+  const take = (p, test, how) => { const v = VLIST.find(x => !used.has(x) && test(x)); if (v) { used.add(v); VMAP[p.id] = { v, how, pitch: 1 }; } };
+  const left = () => VOICES.filter(p => !VMAP[p.id]);
+  VOICES.forEach(p => take(p, x => vgender(x) === p.g && vloc(x).startsWith(p.loc), "exact"));
+  left().forEach(p => take(p, x => vgender(x) === p.g, "gender"));                         // 같은 성별, 다른 나라 원어민
+  left().forEach(p => take(p, x => vloc(x).startsWith(p.loc) && !vgender(x), "plain"));     // 성별 모르는 그 나라 음성(안드로이드)
+  left().forEach(p => take(p, x => !vgender(x) || vgender(x) !== p.g, "other"));           // 남은 아무 음성
+  left().forEach(p => {   // 다 썼으면 겹침(같은 성별 우선)
+    const v = VLIST.find(x => vgender(x) === p.g) || VLIST.find(x => vloc(x).startsWith(p.loc)) || VLIST[0];
+    if (v) VMAP[p.id] = { v, how: "dup", pitch: 1 };
+  });
+  for (const p of VOICES) { const r = VMAP[p.id]; if (r && p.g === "m" && !vgender(r.v)) r.pitch = 0.8; }   // 성별 모르는 음성으로 남성 칸 → 음 낮춤
 }
-const voiceName = id => { const r = pickVoice(id); return r.v ? r.v.name.replace(/^[a-z]{2}-[a-z]{2}-x-(\w+).*$/, "음성 $1").replace(/^(Microsoft|Google)\s+/, "").replace(/\s*\(.*?\)\s*/g, " ").replace(/ - English.*$/, "").trim() + (r.exact ? "" : " · 음높이 조절") : "기기 기본 음성"; };
+function pickVoice(id) { if (!VLIST.length) loadVoices(); return VMAP[id] || VMAP["us-f"] || { v: null, pitch: 1, how: "none" }; }
+function voiceName(id) {
+  const r = pickVoice(id); if (!r.v) return "기기 기본 음성";
+  const nm = r.v.name.replace(/^[a-z]{2}-[a-z]{2}-x-(\w+).*$/, "음성 $1").replace(/^(Microsoft|Google)\s+/, "").replace(/\s*\(.*?\)\s*/g, " ").replace(/ - English.*$/, "").trim();
+  const c = LOC_KO[vloc(r.v).split("-")[1]] || ""; const g = { f: "여", m: "남" }[vgender(r.v)] || "";
+  return r.how === "exact" ? nm : `${nm} · ${c}${g ? " " + g : ""}${r.pitch !== 1 ? " 음 낮춤" : ""}`;
+}
 const VOICE_SAMPLE = "Hi! I'll read the English for you.";
-const voiceRow = () => `<div class="set-row"><span>음성</span><div class="seg vgrid">${VOICES.map(p => `<button data-voice="${p.id}" aria-pressed="${ST.set.voice === p.id}"><b>${p.label}</b><small>${esc(voiceName(p.id))}</small></button>`).join("")}</div></div>`;
+const voiceRow = () => `<div class="set-row"><span>음성</span><div class="seg vgrid">${VOICES.map(p => { const ok = pickVoice(p.id).how === "exact";
+  return `<button data-voice="${p.id}" aria-pressed="${ST.set.voice === p.id}"><b>${p.label}</b><small>${esc(voiceName(p.id))}</small>${ok ? "" : `<small class="vget">추천: ${p.get}</small>`}</button>`; }).join("")}</div></div>`;
+const voiceHelp = () => VOICES.some(p => pickVoice(p.id).how !== "exact")
+  ? `<p class="note" style="margin:4px 0 10px">'추천'이 붙은 칸은 기기에 그 나라·성별 원어민 음성이 없어 다른 나라 원어민 음성으로 대신해요. 아이폰 <b>설정 › 손쉬운 사용 › 읽기 및 말하기 › 음성 › 영어</b>에서 추천 이름을 내려받으면(‘고품질’이 더 자연스러움) 앱을 다시 열 때 그 칸에 자동으로 들어가요.</p>`
+  : `<p class="note" style="margin:4px 0 10px">음성을 누르면 미리 들려줘요. 모두 그 나라 원어민 음성이에요.</p>`;
 function setVoice(id) { ST.set.voice = id; touchSet(); sayEn(VOICE_SAMPLE, { repeat: 1 }); }
 const ttsText = t => plain(t).replace(/^[AB]:\s*/gm, "").replace(/\+\s*[가-힣/·\-]+/g, "").replace(/[가-힣]+/g, "").replace(/[~()[\]]/g, " ").replace(/\s+/g, " ").trim();
 function utter(text, lang, rate) {
@@ -627,7 +643,7 @@ function audioSheet() {
   modal(`<h3>듣기 설정</h3><p>모든 영어 듣기 버튼(표현·예문·설명·문장)에 적용돼요. '천천히' 버튼은 0.6배속으로 같은 횟수만큼 들려줘요.</p>
     <div class="set-row"><span>반복 횟수</span><div class="seg">${[1, 2, 3, 5].map(n => `<button data-rep="${n}" aria-pressed="${ST.set.repeat === n}">${n}회</button>`).join("")}</div></div>
     <div class="set-row"><span>속도</span><div class="seg">${[0.6, 0.75, 0.9, 1.0, 1.2].map(r => `<button data-rate="${r}" aria-pressed="${ST.set.rate === r}">${r}x</button>`).join("")}</div></div>
-    ${voiceRow()}<p class="note" style="margin:4px 0 10px">음성을 누르면 미리 들려줘요. 기기에 그 성별 음성이 없으면 음높이를 바꿔 들려줘요.</p>
+    ${voiceRow()}${voiceHelp()}
     <button class="primary" data-keep>확인</button>`);
 }
 layer.addEventListener("click", e => {
@@ -1137,7 +1153,7 @@ function vMe() {
     <div class="set-row"><span>일일 목표</span><div class="seg">${[30, 50, 100, 150].map(g => `<button data-goal="${g}" aria-pressed="${ST.set.goal === g}">${g} XP</button>`).join("")}</div></div>
     <div class="set-row"><span>발음 속도</span><div class="seg">${[0.6, 0.75, 0.9, 1.0, 1.2].map(r => `<button data-rate="${r}" aria-pressed="${ST.set.rate === r}">${r}x</button>`).join("")}</div></div>
     <div class="set-row"><span>반복 횟수</span><div class="seg">${[1, 2, 3, 5].map(n => `<button data-rep="${n}" aria-pressed="${ST.set.repeat === n}">${n}회</button>`).join("")}</div></div>
-    ${voiceRow()}
+    ${voiceRow()}<div style="padding:0 16px">${voiceHelp()}</div>
     <div class="set-row"><label class="toggle"><input type="checkbox" data-setbool="auto" ${ST.set.auto ? "checked" : ""}>문제가 나오면 자동으로 듣기</label></div>
     <div class="set-row"><label class="toggle"><input type="checkbox" data-setbool="sfx" ${ST.set.sfx ? "checked" : ""}>정답·오답 효과음</label></div>
     <div class="set-row"><span>실력 진단</span><button class="pill" data-leveltest>${AS().tested ? "다시 하기" : "20문제 시작"}</button></div>
@@ -1361,7 +1377,7 @@ document.addEventListener("keydown", e => {
   if (e.key === "Enter") { const b = fbEl.querySelector("[data-next], [data-check]:not([disabled])"); if (b) { e.preventDefault(); b.click(); } }
   if (/^[1-4]$/.test(e.key)) document.querySelectorAll("[data-pick]")[+e.key - 1]?.click();
 });
-if (TTS) { loadVoices(); speechSynthesis.onvoiceschanged = () => { loadVoices(); if (layer.querySelector("[data-voice]")) audioSheet(); }; }
+if (TTS) { loadVoices(); speechSynthesis.onvoiceschanged = () => { loadVoices(); if (layer.querySelector("[data-voice]")) audioSheet(); else if (document.querySelector("#main [data-voice]")) render(false); }; }
 
 try { history.replaceState({ d: 1 }, ""); } catch (e) { histOK = false; }
 let startTab = "home"; try { startTab = localStorage.getItem(STORE + ".tab") || "home"; } catch (e) {}
