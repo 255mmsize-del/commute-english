@@ -48,7 +48,8 @@ body.lesson-mode nav.tabs { display: none; }
 .chip-stat svg { width: 16px; height: 16px; }
 .chip-stat.flame { color: var(--flame); } .chip-stat.xp { color: var(--brass); }
 .chip-stat.off { color: var(--muted); }
-.appbar.lesson { grid-template-columns: 40px 1fr auto; }
+.appbar.lesson { grid-template-columns: 40px 40px 1fr auto; }
+.appbar .ibtn:disabled { opacity: .3; }
 .lbar { height: 10px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
 .lbar i { display: block; height: 100%; background: var(--good); border-radius: 99px; transition: width .3s; }
 .combo { font-family: var(--f-num); font-size: 12px; font-weight: 600; color: var(--flame); min-width: 44px; text-align: right; }
@@ -166,6 +167,7 @@ mark { background: none; color: var(--hl); font-weight: 700; }
 .pic { background: var(--brass-soft); border-radius: 12px; padding: 10px 14px; font-size: 14px; }
 .thinkbox { border-left: 3px solid var(--brass); padding: 2px 0 2px 14px; }
 .thinkbox p { font-family: var(--f-en); font-size: 17px; line-height: 1.55; white-space: normal; margin: 0; }
+.thinkbox .think-say { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
 .ex { display: grid; }
 .ex-item { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: start; padding-block: 11px; border-top: 1px solid var(--line); }
 .ex-item:first-child { border-top: 0; padding-top: 0; }
@@ -461,7 +463,11 @@ async function sayEn(text, opt = {}) {
   stopSpeak(); const my = speakToken; const t = ttsText(text); if (!t) return;
   const times = opt.repeat ?? ST.set.repeat; const rate = opt.rate ?? ST.set.rate;
   opt.btn?.classList.add("playing");
-  for (let i = 0; i < times && my === speakToken; i++) { await utter(t, "en-US", rate); if (i < times - 1) await wait(600); }
+  const parts = t.length > 140 ? t.match(/[^.!?]+[.!?]+["'”]?|[^.!?]+$/g).map(x => x.trim()).filter(Boolean) : [t];
+  for (let i = 0; i < times && my === speakToken; i++) {
+    for (let j = 0; j < parts.length && my === speakToken; j++) { await utter(parts[j], "en-US", rate); if (j < parts.length - 1) await wait(250); }
+    if (i < times - 1) await wait(600);
+  }
   if (my === speakToken) opt.btn?.classList.remove("playing");
 }
 document.addEventListener("click", e => {
@@ -555,7 +561,7 @@ document.querySelector("nav.tabs").addEventListener("click", e => { const b = e.
 function bar(title, opts = {}) {
   if (opts.lesson) {
     appbar.className = "appbar lesson";
-    appbar.innerHTML = `<button class="ibtn" data-quit aria-label="그만두기">${IC.close}</button><div class="lbar"><i style="width:${opts.pct}%"></i></div><span class="combo">${opts.combo >= 2 ? opts.combo + " 콤보" : ""}</span>`;
+    appbar.innerHTML = `<button class="ibtn" data-quit aria-label="그만두기">${IC.close}</button><button class="ibtn" data-prevq aria-label="이전 문제" ${opts.first ? "disabled" : ""}>${IC.back}</button><div class="lbar"><i style="width:${opts.pct}%"></i></div><span class="combo">${opts.combo >= 2 ? opts.combo + " 콤보" : ""}</span>`;
   } else if (stack.length <= 1) {
     appbar.className = "appbar root";
     appbar.innerHTML = `<h1>${esc(title)}</h1><div class="stats"><span class="chip-stat flame ${xpToday() ? "" : "off"}" title="연속 학습일">${IC.flame}${streak()}</span><span class="chip-stat xp" title="오늘 XP">${IC.bolt}${xpToday()}</span></div>`;
@@ -567,6 +573,7 @@ function bar(title, opts = {}) {
 appbar.addEventListener("click", e => {
   if (e.target.closest("[data-back]")) return uiBack();
   if (e.target.closest("[data-quit]")) return askQuit();
+  if (e.target.closest("[data-prevq]")) return prevQ();
   const s = e.target.closest("[data-star]"); if (s) { toggleStar(s.dataset.star); render(false); }
 });
 function modal(html) { layer.innerHTML = `<div class="modal-bg" data-closelayer><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`; }
@@ -717,13 +724,16 @@ function autoQ(q) {
 }
 
 const QTITLE = { learn: "새 표현", mean: "알맞은 뜻을 고르세요", en: "이 뜻의 영어 표현은?", listen: "들리는 표현을 고르세요", blank: "빈칸에 들어갈 표현은?", order: "단어를 순서대로 눌러 문장을 만드세요", type: "듣고 영어로 쓰세요", speak: "문장을 듣고 따라 말해 보세요" };
+/* Think in English 설명 상자 + 영어 설명 듣기(보통·천천히) */
+const thinkBox = (t, cls = "") => `<div class="thinkbox ${cls}"><span class="label">Think in English</span><p>${marked(t)}</p>
+  <div class="think-say"><button class="pill" data-say="${esc(plain(t))}" data-once="1" aria-label="설명 영어로 듣기">${IC.speak}설명 듣기</button><button class="pill" data-say="${esc(plain(t))}" data-slow="1" data-once="1">${IC.turtle}천천히</button></div></div>`;
 const sayRow = t => `<div class="say-row"><button class="big-say" data-say="${esc(t)}">${IC.speak}듣기</button><button class="big-say slow" data-say="${esc(t)}" data-slow="1" data-once="1">${IC.turtle}천천히</button></div>`;
 function vLesson() {
   const L = cur().L;
   if (L.i >= L.qs.length) return vLessonDone(L);
   document.body.classList.add("lesson-mode");
   const q = L.qs[L.i]; const it = ALL[q.key];
-  bar("", { lesson: true, pct: (L.i / L.qs.length) * 100, combo: L.combo });
+  bar("", { lesson: true, pct: (L.i / L.qs.length) * 100, combo: L.combo, first: L.i === 0 });
   const head = `<div class="qhead"><span class="label">${q.type === "learn" ? "배우기" : q.type === "speak" ? "말하기" : L.kind === "test" ? "실력 진단" : "연습"} · ${SRC_NAME[it.src]} · ${L.i + 1}/${L.qs.length}</span><h3>${QTITLE[q.type]}</h3></div>`;
 
   if (q.type === "learn") {
@@ -732,7 +742,7 @@ function vLesson() {
       <span class="en">${esc(it.en)}</span>${sayRow(it.en)}
       <span class="mean">${esc(meaningOf(it))}</span>
       ${it.pic ? `<div class="pic">${esc(it.pic)}</div>` : ""}
-      ${it.think ? `<div class="thinkbox"><span class="label">Think in English</span><p>${marked(it.think)}</p></div>` : ""}
+      ${it.think ? thinkBox(it.think) : ""}
       ${ex ? `<div class="ex-item" style="border:0;padding:0"><span class="e">${esc(ex.en)}</span><span class="k">${esc(ex.ko)}</span><button class="say" data-say="${esc(ex.en)}" aria-label="예문 듣기">${IC.speak}</button></div>` : ""}
     </div>`;
   }
@@ -805,9 +815,14 @@ function answer(ok) {
     else { L.combo = 0; if (!L.wrongKeys.includes(q.key)) L.wrongKeys.push(q.key); L.xp += 1; addXP(1); } }
   sfx(ok ? "ok" : "no"); save(); render(false);
 }
+function prevQ() {
+  const L = cur().L; if (!L || L.i <= 0) return;
+  stopSpeak(); stopListen(); L.i--; const q = L.qs[L.i];
+  L.answered = q.type !== "learn" && !!q.graded; render(true);
+}
 function nextQ() {
   const L = cur().L; const q0 = L.qs[L.i];
-  if (q0 && q0.type === "learn") { learned(q0.key); L.xp += 2; addXP(2); save(); }
+  if (q0 && q0.type === "learn" && !q0.seen) { q0.seen = true; learned(q0.key); L.xp += 2; addXP(2); save(); }
   L.i++; L.answered = false; render(true); autoQ(L.qs[L.i]);
 }
 function vLessonDone(L) {
@@ -915,15 +930,16 @@ function vRole() {
   if (!c) {
     const sc = R.scores.filter(Boolean); const avg = sc.length ? Math.round(sc.reduce((a, s) => a + s.pct, 0) / sc.length) : null;
     action = `<div class="panel done"><h3>대화 완료</h3><p style="margin:0">내 대답 평균 ${avg === null ? "(채점 없음)" : avg + "점"} · 핵심 표현 <b class="en">${esc(it.en)}</b></p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="ghost" data-open="${esc(it.key)}" data-ctx="">단어 보기</button><button class="primary" data-roleplay>다른 대화</button></div></div>`;
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="ghost" data-open="${esc(it.key)}" data-ctx="">단어 보기</button><button class="primary" data-roleplay>다른 대화</button></div>
+      ${R.lines.some(l => l.who === "B") ? `<button class="ghost" data-rprev>‹ 이전 대사 다시 말하기</button>` : ""}</div>`;
   } else if (c.who === "A") {
     action = `<div class="bubble them playing"><span class="e">${esc(c.en)}</span><span class="k">${esc(c.ko)}</span></div>
-      <button class="ghost" data-rnext>다음 대사로 ›</button>`;
+      <div style="display:grid;grid-template-columns:${R.lines.slice(0, R.i).some(l => l.who === "B") ? "1fr 2fr" : "1fr"};gap:8px">${R.lines.slice(0, R.i).some(l => l.who === "B") ? `<button class="ghost" data-rprev>‹ 이전 대사</button>` : ""}<button class="ghost" data-rnext>다음 대사로 ›</button></div>`;
   } else {
     action = `<div class="bubble todo"><span class="k" style="color:var(--ink);font-size:14px">내 차례: ${esc(c.ko)}</span>${st.hint ? `<span class="e">${esc(c.en)}</span>` : ""}</div>
       ${SR ? `<div class="mic-wrap"><button class="mic" data-rmic aria-label="말하기">${IC.mic}</button><div class="heard" id="heard">버튼을 누르고 영어로 대답하세요</div></div>`
         : `<button class="primary go" data-rself>말했어요 (다음)</button>`}
-      <div class="say-row"><button class="pill" data-rhint>힌트 보기</button><button class="pill" data-say="${esc(c.en)}" data-once="1">${IC.speak}모범 답 듣기</button><button class="pill" data-rskip>건너뛰기</button></div>`;
+      <div class="say-row">${R.lines.slice(0, R.i).some(l => l.who === "B") ? `<button class="pill" data-rprev>‹ 이전 대사</button>` : ""}<button class="pill" data-rhint>힌트 보기</button><button class="pill" data-say="${esc(c.en)}" data-once="1">${IC.speak}모범 답 듣기</button><button class="pill" data-rskip>건너뛰기</button></div>`;
   }
   return `<p class="note">상황 대화 · 핵심 표현 <b class="en" style="color:var(--ink)">${esc(it.en)}</b> (${esc(firstLine(it.mean))})</p>
     <div class="chat">${bubbles}${action}</div>`;
@@ -1008,8 +1024,7 @@ function vDetail() {
       <div class="panel" style="padding:18px;display:grid;gap:14px">
         <div class="block"><span class="label">한국어 뜻</span><p style="font-size:16px">${esc(i.ko)}</p></div>
         ${i.pic ? `<div class="pic">${esc(i.pic)}</div>` : ""}
-        <div class="block thinkbox"><span class="label">Think in English</span><p>${marked(i.think)}</p></div>
-        <button class="big-say" style="justify-self:start" data-say="${esc(plain(i.think))}" data-once="1">${IC.speak}설명 영어로 듣기</button>
+        ${thinkBox(i.think, "block")}
       </div>
       <div class="block"><h2>예문</h2><div class="panel" style="padding:16px">${exHTML(i.ex)}</div></div>`;
   const nextDue = s ? (s.due <= Date.now() ? "지금 복습 가능" : `다음 복습 ${Math.max(1, Math.round((s.due - Date.now()) / DAY))}일 뒤`) : "아직 배우지 않음";
@@ -1219,6 +1234,12 @@ document.addEventListener("click", e => {
   if (t.closest("[data-rmic]")) return roleSpeak();
   if (t.closest("[data-rhint]")) { st.hint = true; return render(false); }
   if (t.closest("[data-rself]")) { dayRec().speak++; ST.stats.speak++; addXP(3); st.R.i++; save(); return playA(); }
+  if (t.closest("[data-rprev]")) {   // 바로 앞의 내 대답 차례로 돌아가 다시 말하기
+    stopSpeak(); stopListen(); st.tok = (st.tok || 0) + 1; const R = st.R;
+    let j = R.i - 1; while (j >= 0 && R.lines[j].who !== "B") j--;
+    if (j < 0) return;
+    R.i = j; R.scores[j] = undefined; st.hint = false; render(false); return scrollEnd();
+  }
   if (t.closest("[data-rskip]")) { stopListen(); st.R.i++; return playA(); }
   /* 단어장 */
   const ds = t.closest("[data-dsrc]"); if (ds) { st.src = ds.dataset.dsrc; st.page = 1; st.q = ""; rootState.dict = { src: st.src }; return render(false); }
