@@ -3,6 +3,9 @@
 만드는 파일: docs/app/index.html, manifest.webmanifest, sw.js (아이콘 png 는 저장소에 고정)
 내용이 같으면 파일을 다시 쓰지 않는다.
 
+app_fixes.json(app_examples_gen.py 가 만듦)을 덧입힌다: 시트에서 단어와 뜻·예문이 어긋난 행의 보정,
+표현이 들어간 예문 3개(ex3) 보강. 시트 자체는 건드리지 않는다.
+
 사용법: python app_build.py [app_data.json]
 """
 from __future__ import annotations
@@ -13,6 +16,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT))
+from app_example_match import example_lines, qa_pairs  # noqa: E402
 TEMPLATE = ROOT / "app_template.html"
 OUT = ROOT / "docs" / "app"
 
@@ -81,9 +86,37 @@ def write_if_changed(path: Path, text: str) -> bool:
     return True
 
 
+def apply_fixes(data: dict) -> dict:
+    """손상 행 보정 + 표현이 들어간 질문/답변 대화 3개(ex3)와 그 안의 문장(ex3s, 말하기·배열 문제용).
+    보정은 시트 뜻 첫 줄(sig)이 그대로일 때만 — 시트를 고치면 시트 값이 우선."""
+    path = ROOT / "app_fixes.json"
+    fixes = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    fix, qa = fixes.get("fix", {}), fixes.get("qa", {})
+    fixed = 0
+
+    def add_qa(it: dict, en: str, key: str) -> None:
+        it["ex3"] = (qa_pairs(en, it["ex"])[:1] + qa.get(key, []))[:3]
+        it["ex3s"] = [s for s, _ in example_lines(en, it["ex3"] + it["ex"])[:4]]
+
+    for w in data["words"]:
+        k = f'{w["no"]}|{w["w"]}'
+        f = fix.get(k)
+        if f and w["mean"].split("\n")[0].strip() == f["sig"]:
+            w.update({x: f[x] for x in ("mean", "syn", "ant", "note", "ex")}); fixed += 1
+        add_qa(w, w["w"], f"w|{k}")
+    for key, src in (("phrasal", "p"), ("pattern", "t")):
+        for sec in data[key]:
+            for it in sec["items"]:
+                add_qa(it, it["expr"], f'{src}|{it["no"]}|{it["expr"]}')
+    items = data["words"] + [i for key in ("phrasal", "pattern") for s in data[key] for i in s["items"]]
+    print(f"보정 {fixed}개 · 질문/답변 3개 미만 {sum(len(i['ex3']) < 3 for i in items)}개 / {len(items)}개")
+    return data
+
+
 def main() -> int:
     data_path = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "app_data.json"
-    data = data_path.read_text(encoding="utf-8").replace("</", r"<\/")  # <script> 안전
+    data = json.dumps(apply_fixes(json.loads(data_path.read_text(encoding="utf-8"))), ensure_ascii=False, separators=(",", ":"))
+    data = data.replace("</", r"<\/")  # <script> 안전
     tpl = TEMPLATE.read_text(encoding="utf-8")
     head, sep, body = tpl.partition("</style>\n")  # 템플릿 앞부분(title·meta·글꼴·style)은 <head> 로
     if not sep:

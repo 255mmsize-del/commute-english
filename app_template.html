@@ -47,6 +47,8 @@ body.lesson-mode nav.tabs { display: none; }
 .chip-stat { display: inline-flex; align-items: center; gap: 4px; font-family: var(--f-num); font-size: 13px; font-weight: 600; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 4px 10px; }
 .chip-stat svg { width: 16px; height: 16px; }
 .chip-stat.flame { color: var(--flame); } .chip-stat.xp { color: var(--brass); }
+.chip-stat.aud { color: var(--ink); cursor: pointer; } .bar-r { display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
+.ex3 { display: grid; gap: 10px; } .ex3 .ex-item { border: 0; padding: 0; }
 .chip-stat.off { color: var(--muted); }
 .appbar.lesson { grid-template-columns: 40px 40px 1fr auto; }
 .appbar .ibtn:disabled { opacity: .3; }
@@ -473,7 +475,7 @@ async function sayEn(text, opt = {}) {
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-say]"); if (!b) return;
   e.stopPropagation();
-  sayEn(b.dataset.say, { btn: b, repeat: b.dataset.once ? 1 : undefined, rate: b.dataset.slow ? 0.6 : undefined });
+  sayEn(b.dataset.say, { btn: b, rate: b.dataset.slow ? Math.min(0.6, ST.set.rate) : undefined });   // 횟수·속도 = 듣기 설정
 }, true);
 
 let actx = null;
@@ -558,28 +560,38 @@ function goTab(t) {
   render(true);
 }
 document.querySelector("nav.tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) goTab(b.dataset.tab); });
+const audChip = () => `<button class="chip-stat aud" data-audio aria-label="듣기 횟수·속도 설정">${IC.speak}${ST.set.repeat}회·${ST.set.rate}x</button>`;
 function bar(title, opts = {}) {
   if (opts.lesson) {
     appbar.className = "appbar lesson";
-    appbar.innerHTML = `<button class="ibtn" data-quit aria-label="그만두기">${IC.close}</button><button class="ibtn" data-prevq aria-label="이전 문제" ${opts.first ? "disabled" : ""}>${IC.back}</button><div class="lbar"><i style="width:${opts.pct}%"></i></div><span class="combo">${opts.combo >= 2 ? opts.combo + " 콤보" : ""}</span>`;
+    appbar.innerHTML = `<button class="ibtn" data-quit aria-label="그만두기">${IC.close}</button><button class="ibtn" data-prevq aria-label="이전 문제" ${opts.first ? "disabled" : ""}>${IC.back}</button><div class="lbar"><i style="width:${opts.pct}%"></i></div><span class="bar-r"><span class="combo">${opts.combo >= 2 ? opts.combo + " 콤보" : ""}</span>${audChip()}</span>`;
   } else if (stack.length <= 1) {
     appbar.className = "appbar root";
-    appbar.innerHTML = `<h1>${esc(title)}</h1><div class="stats"><span class="chip-stat flame ${xpToday() ? "" : "off"}" title="연속 학습일">${IC.flame}${streak()}</span><span class="chip-stat xp" title="오늘 XP">${IC.bolt}${xpToday()}</span></div>`;
+    appbar.innerHTML = `<h1>${esc(title)}</h1><div class="stats">${audChip()}<span class="chip-stat flame ${xpToday() ? "" : "off"}" title="연속 학습일">${IC.flame}${streak()}</span><span class="chip-stat xp" title="오늘 XP">${IC.bolt}${xpToday()}</span></div>`;
   } else {
     appbar.className = "appbar";
-    appbar.innerHTML = `<button class="ibtn" data-back aria-label="뒤로가기">${IC.back}</button><h1>${esc(title)}</h1>${opts.right || "<span></span>"}`;
+    appbar.innerHTML = `<button class="ibtn" data-back aria-label="뒤로가기">${IC.back}</button><h1>${esc(title)}</h1><span class="bar-r">${audChip()}${opts.right || ""}</span>`;
   }
 }
 appbar.addEventListener("click", e => {
   if (e.target.closest("[data-back]")) return uiBack();
   if (e.target.closest("[data-quit]")) return askQuit();
   if (e.target.closest("[data-prevq]")) return prevQ();
+  if (e.target.closest("[data-audio]")) return audioSheet();
   const s = e.target.closest("[data-star]"); if (s) { toggleStar(s.dataset.star); render(false); }
 });
 function modal(html) { layer.innerHTML = `<div class="modal-bg" data-closelayer><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`; }
 function closeLayer() { layer.innerHTML = ""; }
+function audioSheet() {
+  modal(`<h3>듣기 설정</h3><p>모든 영어 듣기 버튼(표현·예문·설명·문장)에 적용돼요. '천천히' 버튼은 0.6배속으로 같은 횟수만큼 들려줘요.</p>
+    <div class="set-row"><span>반복 횟수</span><div class="seg">${[1, 2, 3, 5].map(n => `<button data-rep="${n}" aria-pressed="${ST.set.repeat === n}">${n}회</button>`).join("")}</div></div>
+    <div class="set-row"><span>속도</span><div class="seg">${[0.6, 0.75, 0.9, 1.0, 1.2].map(r => `<button data-rate="${r}" aria-pressed="${ST.set.rate === r}">${r}x</button>`).join("")}</div></div>
+    <button class="primary" data-keep>확인</button>`);
+}
 layer.addEventListener("click", e => {
   if (e.target.matches("[data-closelayer]") || e.target.closest("[data-keep]")) return closeLayer();
+  const ra = e.target.closest("[data-rate]"), rp = e.target.closest("[data-rep]");
+  if (ra || rp) { if (ra) ST.set.rate = +ra.dataset.rate; else ST.set.repeat = +rp.dataset.rep; touchSet(); audioSheet(); return render(false); }
   if (e.target.closest("[data-leave]")) { closeLayer(); const L = cur().L; if (L) L.finished = true; stopListen(); uiBack(); return; }
   if (e.target.closest("[data-reset-yes]")) { try { localStorage.removeItem(STORE); localStorage.removeItem("vocab-note.v2"); localStorage.removeItem("vocab-note.v2.stars"); } catch (e) {} location.reload(); }
 });
@@ -672,7 +684,7 @@ function blankOf(item) {
   const pat = core.map(w => { const b = w.replace(/[^A-Za-z']/g, ""); if (!b) return null; const stem = b.length > 4 ? b.slice(0, Math.max(3, b.length - 2)) : b; return stem.replace(/'/g, "['’]") + "[A-Za-z'’]*"; });
   if (pat.includes(null)) return null;
   const re = new RegExp("\\b" + pat.join("\\s+(?:\\w+\\s+){0,2}?") + "\\b", "i");
-  for (const [e, k] of shuffle(item.ex)) {
+  for (const [e, k] of shuffle([...(item.ex3 || []), ...item.ex])) {
     const lines = e.split("\n"), kl = String(k).split("\n");
     const li = lines.findIndex(l => re.test(l)); if (li < 0) continue;
     const line = lines[li].replace(/^[AB]:\s*/, ""); const m = line.match(re);
@@ -682,6 +694,12 @@ function blankOf(item) {
 }
 /* 예문에서 짧은 한 문장(말하기·배열용) */
 function sentenceOf(item, maxW = 12) {
+  const good = shuffle((item.ex3s || []).filter(e => { const n = e.split(/\s+/).length; return n >= 3 && n <= maxW; }));
+  if (good.length) {   // 문장 해석은 그 문장이 든 대화(ex3 또는 시트 예문)의 같은 줄에서 찾음
+    const src = [...(item.ex3 || []), ...item.ex].find(([d]) => d.includes(good[0]));
+    const i = src ? src[0].split("\n").findIndex(l => l.includes(good[0])) : -1;
+    return { en: good[0], ko: i >= 0 ? (String(src[1]).split("\n")[i] || "").replace(/^[AB]:\s*/, "") : "" };
+  }
   for (const [e, k] of shuffle(item.ex)) {
     const lines = e.split("\n"), kl = String(k).split("\n");
     for (let i = 0; i < lines.length; i++) {
@@ -718,9 +736,9 @@ const newL = (qs, kind) => ({ kind, qs, i: 0, xp: 0, combo: 0, maxCombo: 0, righ
 function startLesson(L) { if (!L.qs.length) return toast("이 범위에 공부할 표현이 없어요", IC.x); push("lesson", { L }); autoQ(L.qs[0]); }
 function autoQ(q) {
   if (!q) return;
-  if (q.type === "speak") { if (ST.set.auto) setTimeout(() => sayEn(q.sent.en, { repeat: 1 }), 300); return; }
+  if (q.type === "speak") { if (ST.set.auto) setTimeout(() => sayEn(q.sent.en), 300); return; }
   if (q.type === "listen" || q.type === "type" || (ST.set.auto && (q.type === "learn" || q.type === "mean")))
-    setTimeout(() => sayEn(ALL[q.key].en, { repeat: q.type === "learn" ? ST.set.repeat : 1 }), 300);
+    setTimeout(() => sayEn(ALL[q.key].en, { repeat: q.type === "mean" ? 1 : undefined }), 300);
 }
 
 const QTITLE = { learn: "새 표현", mean: "알맞은 뜻을 고르세요", en: "이 뜻의 영어 표현은?", listen: "들리는 표현을 고르세요", blank: "빈칸에 들어갈 표현은?", order: "단어를 순서대로 눌러 문장을 만드세요", type: "듣고 영어로 쓰세요", speak: "문장을 듣고 따라 말해 보세요" };
@@ -737,13 +755,13 @@ function vLesson() {
   const head = `<div class="qhead"><span class="label">${q.type === "learn" ? "배우기" : q.type === "speak" ? "말하기" : L.kind === "test" ? "실력 진단" : "연습"} · ${SRC_NAME[it.src]} · ${L.i + 1}/${L.qs.length}</span><h3>${QTITLE[q.type]}</h3></div>`;
 
   if (q.type === "learn") {
-    const ex = sentenceOf(it, 16);
+    const ex3 = (it.ex3 || []).length ? it.ex3 : (sentenceOf(it, 16) ? [[sentenceOf(it, 16).en, sentenceOf(it, 16).ko]] : []);
     return `${head}<div class="panel learn">
       <span class="en">${esc(it.en)}</span>${sayRow(it.en)}
       <span class="mean">${esc(meaningOf(it))}</span>
       ${it.pic ? `<div class="pic">${esc(it.pic)}</div>` : ""}
       ${it.think ? thinkBox(it.think) : ""}
-      ${ex ? `<div class="ex-item" style="border:0;padding:0"><span class="e">${esc(ex.en)}</span><span class="k">${esc(ex.ko)}</span><button class="say" data-say="${esc(ex.en)}" aria-label="예문 듣기">${IC.speak}</button></div>` : ""}
+      ${ex3.length ? `<div class="ex3"><span class="label">질문·답변 예문 ${ex3.length}개</span>${ex3.map(([e, k]) => `<div class="ex-item"><span class="e">${esc(e)}</span><span class="k">${esc(k)}</span><button class="say" data-say="${esc(e)}" aria-label="예문 듣기">${IC.speak}</button></div>`).join("")}</div>` : ""}
     </div>`;
   }
   if (["mean", "en", "listen", "blank"].includes(q.type)) {
@@ -1008,6 +1026,12 @@ function vSection() {
     <div class="panel list">${items.map(i => rowHTML(i, "sec")).join("")}</div>${pager(p, pages)}
     <button class="primary" data-unit-of="${st.src}:${st.si}">이 유닛 레슨 시작</button>`;
 }
+/* 상세 예문: 질문·답변 3개(표현이 들어간 대화)를 먼저, 시트 원래 예문은 그 아래 */
+const exBlocks = i => {
+  const qa = i.ex3 || [], rest = i.ex.filter(([e]) => !qa.some(([q]) => q.includes(e.split("\n")[0].replace(/^[AB]:\s*/, ""))));
+  return (qa.length ? `<div class="block"><h2>질문·답변 예문 <small>${qa.length}개</small></h2><div class="panel" style="padding:16px">${exHTML(qa)}</div></div>` : "")
+    + (rest.length ? `<div class="block"><h2>${qa.length ? "시트 예문" : "예문"}</h2><div class="panel" style="padding:16px">${exHTML(rest)}</div></div>` : "");
+};
 const exHTML = ex => `<div class="ex">${ex.map(([e, k]) => `<div class="ex-item"><span class="e">${esc(e)}</span><span class="k">${esc(k)}</span><button class="say" aria-label="예문 듣기" data-say="${esc(e)}">${IC.speak}</button></div>`).join("")}</div>`;
 function vDetail() {
   const st = cur(); const i = ALL[st.key]; if (!i) return "";
@@ -1018,7 +1042,7 @@ function vDetail() {
         <div class="block"><span class="label">뜻${i.type ? " · " + esc(i.type) : ""}</span><p style="font-size:16px">${esc(i.mean)}</p></div>
         ${i.syn || i.ant ? `<div class="pair">${i.syn ? `<div class="block"><span class="label">비슷한 말</span><p style="font-size:13.5px">${esc(i.syn)}</p></div>` : "<div></div>"}${i.ant ? `<div class="block"><span class="label">반대말</span><p style="font-size:13.5px">${esc(i.ant)}</p></div>` : ""}</div>` : ""}
       </div>
-      ${i.ex.length ? `<div class="block"><h2>예문</h2><div class="panel" style="padding:16px">${exHTML(i.ex)}</div></div>` : ""}
+      ${exBlocks(i)}
       ${i.note ? `<div class="block"><h2>주의할 점</h2><div class="panel" style="padding:16px"><p style="margin:0;white-space:pre-line">${esc(i.note)}</p></div></div>` : ""}`
     : `
       <div class="panel" style="padding:18px;display:grid;gap:14px">
@@ -1026,7 +1050,7 @@ function vDetail() {
         ${i.pic ? `<div class="pic">${esc(i.pic)}</div>` : ""}
         ${thinkBox(i.think, "block")}
       </div>
-      <div class="block"><h2>예문</h2><div class="panel" style="padding:16px">${exHTML(i.ex)}</div></div>`;
+      ${exBlocks(i)}`;
   const nextDue = s ? (s.due <= Date.now() ? "지금 복습 가능" : `다음 복습 ${Math.max(1, Math.round((s.due - Date.now()) / DAY))}일 뒤`) : "아직 배우지 않음";
   return `
   <div class="panel detail-head">
