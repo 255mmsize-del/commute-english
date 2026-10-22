@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -92,25 +93,55 @@ def apply_fixes(data: dict) -> dict:
     path = ROOT / "app_fixes.json"
     fixes = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     fix, qa = fixes.get("fix", {}), fixes.get("qa", {})
-    fixed = 0
+    cpath = ROOT / "app_corrections.json"
+    corr = json.loads(cpath.read_text(encoding="utf-8")).get("words", {}) if cpath.exists() else {}
+    fixed, applied = 0, set()
 
     def add_qa(it: dict, en: str, key: str) -> None:
         it["ex3"] = (qa_pairs(en, it["ex"])[:1] + qa.get(key, []))[:3]
         it["ex3s"] = [s for s, _ in example_lines(en, it["ex3"] + it["ex"])[:4]]
 
     for w in data["words"]:
-        k = f'{w["no"]}|{w["w"]}'
+        k = f'{w["no"]}|{w["w"]}'   # 보정·예문 키는 시트 원래 단어 기준
         f = fix.get(k)
         if f and w["mean"].split("\n")[0].strip() == f["sig"]:
             w.update({x: f[x] for x in ("mean", "syn", "ant", "note", "ex")}); fixed += 1
+        if k in corr:
+            w.update({x: v for x, v in corr[k].items() if x in ("w", "mean", "ex")}); applied.add(k)
+        w["w"] = cap_i(w["w"])
         add_qa(w, w["w"], f"w|{k}")
     for key, src in (("phrasal", "p"), ("pattern", "t")):
         for sec in data[key]:
             for it in sec["items"]:
-                add_qa(it, it["expr"], f'{src}|{it["no"]}|{it["expr"]}')
+                qk = f'{src}|{it["no"]}|{it["expr"]}'
+                it["expr"] = cap_i(it["expr"])
+                add_qa(it, it["expr"], qk)
+    stale = [k for k in corr if k not in applied]
     items = data["words"] + [i for key in ("phrasal", "pattern") for s in data[key] for i in s["items"]]
-    print(f"보정 {fixed}개 · 질문/답변 3개 미만 {sum(len(i['ex3']) < 3 for i in items)}개 / {len(items)}개")
+    print(f"보정 {fixed}개 · 오타 보정 {len(applied)}개 · 질문/답변 3개 미만 {sum(len(i['ex3']) < 3 for i in items)}개 / {len(items)}개")
+    if stale:
+        print(f"app_corrections.json: 시트에서 이미 고쳐져 지워도 되는 항목 {len(stale)}개 → {', '.join(stale)}")
+    warn_typos(data)
     return data
+
+
+def cap_i(s: str) -> str:
+    """문장 맨 앞 소문자 i(i wish to, i'm …)를 I 로."""
+    return re.sub(r"^i(?=[ '’])", "I", s)
+
+
+def warn_typos(data: dict) -> None:
+    """오타 의심: 표현 속 영어 낱말이 앱 전체 예문 어디에도 안 나오면 알린다(빌드는 계속)."""
+    toks = lambda t: re.findall(r"[a-z]+(?:'[a-z]+)?", t.lower())  # noqa: E731
+    items = [(w["no"], w["w"], w["ex"] + w.get("ex3", [])) for w in data["words"]]
+    items += [(it["no"], it["expr"], it["ex"] + it.get("ex3", [])) for k in ("phrasal", "pattern") for s in data[k] for it in s["items"]]
+    vocab = {t for _, _, ex in items for e, _ in ex for t in toks(e)}
+    skip = {"sb", "sth", "someone", "something", "one's", "ing", "adj"}
+    known = lambda t: t in vocab or t in skip or len(t) <= 2 or any(v.startswith(t) for v in vocab)  # noqa: E731  altered·sprained 도 인정
+    sus = [f"No.{no} {en}" for no, en, _ in items
+           if not all(known(t) for t in toks(re.sub(r"\(.*?\)|[가-힣]+|[~…+/]", " ", en)))]
+    if sus:
+        print(f"오타 의심 {len(sus)}개(예문에 한 번도 안 나오는 낱말): {' · '.join(sus)}")
 
 
 def main() -> int:

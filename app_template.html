@@ -90,6 +90,7 @@ mark { background: none; color: var(--hl); font-weight: 700; }
 .seg { display: flex; flex-wrap: wrap; gap: 6px; }
 .seg button { border: 1px solid var(--line); background: var(--surface); border-radius: 99px; padding: 6px 13px; font-size: 13px; color: var(--muted); }
 .seg button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--on-navy); }
+.seg button small:not(.vget) { margin-left: 5px; font-size: 11px; opacity: .7; }
 .seg.vgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
 .seg.vgrid button { border-radius: 12px; padding: 7px 4px; display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0; }
 .seg.vgrid b { font-size: 13px; font-weight: 600; }
@@ -362,13 +363,26 @@ const box = k => (ST.items[k] ? ST.items[k].b : -1);
 const isDue = k => !!ST.items[k] && ST.items[k].due <= Date.now();
 const mastered = k => box(k) >= 4;
 const dueKeys = () => Object.keys(ST.items).filter(k => ALL[k] && isDue(k)).sort((a, b) => ST.items[a].due - ST.items[b].due);
-function grade(k, ok) {
+/* bonus: 실력 진단에서 처음 보는 표현을 맞히면 이미 아는 것으로 보고 2단계로 */
+function grade(k, ok, bonus = false) {
   const s = ST.items[k] || { b: 0, due: 0, r: 0, w: 0 };
-  if (ok) { s.b = Math.min(5, s.b + (s.r + s.w === 0 ? 2 : 1)); s.r++; }
+  if (ok) { s.b = Math.min(5, s.b + (bonus && s.r + s.w === 0 ? 2 : 1)); s.r++; }
   else { s.b = Math.max(0, s.b - 2); s.w++; if (!ST.wrong.includes(k)) ST.wrong.unshift(k); }
   if (ok && s.b >= 3) ST.wrong = ST.wrong.filter(x => x !== k);
   s.due = Date.now() + INTERVAL[s.b] * DAY - (INTERVAL[s.b] ? 3 * 36e5 : 0); // 하루 이상 간격은 3시간 일찍 열어 줌
   s.last = Date.now(); ST.items[k] = s; ST.stats.answered++;
+}
+/* 한 레슨 안에서 같은 표현을 여러 번 풀어도 복습 단계는 한 번만 바뀐다.
+   첫 채점으로 단계를 정하고, 그 뒤에 틀리면 레슨 시작 전 상태로 되돌려 '틀림'으로 다시 매긴다.
+   말하기는 음성 인식 탓에 틀릴 수 있어 단계는 건드리지 않고 횟수만 센다. */
+function gradeInLesson(L, q, ok) {
+  const k = q.key, prev = L.res[k];
+  if (prev === undefined && q.type !== "speak") {
+    L.base[k] = ST.items[k] ? { ...ST.items[k] } : null; L.res[k] = ok; grade(k, ok, L.kind === "test");
+  } else if (prev === true && !ok && q.type !== "speak") {
+    const r = ST.items[k].r; if (L.base[k]) ST.items[k] = { ...L.base[k] }; else delete ST.items[k];
+    L.res[k] = false; grade(k, false); ST.items[k].r = r;
+  } else if (ST.items[k]) { ST.items[k][ok ? "r" : "w"]++; ST.items[k].last = Date.now(); ST.stats.answered++; }
 }
 function learned(k) { if (!ST.items[k]) ST.items[k] = { b: 0, due: Date.now() + 10 * 6e4, r: 0, w: 0, last: Date.now() }; }
 function toggleStar(k) { stars.has(k) ? stars.delete(k) : stars.add(k); ST.stars = [...stars]; ST.starT[k] = Date.now(); save(); scheduleSync(); }
@@ -388,13 +402,17 @@ function AS() {
   const sum = k => all.reduce((a, x) => a + (x[k] || 0), 0);
   return { speak: sum("speak"), role: sum("role"), lessons: sum("lessons"), answered: sum("answered"), maxCombo: Math.max(...all.map(x => x.maxCombo || 0)), tested: all.some(x => x.tested) };
 }
+/* XP: 정답 2(콤보 5↑ +1, 10↑ +2), 오답·배우기 카드 0, 끝까지 마친 레슨 +10 → 새 표현 5개 레슨 1회 ≈ 50 XP(기본 일일 목표) */
+const XP_RIGHT = 2, XP_DONE = 10;
+const GOALS = [50, 100, 150];
+if (!GOALS.includes(ST.set.goal)) ST.set.goal = 50;
 function addXP(n) { const r = dayRec(); r.xp += n; r.n++; }
 function streak() {
   let n = 0; const d = new Date();
   if (!xpToday()) d.setDate(d.getDate() - 1);
   for (;;) { if (!aggDay(dkey(d)).xp) return n; n++; d.setDate(d.getDate() - 1); }
 }
-const TIERS = [["브론즈", 0, "#9C6B3E"], ["실버", 500, "#7D879B"], ["골드", 1500, "#B88A1E"], ["플래티넘", 3500, "#2F807E"], ["다이아", 7000, "#3F63C4"], ["마스터", 12000, "#7A3FB8"]];
+const TIERS = [["브론즈", 0, "#9C6B3E"], ["실버", 150, "#7D879B"], ["골드", 400, "#B88A1E"], ["플래티넘", 900, "#2F807E"], ["다이아", 1800, "#3F63C4"], ["마스터", 3000, "#7A3FB8"]];
 const tierOf = xp => TIERS.reduce((t, x, i) => (xp >= x[1] ? i : t), 0);
 
 /* 도전과제 */
@@ -786,7 +804,19 @@ function sentenceOf(item, maxW = 12) {
   }
   return null;
 }
-function distractors(it, n = 3) { return shuffle(SOURCES[it.src].filter(o => o.key !== it.key && firstLine(o.ko) !== firstLine(it.ko))).slice(0, n); }
+/* 오답 보기: 정답과 뜻 첫 줄·영어 표현·읽히는 소리(ttsText)가 같은 것은 빼고, 보기끼리도 겹치지 않게
+   (시트에 같은 표현이 두 번 있거나 'have been + 장소'/'have been + 과거분사'처럼 똑같이 들리면 정답이 둘이 됨) */
+function distractors(it, n = 3) {
+  const said = o => ttsText(o.en).toLowerCase(), same = o => o.en.trim().toLowerCase();
+  const used = new Set([same(it), said(it)]), means = new Set([firstLine(it.ko)]), out = [];
+  for (const o of shuffle(SOURCES[it.src])) {
+    if (out.length >= n) break;
+    const e = same(o), s = said(o), m = firstLine(o.ko);
+    if (o.key === it.key || used.has(e) || used.has(s) || means.has(m)) continue;
+    used.add(e); used.add(s); means.add(m); out.push(o);
+  }
+  return out;
+}
 function makeQ(type, k) {
   const it = ALL[k]; const q = { type, key: k };
   if (["mean", "en", "listen", "blank"].includes(type)) {
@@ -813,7 +843,7 @@ function buildLesson(fresh, rev, kind = "lesson") {
   shuffle([...fresh, ...rev]).slice(0, 3).forEach(k => { const q = makeQ("speak", k); if (q) qs.push(q); });
   return newL(qs, kind);
 }
-const newL = (qs, kind) => ({ kind, qs, i: 0, xp: 0, combo: 0, maxCombo: 0, right: 0, graded: 0, wrongKeys: [], finished: false, answered: false });
+const newL = (qs, kind) => ({ kind, qs, i: 0, xp: 0, combo: 0, maxCombo: 0, right: 0, graded: 0, wrongKeys: [], res: {}, base: {}, finished: false, answered: false });
 function startLesson(L) { if (!L.qs.length) return toast("이 범위에 공부할 표현이 없어요", IC.x); push("lesson", { L }); autoQ(L.qs[0]); }
 function autoQ(q) {
   if (!q) return;
@@ -913,9 +943,9 @@ function lessonFooter() {
 function answer(ok) {
   const L = cur().L; const q = L.qs[L.i];
   q.ok = ok; L.answered = true;
-  if (!q.graded) { grade(q.key, ok); L.graded++; q.graded = true;
-    if (ok) { L.right++; L.combo++; L.maxCombo = Math.max(L.maxCombo, L.combo); const gain = 10 + Math.min(10, Math.floor(L.combo / 3) * 2); L.xp += gain; addXP(gain); }
-    else { L.combo = 0; if (!L.wrongKeys.includes(q.key)) L.wrongKeys.push(q.key); L.xp += 1; addXP(1); } }
+  if (!q.graded) { gradeInLesson(L, q, ok); L.graded++; q.graded = true;
+    if (ok) { L.right++; L.combo++; L.maxCombo = Math.max(L.maxCombo, L.combo); const gain = XP_RIGHT + (L.combo >= 10 ? 2 : L.combo >= 5 ? 1 : 0); L.xp += gain; addXP(gain); }
+    else { L.combo = 0; if (!L.wrongKeys.includes(q.key)) L.wrongKeys.push(q.key); } }
   sfx(ok ? "ok" : "no"); save(); render(false);
 }
 function prevQ() {
@@ -925,12 +955,13 @@ function prevQ() {
 }
 function nextQ() {
   const L = cur().L; const q0 = L.qs[L.i];
-  if (q0 && q0.type === "learn" && !q0.seen) { q0.seen = true; learned(q0.key); L.xp += 2; addXP(2); save(); }
+  if (q0 && q0.type === "learn" && !q0.seen) { q0.seen = true; learned(q0.key); save(); }
   L.i++; L.answered = false; render(true); autoQ(L.qs[L.i]);
 }
 function vLessonDone(L) {
   if (!L.finished) {
     L.finished = true; ST.stats.lessons++; ST.stats.maxCombo = Math.max(ST.stats.maxCombo, L.maxCombo);
+    if (L.graded) { L.xp += XP_DONE; addXP(XP_DONE); }   // 끝까지 마친 레슨만 보너스(중간에 그만두면 없음)
     if (L.kind === "test") ST.stats.tested = true;
     save(); sfx("done"); setTimeout(confetti, 50); setTimeout(checkAch, 900); scheduleSync(800);
   }
@@ -1059,7 +1090,7 @@ async function playA() {
   }
   if (!alive()) return;
   st.hint = false; render(false); scrollEnd();
-  if (!R.lines[R.i] && !R.done) { R.done = true; ST.stats.role++; addXP(15); save(); sfx("done"); checkAch(); scheduleSync(800); }
+  if (!R.lines[R.i] && !R.done) { R.done = true; ST.stats.role++; addXP(5); save(); sfx("done"); checkAch(); scheduleSync(800); }
 }
 async function roleSpeak() {
   const st = cur(); const R = st.R; const l = R.lines[R.i];
@@ -1070,7 +1101,7 @@ async function roleSpeak() {
     const alts = await listenOnce(t => { const h = document.getElementById("heard"); if (h) h.textContent = t; });
     if (cur() !== st || st.R !== R) return;
     const sc = scoreSpeech(l.en, alts.length ? alts : [""]);
-    R.scores[R.i] = sc; dayRec().speak++; ST.stats.speak++; addXP(sc.pct >= 70 ? 8 : 3);
+    R.scores[R.i] = sc; dayRec().speak++; ST.stats.speak++; addXP(sc.pct >= 70 ? 2 : 1);
     sfx(sc.pct >= 70 ? "ok" : "no"); R.i++; save(); playA();
   } catch (e) { btn?.classList.remove("rec"); if (heard) heard.textContent = micError(e); }
 }
@@ -1168,7 +1199,7 @@ function vMe() {
     <div class="ach">${ACH.map(([id, n, d]) => `<div class="panel ${ST.ach[id] ? "got" : ""}"><span class="ic">${IC.trophy}</span><b class="${ST.ach[id] ? "" : "lock"}">${n}</b><small>${d}</small></div>`).join("")}</div></div>
   ${syncBlock()}
   <div class="block"><h2>설정</h2><div class="panel">
-    <div class="set-row"><span>일일 목표</span><div class="seg">${[30, 50, 100, 150].map(g => `<button data-goal="${g}" aria-pressed="${ST.set.goal === g}">${g} XP</button>`).join("")}</div></div>
+    <div class="set-row"><span>일일 목표</span><div class="seg">${GOALS.map((g, i) => `<button data-goal="${g}" aria-pressed="${ST.set.goal === g}">${g} XP<small>레슨 ${i + 1}회</small></button>`).join("")}</div></div>
     <div class="set-row"><span>발음 속도</span><div class="seg">${[0.6, 0.75, 0.9, 1.0, 1.2].map(r => `<button data-rate="${r}" aria-pressed="${ST.set.rate === r}">${r}x</button>`).join("")}</div></div>
     <div class="set-row"><span>반복 횟수</span><div class="seg">${[1, 2, 3, 5].map(n => `<button data-rep="${n}" aria-pressed="${ST.set.repeat === n}">${n}회</button>`).join("")}</div></div>
     ${voiceRow()}<div style="padding:0 16px">${voiceHelp()}</div>
@@ -1343,7 +1374,7 @@ document.addEventListener("click", e => {
   if (t.closest("[data-rnext]")) { stopSpeak(); return; }   // 읽던 A 대사를 끊으면 playA 가 다음으로 넘어감
   if (t.closest("[data-rmic]")) return roleSpeak();
   if (t.closest("[data-rhint]")) { st.hint = true; return render(false); }
-  if (t.closest("[data-rself]")) { dayRec().speak++; ST.stats.speak++; addXP(3); st.R.i++; save(); return playA(); }
+  if (t.closest("[data-rself]")) { dayRec().speak++; ST.stats.speak++; addXP(1); st.R.i++; save(); return playA(); }
   if (t.closest("[data-rprev]")) {   // 바로 앞의 내 대답 차례로 돌아가 다시 말하기
     stopSpeak(); stopListen(); st.tok = (st.tok || 0) + 1; const R = st.R;
     let j = R.i - 1; while (j >= 0 && R.lines[j].who !== "B") j--;
