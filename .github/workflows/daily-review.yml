@@ -8,11 +8,22 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   build-and-send:
     runs-on: ubuntu-latest
     steps:
+      - name: 2026-11-30까지만 실행 (지나면 이 자동화를 스스로 끔)
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$(TZ=Asia/Seoul date +%Y%m%d)" -gt 20261130 ]; then
+            gh workflow disable "${{ github.workflow }}" -R "${{ github.repository }}"
+            echo "실행 기간(2026-11-30)이 끝나 자동화를 껐습니다."; exit 1
+          fi
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
