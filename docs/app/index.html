@@ -450,6 +450,16 @@ body.focus-mode .app { padding-block-end: 220px; }
 .qtrow:first-child { border-top: 0; } .qtrow .num { text-align: right; }
 .quick + .qbtn, .view > .qbtn { width: 100%; }
 @media (max-width: 400px) { .appbar.root h1 { font-size: 19px; } .appbar .stats { gap: 4px; } .appbar .stats .chip-stat { padding-inline: 7px; } }
+/* 오늘의 루틴·내 문장 */
+.routine { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.rstep { border: 1px solid var(--line); background: var(--surface); border-radius: 14px; padding: 10px 4px 9px; display: grid; justify-items: center; gap: 3px; text-align: center; min-width: 0; box-shadow: var(--shadow); }
+.rstep .rn { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-num); font-size: 13px; font-weight: 600; border: 1.5px solid var(--wine); color: var(--wine); }
+.rstep .rn svg { width: 15px; height: 15px; }
+.rstep b { font-size: 12.5px; white-space: nowrap; } .rstep small { font-size: 10.5px; color: var(--muted); line-height: 1.3; }
+.rstep.done { background: var(--good-soft); border-color: color-mix(in srgb, var(--good) 35%, transparent); }
+.rstep.done .rn { background: var(--good); border-color: var(--good); color: #fff; }
+.tchip small { font-size: 11px; color: var(--muted); margin-left: 2px; }
+.mybox { padding: 14px 16px; display: grid; gap: 12px; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 <script>
@@ -921,6 +931,7 @@ function vHome() {
     <div><b>${xp >= goal ? "오늘 목표 달성!" : `오늘 목표까지 ${goal - xp} XP`}</b><p>${streak()}일 연속 학습 · 목표 ${goal} XP</p></div>
     <div class="week">${weekCells}</div>
   </div>
+  ${routineHTML()}
   <div class="hero">
     <span class="label">오늘의 레슨 · ${SRC_NAME[course]} 코스</span>
     <h3>${planTitle}</h3>
@@ -1039,7 +1050,7 @@ function vLesson() {
   document.body.classList.add("lesson-mode");
   const q = L.qs[L.i]; const it = ALL[q.key];
   bar("", { lesson: true, pct: (L.i / L.qs.length) * 100, combo: L.combo, first: L.i === 0 });
-  const head = `<div class="qhead"><span class="label">${q.type === "learn" ? "배우기" : q.type === "speak" ? "말하기" : L.kind === "test" ? "실력 진단" : "연습"} · ${SRC_NAME[it.src]} · ${L.i + 1}/${L.qs.length}</span><h3>${QTITLE[q.type]}</h3></div>`;
+  const head = `<div class="qhead"><span class="label">${q.retry ? "다시 확인 · " : ""}${q.type === "learn" ? "배우기" : q.type === "speak" ? "말하기" : L.kind === "test" ? "실력 진단" : "연습"} · ${SRC_NAME[it.src]} · ${L.i + 1}/${L.qs.length}</span><h3>${QTITLE[q.type]}</h3></div>`;
 
   if (q.type === "learn") {
     const ex3 = (it.ex3 || []).length ? it.ex3 : (sentenceOf(it, 16) ? [[sentenceOf(it, 16).en, sentenceOf(it, 16).ko]] : []);
@@ -1105,12 +1116,13 @@ function lessonFooter() {
   const ok = q.ok; const sent = q.type === "order" || q.type === "speak";
   const ansEn = sent ? q.sent.en : q.sentEn || it.en, ansKo = sent ? q.sent.ko : q.blank && q.type === "type" ? q.blank.ko : firstLine(meaningOf(it));
   const extra = it.src === "w" ? (it.note ? `<p>${esc(it.note)}</p>` : `<p>${esc(it.mean)}</p>`) : `<p class="t">${marked(it.think)}</p>`;
-  const ttl = ok ? (q.type === "speak" ? `잘 말했어요${q.result ? " · " + q.result.pct + "점" : ""}` : L.combo >= 3 ? `정답! ${L.combo} 콤보` : "정답!")
+  const ttl = ok && q.near ? `거의 정답! 철자 확인: ${esc(q.target)}` : ok ? (q.type === "speak" ? `잘 말했어요${q.result ? " · " + q.result.pct + "점" : ""}` : L.combo >= 3 ? `정답! ${L.combo} 콤보` : "정답!")
     : q.type === "speak" ? "조금 더 연습해 봐요" : q.type === "type" ? `오답 · 입력: ${esc(q.given || "(비어 있음)")}` : "오답이에요";
   fbEl.innerHTML = `<div class="fb ${ok ? "ok" : "no"}"><div class="in">
     <div class="ttl">${ok ? IC.check : IC.x}<span>${ttl}</span></div>
     <div class="ans"><span class="en">${esc(ansEn)}</span><small>${esc(ansKo)}</small></div>
     ${!ok ? `<div class="notebox"><span class="label">해설 노트 · ${esc(it.en)}</span>${extra}</div>` : ""}
+    ${!ok && !q.retry && L.rq && L.rq[q.key] ? `<p class="note">이 표현은 몇 문제 뒤에 다른 방식으로 한 번 더 나와요.</p>` : ""}
     <div class="tools"><button class="pill" data-say="${esc(ansEn)}">${IC.speak}듣기</button>
       <button class="pill" data-starq="${esc(it.key)}">${stars.has(it.key) ? IC.starOn : IC.star}${stars.has(it.key) ? "저장됨" : "저장"}</button>
       ${q.type === "speak" && !ok && SR ? `<button class="pill" data-retry-speak>${IC.mic}다시 말하기</button>` : ""}</div>
@@ -1121,7 +1133,7 @@ function answer(ok) {
   q.ok = ok; L.answered = true;
   if (!q.graded) { gradeInLesson(L, q, ok); L.graded++; q.graded = true;
     if (ok) { L.right++; L.combo++; L.maxCombo = Math.max(L.maxCombo, L.combo); const gain = XP_RIGHT + (L.combo >= 10 ? 2 : L.combo >= 5 ? 1 : 0); L.xp += gain; addXP(gain); }
-    else { L.combo = 0; if (!L.wrongKeys.includes(q.key)) L.wrongKeys.push(q.key); } }
+    else { L.combo = 0; if (!L.wrongKeys.includes(q.key)) L.wrongKeys.push(q.key); requeue(L, q); } }
   sfx(ok ? "ok" : "no"); save(); render(false);
 }
 function prevQ() {
@@ -1139,6 +1151,7 @@ function vLessonDone(L) {
     L.finished = true; ST.stats.lessons++; ST.stats.maxCombo = Math.max(ST.stats.maxCombo, L.maxCombo);
     if (L.graded) { L.xp += XP_DONE; addXP(XP_DONE); }   // 끝까지 마친 레슨만 보너스(중간에 그만두면 없음)
     if (L.kind === "test") ST.stats.tested = true;
+    if (L.kind === "lesson" || L.kind === "review") { const dr = dayRec(); dr[L.kind === "lesson" ? "les" : "rev"] = (dr[L.kind === "lesson" ? "les" : "rev"] || 0) + 1; }
     save(); sfx("done"); setTimeout(confetti, 50); setTimeout(checkAch, 900); scheduleSync(800);
   }
   document.body.classList.remove("lesson-mode");
@@ -1363,6 +1376,7 @@ function vDetail() {
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${seen(i.key) ? lvHTML(i.key) : ""}<button class="pill" data-say="${esc(i.en)}">${IC.speak}발음 ${ST.set.repeat}회 · ${ST.set.rate}x</button><button class="pill" data-say="${esc(i.en)}" data-slow="1" data-once="1">${IC.turtle}천천히</button><button class="pill" data-one="${esc(i.key)}">${IC.target}이 표현 퀴즈</button></div>
   </div>
   ${body}
+  ${myBlock(i, st)}
   ${pos >= 0 && ctx.length > 1 ? `<div class="stepper"><button class="ghost" data-step="-1" ${pos === 0 ? "disabled" : ""}>‹ 이전</button><span class="num">${pos + 1} / ${ctx.length}</span><button class="ghost" data-step="1" ${pos === ctx.length - 1 ? "disabled" : ""}>다음 ›</button></div>` : ""}`;
 }
 
@@ -1522,8 +1536,10 @@ const TOPICS = [
 ];
 const topicOf = id => TOPICS.find(t => t.id === id) || TOPICS[0];
 function talkTargets() {
-  let ks = shuffle(recentKeys(12).filter(k => exprRe(ALL[k]))).slice(0, 4);
-  if (ks.length < 4) { const u = COURSES[ST.set.course][currentUnit(ST.set.course)]; ks = [...ks, ...shuffle(u.keys).filter(k => !ks.includes(k) && exprRe(ALL[k]))].slice(0, 4); }
+  const good = k => ALL[k] && exprRe(ALL[k]) && !/\+/.test(ALL[k].en) && ALL[k].en.length <= 40;   // 'have been + p.p.' 같은 문형 틀은 대화 목표로 부적합
+  let ks = shuffle(recentKeys(20).filter(good)).slice(0, 4);
+  if (ks.length < 4) { const u = COURSES[ST.set.course][currentUnit(ST.set.course)]; ks = [...ks, ...shuffle(u.keys).filter(k => !ks.includes(k) && good(k))].slice(0, 4); }
+  if (ks.length < 4) ks = [...ks, ...shuffle(SOURCES.p.map(i => i.key)).filter(k => !ks.includes(k) && good(k))].slice(0, 4);
   return ks;
 }
 const tList = T => T.targets.map(k => `"${ALL[k].en}" (${firstLine(meaningOf(ALL[k]))})`).join(", ");
@@ -1609,7 +1625,7 @@ async function talkEnd(T) {
 function vTalk() {
   const T = cur().T; const tp = topicOf(T.topic);
   bar("AI 프리토킹 · " + tp.name);
-  const tgt = `<div class="tgt">${T.targets.map(k => `<button class="tchip ${T.used[k] ? "on" : ""}" data-open="${esc(k)}" data-ctx="">${T.used[k] ? IC.check : ""}<span class="en">${esc(ALL[k].en)}</span></button>`).join("")}</div>`;
+  const tgt = `<div class="tgt">${T.targets.map(k => `<button class="tchip ${T.used[k] ? "on" : ""}" data-open="${esc(k)}" data-ctx="">${T.used[k] ? IC.check : ""}<span class="en">${esc(ALL[k].en)}</span><small>${esc(firstLine(meaningOf(ALL[k])).slice(0, 14))}</small></button>`).join("")}</div>`;
   const usedN = Object.keys(T.used).length;
   if (T.reportBusy) return `<div class="panel done"><h3>리포트를 만드는 중…</h3><p class="note">대화 전체를 보고 점수와 고칠 문장을 정리하고 있어요.</p><div class="dots" style="justify-self:center"><i></i><i></i><i></i></div></div>`;
   if (T.report) {
@@ -1825,8 +1841,8 @@ function startWrongFocus() {
 }
 
 /* ===================== 주간 리포트: 최근 7일(모든 기기 합산) ===================== */
-const QT_NAME = { mean: "뜻 고르기", en: "영어 고르기", listen: "듣고 고르기", blank: "빈칸", order: "문장 배열", type: "받아쓰기", compose: "한→영 영작" };
-const QT_FIX = { mean: "단어장에서 뜻을 다시 보고 레슨의 배우기 카드를 천천히 읽어 보세요", en: "출퇴근 오디오로 '뜻 → 영어'를 반복해 들어 보세요", listen: "출퇴근 오디오로 귀를 먼저 익혀 보세요", blank: "예문을 소리 내어 읽으며 표현이 들어가는 자리를 익혀 보세요", order: "대화 섀도잉으로 문장 리듬을 입에 붙여 보세요", type: "받아쓰기는 0.75배속으로 들어 보세요", compose: "한→영 영작을 하루 8문장씩 꾸준히 해 보세요" };
+const QT_NAME = { make: "내 문장 만들기", mean: "뜻 고르기", en: "영어 고르기", listen: "듣고 고르기", blank: "빈칸", order: "문장 배열", type: "받아쓰기", compose: "한→영 영작" };
+const QT_FIX = { make: "단어 상세의 '내 문장 만들기'에서 고친 문장을 소리 내어 읽어 보세요", mean: "단어장에서 뜻을 다시 보고 레슨의 배우기 카드를 천천히 읽어 보세요", en: "출퇴근 오디오로 '뜻 → 영어'를 반복해 들어 보세요", listen: "출퇴근 오디오로 귀를 먼저 익혀 보세요", blank: "예문을 소리 내어 읽으며 표현이 들어가는 자리를 익혀 보세요", order: "대화 섀도잉으로 문장 리듬을 입에 붙여 보세요", type: "받아쓰기는 0.75배속으로 들어 보세요", compose: "한→영 영작을 하루 8문장씩 꾸준히 해 보세요" };
 function weekDays(off) { const d0 = new Date(); return [...Array(7)].map((_, i) => { const d = new Date(d0); d.setDate(d0.getDate() - 6 + i - off * 7); return { l: "일월화수목금토"[d.getDay()], ...aggDay(dkey(d)) }; }); }
 function vWeek() {
   bar("주간 리포트");
@@ -1871,6 +1887,7 @@ function featureClick(t, st) {
   if (t.closest("[data-compose]")) { startCompose(); return true; }
   if (t.closest("[data-dshadow]")) { startDialogShadow(); return true; }
   if (t.closest("[data-amode]")) { startAudio(); return true; }
+  if (t.closest("[data-review-go]")) { const due = dueKeys(); if (due.length) startLesson(buildLesson([], due.slice(0, 15), "review")); else goTab("review"); return true; }
   if (t.closest("[data-wrongfocus]")) { startWrongFocus(); return true; }
   if (t.closest("[data-week]")) { push("week"); return true; }
   if (t.closest("[data-tohome]")) { goTab("home"); return true; }
@@ -1910,6 +1927,72 @@ function featureClick(t, st) {
   return false;
 }
 
+
+/* ===================== 사용성·학습 효과 보강 ===================== */
+/* 오늘의 루틴: 레슨 → 복습 → 말하기 → 듣기 (모든 기기 합산) */
+function routineHTML() {
+  const d = aggDay(today()); const due = dueKeys().length;
+  const steps = [
+    { n: "오늘의 레슨", s: "새 표현 배우기", done: (d.les || 0) > 0, act: "data-today" },
+    { n: "복습", s: due ? `${due}개 대기` : "대기 없음", done: (d.rev || 0) > 0 || !due, act: "data-review-go" },
+    { n: "말하기", s: "프리토킹·섀도잉", done: (d.talk || 0) > 0 || (d.speak || 0) >= 5, act: 'data-tabgo="speak"' },
+    { n: "듣기", s: "출퇴근 오디오", done: (d.audio || 0) > 0, act: "data-amode" },
+  ];
+  const n = steps.filter(x => x.done).length;
+  return `<div class="block"><h2>오늘의 루틴 <small>${n}/4 완료${n === 4 ? " · 완벽한 하루!" : ""}</small></h2>
+    <div class="routine">${steps.map((x, i) => `<button class="rstep ${x.done ? "done" : ""}" ${x.act}><span class="rn">${x.done ? IC.check : i + 1}</span><b>${x.n}</b><small>${esc(x.s)}</small></button>`).join("")}</div></div>`;
+}
+/* 틀린 표현은 3~4문제 뒤에 다른 유형으로 한 번 더(레슨당 표현마다 1번) — 틀린 직후 다시 떠올리기 */
+function requeue(L, q) {
+  if (q.retry || ["speak", "learn"].includes(q.type) || L.kind === "test") return;
+  L.rq ||= {}; if (L.rq[q.key]) return;
+  const nq = firstOK(shuffle(["mean", "en", "listen", "blank", "type"].filter(t => t !== q.type)), q.key); if (!nq) return;
+  L.rq[q.key] = 1; nq.retry = true;
+  let end = L.qs.findIndex((x, i) => i > L.i && x.type === "speak"); if (end < 0) end = L.qs.length;
+  L.qs.splice(Math.min(L.i + 4, end), 0, nq);
+}
+const lev = (a, b) => { const d = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  return d[a.length][b.length]; };
+/* 단어 상세: 이 표현으로 내 문장 만들기 → AI 첨삭. 만든 문장은 표현별로 저장(이 기기) */
+function myBlock(i, st) {
+  if (!st.my || st.my.key !== i.key) st.my = { key: i.key, text: "", busy: false, res: null };
+  const M = st.my; const mine = ((ST.mine || {})[i.key] || []);
+  const r = M.res;
+  return `<div class="block"><h2>내 문장 만들기 <small>AI 첨삭</small></h2><div class="panel mybox">
+    <p class="note">이 표현으로 내 이야기를 한 문장 만들어 보세요. 직접 만든 문장이 가장 오래 기억에 남아요.</p>
+    <form class="tform" data-myform><input id="myIn" autocomplete="off" autocapitalize="sentences" placeholder="${esc(ttsText(i.en))}…" value="${esc(M.text)}" ${M.busy ? "disabled" : ""}><button class="send" aria-label="첨삭 받기" ${M.busy ? "disabled" : ""}>${IC.check}</button></form>
+    ${aiOK() ? "" : `<p class="note" style="color:var(--hl)">AI 첨삭은 기기 동기화를 연결한 기기에서 쓸 수 있어요.</p>`}
+    ${M.busy ? `<div class="dots" style="justify-self:center"><i></i><i></i><i></i></div>` : ""}
+    ${r ? `<div class="cres ${r.ok ? "ok" : "no"}" style="padding:0"><div class="ttl">${r.ok ? IC.check : IC.x}<b>${r.ok ? "자연스러워요!" : r.used === false ? "표현이 빠졌어요" : "조금 고쳐 볼까요?"}</b></div>
+      ${r.better && normT(r.better) !== normT(r.given) ? `<div class="cline"><span class="label">이렇게 고치면</span><span class="e">${esc(r.better)}</span><button class="mini" data-say="${esc(r.better)}" data-once="1">${IC.speak}</button></div>` : ""}
+      ${r.why ? `<p class="note">${esc(r.why)}</p>` : ""}
+      ${r.example ? `<div class="cline"><span class="label">예문 하나 더</span><span class="e">${esc(r.example)}</span><button class="mini" data-say="${esc(r.example)}" data-once="1">${IC.speak}</button></div>` : ""}</div>` : ""}
+    ${mine.length ? `<div class="cline"><span class="label">내가 만든 문장 ${mine.length}개</span>${mine.map(m => `<span class="e">${esc(m.s)}</span><button class="mini" data-say="${esc(m.s)}" data-once="1">${IC.speak}</button>`).join("")}</div>` : ""}
+  </div></div>`;
+}
+async function myCheck(st) {
+  const M = st.my; const i = ALL[M.key]; if (!M || M.busy) return;
+  const text = String(document.getElementById("myIn")?.value || M.text || "").trim(); if (!text) return;
+  if (!aiOK()) return toast(AI_ERR["no-sync"], IC.x);
+  M.text = text; M.busy = true; M.res = null; render(false);
+  try {
+    const r = await ai([{ role: "user", text: `Target expression: ${i.en} (${firstLine(meaningOf(i))})\nLearner's sentence: ${text}` }],
+      { system: `You are a kind English teacher checking a sentence a Korean learner wrote with a target expression. Judge grammar, naturalness and whether the expression is used correctly (any valid form/tense is fine).
+JSON only: {"ok": boolean, "used": boolean, "better": "corrected natural version keeping the learner's idea (empty string if already perfect)", "why": "Korean explanation, max 60 characters", "example": "one more short natural example sentence with the expression, related to the learner's idea"}`, json: true, temp: 0.4 });
+    M.res = { ok: !!r.ok && r.used !== false, used: r.used, better: String(r.better || ""), why: String(r.why || ""), example: String(r.example || ""), given: text };
+    const good = M.res.ok;
+    qtally("make", good);
+    if (good && seen(i.key)) grade(i.key, true); else tally(good);   // 만든 문장이 틀려도 복습 단계는 내리지 않음
+    if (good) addXP(3);
+    const keep = M.res.better && normT(M.res.better) !== normT(text) ? M.res.better : text;
+    if (good || M.res.better) { (ST.mine ||= {})[i.key] = [{ t: Date.now(), s: keep }, ...((ST.mine[i.key]) || [])].slice(0, 5); }
+    M.text = ""; save(); sfx(good ? "ok" : "no");
+    sayEn(keep, { repeat: 1 });
+  } catch (e) { toast(aiErr(e), IC.x); }
+  M.busy = false; if (cur() === st) render(false);
+}
+
 /* ===================== 렌더·이벤트 ===================== */
 const VIEWS = { home: vHome, review: vReview, speak: vSpeak, dict: vDict, me: vMe, section: vSection, detail: vDetail, lesson: vLesson, role: vRole, talk: vTalk, compose: vCompose, audio: vAudio, week: vWeek };
 function render(scrollTop) {
@@ -1928,6 +2011,7 @@ function bindInputs() {
   const inp = document.getElementById("q");
   if (inp) inp.addEventListener("input", () => { cur().q = inp.value; cur().page = 1; const pos = inp.selectionStart; render(false); const n = document.getElementById("q"); n.focus(); n.setSelectionRange(pos, pos); });
   const ti = document.getElementById("talkIn"); if (ti) ti.addEventListener("input", () => { cur().T.draft = ti.value; });
+  const mi = document.getElementById("myIn"); if (mi) mi.addEventListener("input", () => { if (cur().my) cur().my.text = mi.value; });
   const ci = document.getElementById("compIn"); if (ci) ci.addEventListener("input", () => { cur().C.draft = ci.value; });
   const t = document.getElementById("typed");
   if (t && !t.disabled) { t.focus({ preventScroll: true }); t.addEventListener("input", () => { cur().L.qs[cur().L.i].given = t.value; }); }
@@ -1936,7 +2020,12 @@ const normT = s => words(s).join(" ");
 function checkCurrent() {
   const L = cur().L; if (!L || L.answered) return; const q = L.qs[L.i];
   if (q.type === "order") { if (!q.picked.length) return; return answer(normT(q.picked.map(i => q.tiles[i].w).join(" ")) === normT(q.sent.en)); }
-  if (q.type === "type") { q.given = document.getElementById("typed")?.value || ""; answer(normT(q.given) === normT(q.target)); sayEn(q.sentEn || ALL[q.key].en, { repeat: 1 }); }
+  if (q.type === "type") {
+    q.given = document.getElementById("typed")?.value || "";
+    const a = normT(q.given), b = normT(q.target);
+    q.near = a !== b && b.length >= 5 && lev(a, b) <= 1;   // 5글자 이상에서 한 글자 실수는 맞은 것으로(철자 안내)
+    answer(a === b || q.near); sayEn(q.sentEn || ALL[q.key].en, { repeat: 1 });
+  }
 }
 async function lessonSpeak() {
   const st = cur(); const L = st.L; const q = L.qs[L.i];
@@ -1969,6 +2058,7 @@ fbEl.addEventListener("submit", e => {
   if (e.target.matches("[data-tform]")) { e.preventDefault(); const i = document.getElementById("talkIn"); talkSend(cur().T, i ? i.value : ""); }
   if (e.target.matches("[data-cform]")) { e.preventDefault(); composeCheck(cur().C); }
 });
+main.addEventListener("submit", e => { if (e.target.matches("[data-myform]")) { e.preventDefault(); myCheck(cur()); } });
 document.addEventListener("click", e => {
   const t = e.target; if (!t.closest("#main, #fb")) return;
   const st = cur();
