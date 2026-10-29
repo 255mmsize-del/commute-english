@@ -18540,6 +18540,1644 @@
     "A: What were you and your team doing in the meeting room?\nB: We were just tossing around potential themes for the event.",
     "A: 회의실에서 당신과 팀원들은 무엇을 하고 있었나요?\nB: 행사를 위한 잠재적인 주제들을 이리저리 의논하고 있었어요."
    ]
+  ],
+  "w|1089|due to": [
+   [
+    "A: Why is the road closed today?\nB: It is closed due to the unexpected construction work.",
+    "A: 오늘 왜 도로가 통제되어 있나요?\nB: 예기치 않은 공사 때문에 통제되었습니다."
+   ],
+   [
+    "A: Did you miss your meeting this morning?\nB: Yes, I was late due to a heavy traffic jam.",
+    "A: 오늘 아침 회의에 늦었나요?\nB: 네, 심한 교통 체증 때문에 늦었습니다."
+   ]
+  ],
+  "w|1090|literature": [
+   [
+    "A: What is your major in university?\nB: I am majoring in English literature because I love classic novels.",
+    "A: 대학에서 전공이 무엇인가요?\nB: 고전 소설을 좋아해서 영문학을 전공하고 있습니다."
+   ],
+   [
+    "A: Have you read any good books lately?\nB: I just finished a piece of French literature that was quite moving.",
+    "A: 최근에 좋은 책 읽은 것 있나요?\nB: 아주 감동적인 프랑스 문학 작품 하나를 막 끝냈어요."
+   ]
+  ],
+  "w|1091|calculate": [
+   [
+    "A: How long will it take to finish the budget report?\nB: I need a few more minutes to calculate the final figures.",
+    "A: 예산 보고서를 끝내는 데 얼마나 걸릴까요?\nB: 최종 수치를 계산하려면 몇 분 더 필요합니다."
+   ],
+   [
+    "A: Can you calculate how much we saved this month?\nB: Let me check the receipts, and I will calculate the exact amount for you.",
+    "A: 이번 달에 우리가 얼마를 절약했는지 계산해 줄 수 있나요?\nB: 영수증을 확인해 보고 정확한 금액을 계산해 드릴게요."
+   ]
+  ],
+  "w|1092|calculating": [
+   [
+    "A: Why do you think he offered to help so suddenly?\nB: He is very calculating, so he probably wants something in return.",
+    "A: 그가 왜 갑자기 돕겠다고 나섰을까요?\nB: 그 사람은 매우 계산적이어서 아마 뭔가를 바라고 있을 거예요."
+   ],
+   [
+    "A: Did you like his business proposal?\nB: Not really, it felt too calculating and lacked any genuine interest in our partnership.",
+    "A: 그의 사업 제안이 마음에 들었나요?\nB: 아니요, 너무 계산적으로 느껴졌고 우리 파트너십에 대한 진심 어린 관심이 부족해 보였어요."
+   ]
+  ],
+  "w|1093|stuck": [
+   [
+    "A: Why are you still standing in the elevator?\nB: I think I am stuck because the doors won't open.",
+    "A: 왜 아직 엘리베이터 안에 서 있나요?\nB: 문이 열리지 않아서 갇힌 것 같아요."
+   ],
+   [
+    "A: Are you having trouble with your computer?\nB: Yes, it is stuck on the loading screen and won't respond.",
+    "A: 컴퓨터에 문제가 있나요?\nB: 네, 로딩 화면에서 멈춰서 아무 반응이 없어요."
+   ],
+   [
+    "A: Did you enjoy your hike in the mountains?\nB: Not really, we got stuck in the mud during the rainstorm.",
+    "A: 등산은 즐거웠나요?\nB: 아니요, 폭우가 쏟아져서 진흙 속에 갇히고 말았어요."
+   ]
+  ],
+  "w|1094|theory": [
+   [
+    "A: What do you think of his explanation for the phenomenon?\nB: It is an interesting theory, but it needs more empirical data.",
+    "A: 그 현상에 대한 그의 설명에 대해 어떻게 생각하나요?\nB: 흥미로운 이론이지만, 더 많은 실증적 데이터가 필요합니다."
+   ],
+   [
+    "A: Are you going to test your hypothesis today?\nB: Yes, I want to see if my theory holds up under these conditions.",
+    "A: 오늘 가설을 검증할 건가요?\nB: 네, 이런 조건에서도 제 이론이 성립하는지 확인하고 싶어요."
+   ]
+  ],
+  "w|1095|practical": [
+   [
+    "A: What kind of shoes should I wear for the long walk?\nB: You should choose practical sneakers rather than fashion boots.",
+    "A: 오래 걸을 때 어떤 신발을 신어야 할까요?\nB: 패션 부츠보다는 실용적인 운동화를 선택하는 게 좋아요."
+   ],
+   [
+    "A: Is this small backpack enough for your trip?\nB: Yes, it is very practical because it has many pockets.",
+    "A: 이 작은 배낭이 여행에 충분할까요?\nB: 네, 주머니가 많아서 아주 실용적이에요."
+   ]
+  ],
+  "w|1096|principle": [
+   [
+    "A: Why did you turn down such a lucrative job offer?\nB: It violated my core principles regarding work-life balance.",
+    "A: 왜 그렇게 수익 좋은 일자리 제안을 거절했나요?\nB: 일과 삶의 균형에 관한 제 핵심 원칙을 위반했기 때문입니다."
+   ],
+   [
+    "A: Do you always tell the truth to your clients?\nB: Yes, honesty is one of the most important principles I follow.",
+    "A: 고객들에게 항상 진실을 말하나요?\nB: 네, 정직은 제가 따르는 가장 중요한 원칙 중 하나입니다."
+   ],
+   [
+    "A: Why do you refuse to cut corners on this project?\nB: I believe in the principle of doing things the right way from the start.",
+    "A: 왜 이 프로젝트에서 요령을 피우지 않으려 하나요?\nB: 처음부터 올바른 방식으로 일을 처리해야 한다는 원칙을 믿기 때문입니다."
+   ]
+  ],
+  "w|1097|workflow": [
+   [
+    "A: How do you manage your daily tasks so efficiently?\nB: I have developed a specific workflow that keeps me organized.",
+    "A: 어떻게 그렇게 효율적으로 일일 업무를 관리하나요?\nB: 체계적으로 유지할 수 있는 나만의 업무 흐름을 만들었습니다."
+   ],
+   [
+    "A: Are you happy with the current team process?\nB: I think we need to improve our workflow to reduce waiting times.",
+    "A: 현재 팀 업무 처리 방식에 만족하나요?\nB: 대기 시간을 줄이기 위해 업무 흐름을 개선해야 한다고 생각해요."
+   ],
+   [
+    "A: Why is the document approval process taking so long?\nB: Our current workflow is outdated and needs a digital update.",
+    "A: 문서 결재 과정이 왜 이렇게 오래 걸리나요?\nB: 현재의 업무 흐름이 너무 구식이라 디지털 업데이트가 필요합니다."
+   ]
+  ],
+  "w|1098|strategy": [
+   [
+    "A: How are you planning to win the chess match?\nB: My strategy is to control the center of the board early on.",
+    "A: 체스 경기에서 어떻게 이길 계획인가요?\nB: 제 전략은 초반에 보드 중앙을 장악하는 것입니다."
+   ],
+   [
+    "A: Did the marketing campaign go well?\nB: Yes, our new strategy attracted a lot of young customers.",
+    "A: 마케팅 캠페인은 잘 진행되었나요?\nB: 네, 우리의 새로운 전략이 많은 젊은 고객을 끌어들였습니다."
+   ]
+  ],
+  "w|1099|work for": [
+   [
+    "A: Are you still with the same company?\nB: No, I now work for a global publishing firm.",
+    "A: 아직 같은 회사에 다니나요?\nB: 아니요, 지금은 글로벌 출판사를 위해 일하고 있습니다."
+   ],
+   [
+    "A: Who do you work for these days?\nB: I work for a freelance agency that specializes in design.",
+    "A: 요즘은 누구를 위해 일하나요?\nB: 디자인 전문 프리랜서 에이전시에서 일하고 있습니다."
+   ]
+  ],
+  "w|1100|spinach": [
+   [
+    "A: What should I add to this green smoothie?\nB: You should definitely add some fresh spinach for a healthy boost.",
+    "A: 이 녹색 스무디에 무엇을 넣을까요?\nB: 건강을 위해 신선한 시금치를 꼭 넣어보세요."
+   ],
+   [
+    "A: Is spinach good for salads?\nB: Yes, spinach is a great base for almost any vegetable salad.",
+    "A: 시금치가 샐러드에 좋나요?\nB: 네, 시금치는 거의 모든 채소 샐러드의 훌륭한 기본 재료가 됩니다."
+   ]
+  ],
+  "w|1053|owe": [
+   [
+    "A: How much money do I owe you for the coffee?\nB: You owe me 5,000 won, but please don't type 'ㅔㅎㄷ' when you send it via mobile banking.",
+    "A: 커피값으로 너에게 얼마를 줘야 해?\nB: 5천 원이야. 그런데 모바일 뱅킹으로 보낼 때 한글 자판 상태로 'ㅔㅎㄷ'라고 치지 마."
+   ],
+   [
+    "A: Do you still owe me the book you borrowed last month?\nB: I'm so sorry, I totally forgot because my computer keyboard was set to 'ㅔㅎㄷ' and I couldn't type properly.",
+    "A: 지난달에 빌려 간 책 아직 나한테 줘야 하지 않아?\nB: 정말 미안해. 컴퓨터 키보드가 'ㅔㅎㄷ' 상태여서 제대로 타이핑을 못 하는 바람에 깜빡했어."
+   ],
+   [
+    "A: Why do you think he might owe you an apology?\nB: He sent me a message saying 'ㅔㅎㄷ' instead of 'page', which shows he wasn't paying attention at all.",
+    "A: 왜 그가 너에게 사과해야 한다고 생각해?\nB: 그가 'page'라고 써야 할 걸 'ㅔㅎㄷ'라고 보냈더라고. 전혀 신경을 안 썼다는 증거지."
+   ]
+  ],
+  "w|1054|rely on": [
+   [
+    "A: Who do you rely on when you have a difficult problem?\nB: I usually rely on my older brother because he always gives me sound advice.",
+    "A: 어려운 문제가 생기면 누구에게 의지하니?\nB: 나는 보통 우리 형에게 의지해. 형은 항상 좋은 조언을 해주거든."
+   ],
+   [
+    "A: Is it wise to rely on a smartphone for directions all the time?\nB: Not really, sometimes it's better to rely on your own sense of direction.",
+    "A: 항상 길 찾기를 스마트폰에 의지하는 게 현명할까?\nB: 꼭 그렇지는 않아. 가끔은 자신의 방향 감각을 믿는 게 더 나을 때도 있어."
+   ]
+  ],
+  "w|1055|stick to": [
+   [
+    "A: Will you stick to your original plan for the weekend?\nB: Yes, I decided to stick to the schedule regardless of the weather.",
+    "A: 주말에 원래 계획을 고수할 거야?\nB: 응, 날씨와 상관없이 계획을 지키기로 했어."
+   ],
+   [
+    "A: Why is it so hard to stick to a new exercise routine?\nB: It's difficult because you have to stick to it consistently to see any results.",
+    "A: 새로운 운동 루틴을 꾸준히 지키기가 왜 이렇게 힘들까?\nB: 결과를 보려면 꾸준히 지켜야 하기 때문에 어려운 거야."
+   ]
+  ],
+  "w|1056|politely": [
+   [
+    "A: Could you please speak more politely to the customers?\nB: I apologize, I will make sure to speak more politely from now on.",
+    "A: 손님들에게 좀 더 공손하게 말해줄 수 있니?\nB: 죄송합니다. 이제부터는 더 공손하게 말하도록 하겠습니다."
+   ],
+   [
+    "A: Did the manager handle the complaint politely?\nB: Yes, he responded very politely even though the customer was quite angry.",
+    "A: 매니저가 불만 사항을 공손하게 처리했니?\nB: 응, 고객이 꽤 화가 났었는데도 아주 공손하게 응대했어."
+   ],
+   [
+    "A: Is it important to ask for help politely?\nB: Yes, you are much more likely to get help if you ask politely.",
+    "A: 도움을 요청할 때 공손하게 말하는 것이 중요할까?\nB: 응, 공손하게 요청하면 도움을 받을 확률이 훨씬 높아져."
+   ]
+  ],
+  "w|1057|state": [
+   [
+    "A: What is the current state of your project?\nB: It is in a poor state because we ran out of budget.",
+    "A: 프로젝트의 현재 상태는 어때?\nB: 예산이 바닥나서 상태가 좋지 않아."
+   ],
+   [
+    "A: Is the house in a good state to move in?\nB: The interior is in excellent state, so we can move in anytime.",
+    "A: 그 집이 이사하기에 좋은 상태니?\nB: 내부 상태가 아주 훌륭해서 언제든 이사할 수 있어."
+   ]
+  ],
+  "w|1058|fairly": [
+   [
+    "A: Was the test fairly difficult for you?\nB: It was fairly challenging, but I think I managed to pass.",
+    "A: 시험이 너에게 꽤 어려웠니?\nB: 상당히 까다로웠지만, 그래도 합격은 한 것 같아."
+   ],
+   [
+    "A: Do you think the price of this laptop is fairly reasonable?\nB: Yes, it's fairly cheap considering the high performance it offers.",
+    "A: 이 노트북 가격이 상당히 합리적이라고 생각하니?\nB: 응, 제공하는 고성능을 고려하면 꽤 저렴한 편이야."
+   ]
+  ],
+  "w|1059|proof": [
+   [
+    "A: Do you have any proof of purchase for this item?\nB: I have the digital receipt as proof in my email inbox.",
+    "A: 이 물건에 대한 구매 증거가 있니?\nB: 이메일 함에 증거로 쓸 수 있는 전자 영수증이 있어."
+   ],
+   [
+    "A: Is there any scientific proof that this medicine works?\nB: There is no solid proof yet, but many people say it helps.",
+    "A: 이 약이 효과가 있다는 과학적 증거가 있니?\nB: 아직 확실한 증거는 없지만, 많은 사람들이 도움이 된다고 말해."
+   ]
+  ],
+  "w|1060|reluctantly": [
+   [
+    "A: Did he reluctantly accept your suggestion?\nB: He reluctantly agreed, but he still seemed unhappy about it.",
+    "A: 그가 네 제안을 마지못해 받아들였니?\nB: 마지못해 동의는 했지만, 여전히 불만족스러워 보이더라."
+   ],
+   [
+    "A: Why did you reluctantly attend the party?\nB: I reluctantly went because I didn't want to be rude to the host.",
+    "A: 왜 마지못해 파티에 참석했니?\nB: 주최자에게 무례하게 보이고 싶지 않아서 마지못해 갔어."
+   ]
+  ],
+  "w|1061|be in charge of": [
+   [
+    "A: Who is going to be in charge of the event planning?\nB: I will be in charge of the planning, and Min-ji will help me.",
+    "A: 누가 이벤트 기획을 맡을 거야?\nB: 내가 기획을 맡고, 민지가 나를 도와줄 거야."
+   ],
+   [
+    "A: Are you going to be in charge of the presentation tomorrow?\nB: No, John is in charge of it, so you should talk to him.",
+    "A: 내일 발표를 네가 맡을 거니?\nB: 아니, 존이 맡고 있으니까 그 사람한테 이야기해 봐."
+   ]
+  ],
+  "w|1062|ensure": [
+   [
+    "A: Did you ensure that the windows are closed?\nB: I will ensure they are locked before I leave the office.",
+    "A: 창문이 닫혔는지 확실히 확인했니?\nB: 사무실을 떠나기 전에 확실하게 잠겼는지 확인할 거야."
+   ],
+   [
+    "A: How can we ensure the quality of the product?\nB: We must ensure that every single item is inspected thoroughly.",
+    "A: 우리가 어떻게 제품의 품질을 보장할 수 있을까?\nB: 모든 물품이 꼼꼼하게 검사되도록 확실히 해야 해."
+   ]
+  ],
+  "w|1063|stubborn": [
+   [
+    "A: Why is he being so stubborn about his decision?\nB: He is always stubborn when it comes to his own creative ideas.",
+    "A: 왜 그는 자신의 결정에 대해 그렇게 고집을 부릴까?\nB: 그는 자신의 창의적인 아이디어에 대해서는 항상 고집이 세."
+   ],
+   [
+    "A: Do you think I'm too stubborn?\nB: A little bit, but sometimes being stubborn is a good trait.",
+    "A: 내가 너무 고집이 세다고 생각하니?\nB: 조금 그렇긴 하지만, 때로는 고집이 있는 게 좋은 자질이야."
+   ]
+  ],
+  "w|1064|vinegar": [
+   [
+    "A: Do I need to add vinegar to this recipe?\nB: Yes, just a teaspoon of vinegar will make the taste much better.",
+    "A: 이 레시피에 식초를 넣어야 할까?\nB: 응, 식초 딱 한 숟가락만 넣으면 맛이 훨씬 좋아질 거야."
+   ],
+   [
+    "A: Is the white vinegar the same as the apple cider vinegar?\nB: No, they are different, so don't mix up the vinegar bottles.",
+    "A: 화이트 식초랑 사과 식초가 같은 거야?\nB: 아니, 서로 다르니까 식초 병들을 헷갈리지 마."
+   ]
+  ],
+  "w|1065|prefer for": [
+   [
+    "A: Do you prefer a quiet room for your study session?\nB: Yes, I prefer a silent library for better concentration.",
+    "A: 공부 시간을 위해 조용한 방을 선호하세요?\nB: 네, 더 나은 집중을 위해 조용한 도서관을 선호합니다."
+   ],
+   [
+    "A: Which material do you prefer for the new dining table?\nB: I prefer solid oak for its durability and natural look.",
+    "A: 새 식탁을 위해 어떤 재질을 선호하시나요?\nB: 내구성과 자연스러운 외관 때문에 단단한 참나무를 선호해요."
+   ]
+  ],
+  "w|1066|scentless": [
+   [
+    "A: Do you have any shampoo that is scentless?\nB: Yes, this brand is completely scentless and great for sensitive skin.",
+    "A: 향기가 없는 샴푸가 있나요?\nB: 네, 이 브랜드는 완전히 향기가 없고 민감한 피부에 아주 좋아요."
+   ],
+   [
+    "A: Why did you choose this candle instead of the floral one?\nB: I prefer this one because it is scentless and won't bother my allergies.",
+    "A: 왜 꽃향기 나는 것 대신 이 양초를 선택하셨나요?\nB: 이게 향기가 없어서 알레르기를 자극하지 않을 것 같아 선호해요."
+   ],
+   [
+    "A: Is the soap in the guest bathroom scentless?\nB: Yes, it is entirely scentless so that no one gets irritated by strong perfumes.",
+    "A: 손님용 화장실에 있는 비누는 향기가 없나요?\nB: 네, 강한 향수에 아무도 자극받지 않도록 완전히 향기가 없는 것입니다."
+   ]
+  ],
+  "w|1067|attend": [
+   [
+    "A: Will you attend the charity gala this weekend?\nB: I plan to attend the event to support the local foundation.",
+    "A: 이번 주말 자선 행사에 참석하실 건가요?\nB: 지역 재단을 후원하기 위해 그 행사에 참석할 계획입니다."
+   ],
+   [
+    "A: How many employees are expected to attend the workshop?\nB: About fifty staff members will attend to learn the new software.",
+    "A: 워크숍에 몇 명의 직원이 참석할 것으로 예상되나요?\nB: 약 50명의 직원이 새 소프트웨어를 배우기 위해 참석할 것입니다."
+   ]
+  ],
+  "w|1068|firm": [
+   [
+    "A: Is the mattress too soft for your back?\nB: Actually, I prefer a very firm mattress to keep my spine straight.",
+    "A: 매트리스가 허리에 너무 푹신한가요?\nB: 사실 저는 척추를 곧게 유지하기 위해 매우 단단한 매트리스를 선호해요."
+   ],
+   [
+    "A: Do you like the texture of this sourdough bread?\nB: Yes, the crust is perfectly firm and the inside is nice and chewy.",
+    "A: 이 사워도우 빵의 식감이 마음에 드시나요?\nB: 네, 겉은 완벽하게 단단하고 속은 아주 쫄깃하네요."
+   ]
+  ],
+  "w|1069|exporing": [
+   [
+    "A: Are you interested in exploring the deep forest?\nB: I love exploring the forest because it helps me de-stress.",
+    "A: 깊은 숲을 탐험하는 것에 관심이 있나요?\nB: 저는 숲을 탐험하는 것을 좋아하는데, 스트레스를 푸는 데 도움이 되기 때문이에요."
+   ],
+   [
+    "A: Is your brother still exploring his career options?\nB: He is currently exploring various fields to find his true passion.",
+    "A: 당신 남동생은 여전히 진로를 탐험하고 있나요?\nB: 그는 자신의 진정한 열정을 찾기 위해 현재 다양한 분야를 탐험 중이에요."
+   ],
+   [
+    "A: Are you exploring the old ruins in the city?\nB: Yes, we are exploring the ruins to learn more about history.",
+    "A: 도시의 고대 유적지를 탐험하고 계신가요?\nB: 네, 역사에 대해 더 배우기 위해 유적지를 탐험하고 있습니다."
+   ]
+  ],
+  "w|1070|export": [
+   [
+    "A: Does your factory export cars to Europe?\nB: We export many vehicles to Europe and South America every month.",
+    "A: 당신 공장은 유럽으로 자동차를 수출하나요?\nB: 우리는 매달 유럽과 남미로 많은 차량을 수출합니다."
+   ],
+   [
+    "A: Why does the company export its goods so cheaply?\nB: They export in large quantities to gain a competitive edge.",
+    "A: 그 회사는 왜 제품을 그렇게 싸게 수출하나요?\nB: 경쟁 우위를 확보하기 위해 대량으로 수출하는 것입니다."
+   ]
+  ],
+  "w|1071|toward": [
+   [
+    "A: Are you walking toward the park?\nB: Yes, I am heading toward the park for a quick jog.",
+    "A: 공원 쪽으로 걷고 계신가요?\nB: 네, 가벼운 조깅을 하러 공원 쪽으로 향하고 있습니다."
+   ],
+   [
+    "A: Should we move toward the gate to board the plane?\nB: Let's walk toward the gate now so we don't miss our flight.",
+    "A: 비행기를 타기 위해 탑승구 쪽으로 이동해야 할까요?\nB: 비행기를 놓치지 않도록 지금 탑승구 쪽으로 걸어가죠."
+   ],
+   [
+    "A: Did you see the cat running toward the alley?\nB: Yes, it ran quickly toward the dark alley behind the building.",
+    "A: 고양이가 골목 쪽으로 달려가는 것을 보셨나요?\nB: 네, 건물 뒤 어두운 골목 쪽으로 빠르게 달려갔어요."
+   ]
+  ],
+  "w|1072|let go of": [
+   [
+    "A: Why is it so hard to let go of old memories?\nB: Sometimes it is painful to let go of the past, but it is necessary.",
+    "A: 왜 오래된 기억을 놓아주기가 그렇게 어려울까요?\nB: 가끔은 과거를 놓아주는 것이 고통스럽지만, 그것은 필요한 일이에요."
+   ],
+   [
+    "A: Did you finally let go of the rope?\nB: I had to let go of the rope when my hands started to slip.",
+    "A: 결국 밧줄을 놓으셨나요?\nB: 손이 미끄러지기 시작했을 때 밧줄을 놓아야만 했어요."
+   ],
+   [
+    "A: Are you ready to let go of your anger?\nB: Yes, I want to let go of my anger to feel peaceful again.",
+    "A: 화난 마음을 내려놓을 준비가 되었나요?\nB: 네, 다시 평온함을 느끼기 위해 화를 내려놓고 싶어요."
+   ]
+  ],
+  "w|1073|take times to": [
+   [
+    "A: Do you take time to exercise every morning?\nB: I always take time to stretch before starting my work.",
+    "A: 매일 아침 운동할 시간을 내시나요?\nB: 일을 시작하기 전에 항상 스트레칭할 시간을 냅니다."
+   ],
+   [
+    "A: Can you take time to help me with this report?\nB: I will take time to review it after I finish my lunch.",
+    "A: 이 보고서를 도와줄 시간을 내줄 수 있나요?\nB: 점심 식사를 마친 후에 검토할 시간을 낼게요."
+   ],
+   [
+    "A: Should we take time to plan our vacation properly?\nB: Yes, let's take time to research the best places to visit.",
+    "A: 휴가 계획을 제대로 세울 시간을 가져야 할까요?\nB: 네, 방문하기 가장 좋은 곳들을 조사할 시간을 가집시다."
+   ]
+  ],
+  "w|1074|initial phase": [
+   [
+    "A: Is the construction project in the initial phase?\nB: Yes, we are currently in the initial phase of drafting the blueprints.",
+    "A: 건설 프로젝트가 초기 단계인가요?\nB: 네, 현재 설계도를 그리는 초기 단계에 있습니다."
+   ],
+   [
+    "A: Are you nervous about the initial phase of the training?\nB: The initial phase is always tough, but I am learning a lot.",
+    "A: 훈련의 초기 단계에 대해 긴장되시나요?\nB: 초기 단계는 항상 힘들지만, 많은 것을 배우고 있어요."
+   ]
+  ],
+  "w|1075|initial": [
+   [
+    "A: What was your initial thought about the movie?\nB: My initial impression was that the plot was a bit confusing.",
+    "A: 그 영화에 대한 당신의 초기 생각은 어땠나요?\nB: 제 초기 인상은 줄거리가 약간 혼란스럽다는 것이었어요."
+   ],
+   [
+    "A: Did you get the initial results from the lab?\nB: Yes, the initial report shows that everything is normal.",
+    "A: 연구소로부터 초기 결과를 받으셨나요?\nB: 네, 초기 보고서에 따르면 모든 것이 정상입니다."
+   ]
+  ],
+  "w|1076|phase": [
+   [
+    "A: Which phase of the project are you working on now?\nB: I am currently focused on the final phase of the development.",
+    "A: 지금 프로젝트의 어느 단계를 작업 중인가요?\nB: 저는 현재 개발의 마지막 단계에 집중하고 있습니다."
+   ],
+   [
+    "A: Is the second phase of the experiment ready to begin?\nB: We are preparing for the second phase to start next Monday.",
+    "A: 실험의 두 번째 단계를 시작할 준비가 되었나요?\nB: 다음 주 월요일에 시작할 두 번째 단계를 준비 중입니다."
+   ]
+  ],
+  "w|1077|send it over": [
+   [
+    "A: Do you have the final draft ready?\nB: Yes, I will send it over to your inbox within five minutes.",
+    "A: 최종 원고 준비됐나요?\nB: 네, 5분 안에 이메일로 보내드릴게요."
+   ],
+   [
+    "A: Can you share the schedule for next week?\nB: Sure, I'll send it over as soon as I finish updating it.",
+    "A: 다음 주 일정을 공유해 줄 수 있나요?\nB: 물론이죠, 업데이트를 마치는 대로 바로 보내드릴게요."
+   ]
+  ],
+  "w|1078|sprained": [
+   [
+    "A: Why are you limping today?\nB: I accidentally sprained my ankle while playing basketball yesterday.",
+    "A: 오늘 왜 절뚝거려요?\nB: 어제 농구하다가 실수로 발목을 삐었어요."
+   ],
+   [
+    "A: Is your wrist feeling any better?\nB: Not really, I think I sprained it when I fell down the stairs.",
+    "A: 손목은 좀 나아졌나요?\nB: 아니요, 계단에서 넘어질 때 삔 것 같아요."
+   ],
+   [
+    "A: What happened to your arm during the match?\nB: I sprained my wrist while trying to catch the ball.",
+    "A: 경기 중에 팔에 무슨 일이 있었나요?\nB: 공을 잡으려다가 손목을 삐었어요."
+   ]
+  ],
+  "w|1079|sprain": [
+   [
+    "A: Does your knee still hurt?\nB: Yes, it is a bad sprain, so the doctor told me to rest for a week.",
+    "A: 무릎은 아직도 아픈가요?\nB: 네, 심하게 삔 거라 의사 선생님이 일주일간 쉬라고 하셨어요."
+   ],
+   [
+    "A: Are you going to join the hiking trip?\nB: I don't think so, because I have a bad sprain on my ankle.",
+    "A: 하이킹 여행에 갈 건가요?\nB: 발목을 심하게 삐어서 못 갈 것 같아요."
+   ],
+   [
+    "A: How did you get that injury?\nB: I got a sprain while jogging in the park this morning.",
+    "A: 그 부상은 어떻게 입은 건가요?\nB: 오늘 아침 공원에서 조깅하다가 삐었어요."
+   ]
+  ],
+  "w|1080|for a second": [
+   [
+    "A: Could you look after my bag for a second?\nB: No problem, I will keep an eye on it while you are away.",
+    "A: 잠시만 제 가방 좀 봐줄 수 있나요?\nB: 문제없어요, 당신이 없는 동안 잘 보고 있을게요."
+   ],
+   [
+    "A: Can you stop talking for a second?\nB: Sorry, I didn't realize I was being too loud.",
+    "A: 잠시만 말 좀 멈춰줄래요?\nB: 미안해요, 너무 시끄럽게 굴고 있는 줄 몰랐네요."
+   ]
+  ],
+  "w|1081|ergonomic": [
+   [
+    "A: Why is your office chair so special?\nB: It is an ergonomic chair designed to support my back during long work hours.",
+    "A: 당신의 사무용 의자는 왜 그렇게 특별한가요?\nB: 긴 업무 시간 동안 허리를 받쳐주도록 설계된 인체공학적 의자예요."
+   ],
+   [
+    "A: Are you satisfied with your new mouse?\nB: Yes, it has an ergonomic design that makes my hand feel much more comfortable.",
+    "A: 새 마우스는 만족하나요?\nB: 네, 인체공학적인 디자인이라 손이 훨씬 편안해요."
+   ],
+   [
+    "A: What should I look for when buying office furniture?\nB: You should prioritize ergonomic features to prevent long-term health issues.",
+    "A: 사무용 가구를 살 때 무엇을 봐야 할까요?\nB: 장기적인 건강 문제를 예방하기 위해 인체공학적 기능을 우선시해야 해요."
+   ]
+  ],
+  "w|1082|altere": [
+   [
+    "A: Is this coat too big for you?\nB: Yes, I need to get it altered to fit my shoulders better.",
+    "A: 이 코트가 당신에게 너무 큰가요?\nB: 네, 어깨에 더 잘 맞게 수선해야 할 것 같아요."
+   ],
+   [
+    "A: Can we change the plan for our meeting?\nB: I think we should have the schedule altered to include more time for discussion.",
+    "A: 회의 계획을 변경할 수 있을까요?\nB: 토론 시간을 더 확보할 수 있도록 일정을 수정하는 게 좋겠어요."
+   ],
+   [
+    "A: Why are you taking these pants to the dry cleaner?\nB: They are too long, so I am getting them altered.",
+    "A: 왜 이 바지를 세탁소로 가져가나요?\nB: 너무 길어서 수선하려고요."
+   ]
+  ],
+  "w|1083|polite": [
+   [
+    "A: Do you think he will accept our invitation?\nB: He is very polite, so he will definitely respond to us kindly.",
+    "A: 그가 우리의 초대를 받아들일까요?\nB: 그는 매우 예의 바른 사람이라 분명 친절하게 답해줄 거예요."
+   ],
+   [
+    "A: How was your interaction with the new client?\nB: It went well; he was very polite throughout the entire meeting.",
+    "A: 새 고객과의 대화는 어땠나요?\nB: 잘 됐어요. 미팅 내내 매우 예의 바르게 행동하더군요."
+   ]
+  ],
+  "w|1084|be ready to": [
+   [
+    "A: Are we ready to start the presentation?\nB: Yes, I am ready to begin whenever you give the signal.",
+    "A: 발표를 시작할 준비가 됐나요?\nB: 네, 신호를 주시면 언제든 시작할 준비가 됐어요."
+   ],
+   [
+    "A: Is the dinner ready to be served?\nB: Almost, I just need a minute to set the table.",
+    "A: 저녁 식사 대접할 준비가 됐나요?\nB: 거의 다 됐어요, 식탁 세팅할 시간만 조금 주세요."
+   ]
+  ],
+  "w|1085|take on the responsibility": [
+   [
+    "A: Are you sure you want to lead this department?\nB: Yes, I am fully prepared to take on the responsibility.",
+    "A: 정말로 이 부서를 이끌고 싶나요?\nB: 네, 책임을 떠맡을 준비가 완전히 됐습니다."
+   ],
+   [
+    "A: Do you feel overwhelmed by the new promotion?\nB: A little, but I am honored to take on the responsibility of this role.",
+    "A: 승진 때문에 부담스럽지 않나요?\nB: 조금은요, 하지만 이 역할의 책임을 맡게 되어 영광입니다."
+   ]
+  ],
+  "w|1086|be prepared for": [
+   [
+    "A: Have you made any plans for the winter?\nB: Yes, I am prepared for the cold weather with plenty of warm clothes.",
+    "A: 겨울을 위한 계획을 세웠나요?\nB: 네, 따뜻한 옷을 많이 준비해서 추위에 대비하고 있어요."
+   ],
+   [
+    "A: Is the company ready for the upcoming audit?\nB: We are well prepared for any questions the auditors might have.",
+    "A: 회사가 다가오는 감사에 대비가 됐나요?\nB: 감사관들이 가질 법한 모든 질문에 잘 대비하고 있습니다."
+   ],
+   [
+    "A: Are you ready for the final exam tomorrow?\nB: I am prepared for it because I studied all night.",
+    "A: 내일 기말고사 준비됐나요?\nB: 밤새 공부해서 시험에 대비가 됐어요."
+   ]
+  ],
+  "w|1087|treatment": [
+   [
+    "A: What kind of medical care do you need?\nB: I need a specific treatment for my skin condition.",
+    "A: 어떤 의료 처치가 필요한가요?\nB: 제 피부 상태에 맞는 특별한 치료가 필요해요."
+   ],
+   [
+    "A: Are you feeling better after the session?\nB: Yes, the physical therapy treatment really helped my back pain.",
+    "A: 세션 후에 좀 나아졌나요?\nB: 네, 물리 치료 처치가 제 요통에 정말 도움이 됐어요."
+   ]
+  ],
+  "w|1088|unstable": [
+   [
+    "A: Why are you moving the bookshelf away from the wall?\nB: It feels unstable and I am worried it might fall over.",
+    "A: 왜 책장을 벽에서 옮기고 있나요?\nB: 불안정하게 느껴져서 넘어질까 봐 걱정돼요."
+   ],
+   [
+    "A: Do you think the table is safe to use?\nB: No, it is very unstable, so we should fix the legs.",
+    "A: 이 테이블을 써도 안전할까요?\nB: 아니요, 너무 불안정해서 다리를 고쳐야겠어요."
+   ],
+   [
+    "A: How is your health lately?\nB: My blood pressure has been quite unstable, so I need to see a doctor.",
+    "A: 최근 건강은 어떤가요?\nB: 혈압이 꽤 불안정해서 의사를 만나봐야 할 것 같아요."
+   ]
+  ],
+  "w|1113|bothering": [
+   [
+    "A: Is the bright light from the window bothering you?\nB: Yes, it is a bit bothering while I am trying to work.",
+    "A: 창문에서 들어오는 밝은 빛이 당신을 방해하나요?\nB: 네, 일하려고 할 때 좀 방해가 되네요."
+   ],
+   [
+    "A: Are the noisy construction sounds bothering you today?\nB: They are bothering me so much that I cannot focus on my reading.",
+    "A: 오늘 시끄러운 공사 소리가 당신을 괴롭히나요?\nB: 너무 괴롭혀서 독서에 집중할 수가 없어요."
+   ],
+   [
+    "A: Is my constant typing bothering you during the exam?\nB: It is not bothering me at all, so don't worry about it.",
+    "A: 시험 보는 동안 내 계속되는 타자 소리가 당신을 방해하나요?\nB: 전혀 방해되지 않으니 걱정 마세요."
+   ]
+  ],
+  "w|1114|normal": [
+   [
+    "A: Do you think it is normal to feel nervous before an interview?\nB: It is completely normal to feel that way.",
+    "A: 면접 전에 긴장하는 것이 정상이라고 생각하세요?\nB: 그렇게 느끼는 건 아주 정상이에요."
+   ],
+   [
+    "A: Is it normal for the apartment to be this quiet at night?\nB: It is quite normal for this neighborhood, actually.",
+    "A: 밤에 아파트가 이렇게 조용한 게 정상인가요?\nB: 실은 이 동네에서는 꽤 정상적인 일이에요."
+   ]
+  ],
+  "w|1115|Have you seen": [
+   [
+    "A: Have you seen my blue jacket in the living room?\nB: Yes, I have seen it hanging on the coat rack.",
+    "A: 거실에서 내 파란 재킷 본 적 있니?\nB: 응, 옷걸이에 걸려 있는 거 봤어."
+   ],
+   [
+    "A: Have you seen the latest episode of that show?\nB: I haven't seen it yet, but I plan to watch it tonight.",
+    "A: 그 프로그램 최신 에피소드 본 적 있니?\nB: 아직 못 봤지만 오늘 밤에 볼 생각이야."
+   ]
+  ],
+  "w|1116|strave": [
+   [
+    "A: Why are you looking in the fridge so often?\nB: I am absolutely starving because I skipped breakfast.",
+    "A: 왜 그렇게 냉장고를 자주 들여다봐?\nB: 아침을 걸러서 배가 너무 고파서 그래."
+   ],
+   [
+    "A: Shall we order some pizza for dinner?\nB: Yes, please! I am starving right now.",
+    "A: 저녁으로 피자 시킬까?\nB: 응, 좋아! 지금 배고파 죽겠어."
+   ],
+   [
+    "A: How long have you been without food?\nB: I have been starving since yesterday afternoon.",
+    "A: 얼마나 오랫동안 음식을 못 먹었어?\nB: 어제 오후부터 굶주린 상태야."
+   ]
+  ],
+  "w|1117|be starving after": [
+   [
+    "A: Are you ready to eat after that long hike?\nB: I am starving after that climb, so let's find a restaurant.",
+    "A: 긴 등산 후에 밥 먹을 준비 됐어?\nB: 등산 후에 너무 배고파서 빨리 식당 찾자."
+   ],
+   [
+    "A: Do you want a snack after the swimming lesson?\nB: I am starving after the lesson, so I would love one.",
+    "A: 수영 수업 끝나고 간식 먹을래?\nB: 수업 후에 너무 배고파서 좋지."
+   ],
+   [
+    "A: Are you hungry after your gym session?\nB: I am definitely starving after a heavy workout like that.",
+    "A: 운동 끝나고 배고파?\nB: 그런 고강도 운동 후에는 당연히 배고파 죽겠어."
+   ]
+  ],
+  "w|1118|be starved": [
+   [
+    "A: Do you want to grab lunch now?\nB: Yes, I am starved since I haven't eaten all day.",
+    "A: 지금 점심 먹으러 갈래?\nB: 응, 하루 종일 못 먹어서 굶주린 상태야."
+   ],
+   [
+    "A: Why are you eating so quickly?\nB: I am starved because I missed my lunch meeting.",
+    "A: 왜 그렇게 급하게 먹어?\nB: 점심 미팅을 놓쳐서 배고파 죽겠거든."
+   ],
+   [
+    "A: Shall we go to the buffet?\nB: That sounds great, I am starved.",
+    "A: 뷔페 갈까?\nB: 좋은 생각이야, 배고파 죽겠어."
+   ]
+  ],
+  "w|1119|be hooked": [
+   [
+    "A: Did you enjoy the mystery novel I lent you?\nB: Yes, I am hooked on the story already.",
+    "A: 내가 빌려준 추리 소설 재밌게 읽었어?\nB: 응, 벌써 이야기에 푹 빠졌어."
+   ],
+   [
+    "A: Are you still playing that mobile game?\nB: I am totally hooked on it these days.",
+    "A: 아직도 그 모바일 게임 하니?\nB: 요즘 거기에 완전히 빠져 있어."
+   ]
+  ],
+  "w|1120|announcement": [
+   [
+    "A: Did you hear the announcement about the holiday?\nB: I missed the announcement, what did they say?",
+    "A: 휴일에 관한 발표 들었어?\nB: 발표를 놓쳤는데, 뭐라고 하던데?"
+   ],
+   [
+    "A: When will the company make an announcement?\nB: They will make an announcement by the end of the day.",
+    "A: 회사가 언제 발표를 할까?\nB: 오늘 일과가 끝나기 전에는 발표가 있을 거야."
+   ],
+   [
+    "A: Is there an announcement about the train delay?\nB: Yes, there was an announcement that it is delayed by an hour.",
+    "A: 기차 지연에 관한 안내 방송이 있었나요?\nB: 네, 1시간 지연된다는 안내 방송이 있었어요."
+   ]
+  ],
+  "w|1121|storage room": [
+   [
+    "A: Where should I keep these cardboard boxes?\nB: You can leave them in the storage room.",
+    "A: 이 골판지 상자들 어디에 둘까?\nB: 창고에 두면 돼."
+   ],
+   [
+    "A: Is the storage room open right now?\nB: No, the storage room is locked until the manager arrives.",
+    "A: 지금 창고 열려 있어?\nB: 아니, 관리자 오기 전까지는 창고가 잠겨 있어."
+   ]
+  ],
+  "w|1122|supplies": [
+   [
+    "A: Do we need to buy more printer paper?\nB: Yes, our office supplies are running out.",
+    "A: 프린터 용지 더 사야 할까?\nB: 응, 사무용품이 다 떨어져 가고 있어."
+   ],
+   [
+    "A: Who is in charge of ordering supplies?\nB: The office manager handles all the supplies.",
+    "A: 누가 비품 주문 담당이야?\nB: 사무실 관리자가 모든 비품을 처리해."
+   ]
+  ],
+  "w|1123|assembly": [
+   [
+    "A: Is the assembly of this cabinet difficult?\nB: The assembly is easy if you follow the guide.",
+    "A: 이 수납장 조립하는 거 어려워?\nB: 설명서대로만 하면 조립은 쉬워."
+   ],
+   [
+    "A: How long will the assembly take for the chair?\nB: It should be a quick assembly, maybe ten minutes.",
+    "A: 의자 조립하는 데 얼마나 걸릴까?\nB: 아마 10분 정도면 빠르게 조립될 거야."
+   ]
+  ],
+  "w|1124|scatter": [
+   [
+    "A: Should I arrange the flowers in a bunch?\nB: No, it looks better if you scatter them in the vase.",
+    "A: 꽃들을 다발로 꽂을까?\nB: 아니, 꽃병에 흩뿌리듯 꽂는 게 더 예뻐 보여."
+   ],
+   [
+    "A: How should I put the salt on the steak?\nB: Scatter the salt lightly over the meat.",
+    "A: 스테이크에 소금을 어떻게 뿌릴까?\nB: 고기 위에 소금을 가볍게 흩뿌려."
+   ]
+  ],
+  "w|1137|scatter A from B": [
+   [
+    "A: How should I spread the bird seeds?\nB: Please scatter the seeds from the balcony to the garden below.",
+    "A: 새 모이를 어떻게 뿌릴까요?\nB: 발코니에서 아래 정원으로 씨앗을 흩뿌려 주세요."
+   ]
+  ],
+  "w|1138|disperse A from B": [
+   [
+    "A: How did the security team handle the crowd?\nB: They had to disperse the visitors from the lobby quickly.",
+    "A: 보안팀이 군중을 어떻게 처리했나요?\nB: 로비에서 방문객들을 신속하게 흩어지게 해야 했습니다."
+   ],
+   [
+    "A: Why is the smoke clearing up?\nB: The strong wind helped disperse the fog from the valley.",
+    "A: 왜 연기가 걷히고 있나요?\nB: 강한 바람이 계곡의 안개를 흩어지게 하는 데 도움을 주었습니다."
+   ],
+   [
+    "A: What happened after the concert ended?\nB: The staff helped disperse the audience from the stadium efficiently.",
+    "A: 콘서트가 끝난 후 무슨 일이 있었나요?\nB: 직원들이 경기장에서 관객들을 효율적으로 흩어지게 도왔습니다."
+   ]
+  ],
+  "w|1139|gather A at B": [
+   [
+    "A: Do you need help with the donation boxes?\nB: Yes, please gather them at the community center lobby.",
+    "A: 기부 상자들을 정리하는 데 도움이 필요하세요?\nB: 네, 커뮤니티 센터 로비에 그것들을 모아 주세요."
+   ],
+   [
+    "A: Should I bring the team members together?\nB: Yes, gather them at the cafeteria for lunch.",
+    "A: 팀원들을 한데 모을까요?\nB: 네, 점심을 먹으러 구내식당에 그들을 모아 주세요."
+   ]
+  ],
+  "w|1140|gather A to B": [
+   [
+    "A: Where do you want these files?\nB: Please gather the files to my desk by this afternoon.",
+    "A: 이 파일들을 어디에 둘까요?\nB: 오늘 오후까지 제 책상으로 파일들을 모아 주세요."
+   ],
+   [
+    "A: Should I collect the scattered toys?\nB: Yes, gather them to the toy box in the corner.",
+    "A: 흩어진 장난감들을 수거할까요?\nB: 네, 구석에 있는 장난감 상자로 그것들을 모아 주세요."
+   ],
+   [
+    "A: Who is responsible for the stray papers?\nB: I will gather them to the recycling bin later.",
+    "A: 흩어진 종이들은 누가 책임지나요?\nB: 나중에 재활용 쓰레기통으로 그것들을 모아 둘게요."
+   ]
+  ],
+  "w|1141|commence": [
+   [
+    "A: When does the morning meeting start?\nB: The meeting will commence at exactly 9 o'clock.",
+    "A: 아침 회의는 언제 시작하나요?\nB: 회의는 9시 정각에 시작할 것입니다."
+   ],
+   [
+    "A: Are the rehearsals finished?\nB: No, the main performance will commence in an hour.",
+    "A: 리허설이 끝났나요?\nB: 아니요, 본 공연은 한 시간 후에 시작될 것입니다."
+   ]
+  ],
+  "w|1142|launch": [
+   [
+    "A: Is the company releasing anything new?\nB: Yes, they plan to launch a new smartphone next month.",
+    "A: 회사가 새로운 것을 출시하나요?\nB: 네, 다음 달에 새 스마트폰을 출시할 계획입니다."
+   ],
+   [
+    "A: Did you see the marketing campaign?\nB: It looks like they are ready to launch the service nationwide.",
+    "A: 마케팅 캠페인을 보셨나요?\nB: 전국적으로 서비스를 출시할 준비가 된 것 같네요."
+   ]
+  ],
+  "w|1143|board": [
+   [
+    "A: What is this wooden material for?\nB: We are using each board to build a new fence.",
+    "A: 이 나무 재료는 무엇을 위한 것인가요?\nB: 새 울타리를 만들기 위해 각각의 판자를 사용하고 있습니다."
+   ],
+   [
+    "A: Did you finish the floor repairs?\nB: I still need to replace one broken board near the door.",
+    "A: 바닥 수리를 마쳤나요?\nB: 문 근처에 있는 부서진 판자 하나를 아직 교체해야 합니다."
+   ]
+  ],
+  "w|1144|conclude": [
+   [
+    "A: What did the committee decide?\nB: They could not conclude the discussion without more data.",
+    "A: 위원회가 어떤 결정을 내렸나요?\nB: 더 많은 데이터 없이는 토론의 결론을 내릴 수 없었습니다."
+   ],
+   [
+    "A: Are you ready to finish the report?\nB: I need to conclude my analysis before writing the final summary.",
+    "A: 보고서를 끝낼 준비가 되었나요?\nB: 최종 요약을 작성하기 전에 분석의 결론을 내려야 합니다."
+   ]
+  ],
+  "w|1145|disembark": [
+   [
+    "A: Is it time to get off the train?\nB: We will disembark at the next station.",
+    "A: 기차에서 내릴 시간인가요?\nB: 다음 역에서 내릴 것입니다."
+   ],
+   [
+    "A: Why are the passengers standing in line?\nB: They are waiting to disembark the cruise ship.",
+    "A: 왜 승객들이 줄을 서 있나요?\nB: 유람선에서 내리려고 기다리는 중입니다."
+   ]
+  ],
+  "w|1146|for a moment": [
+   [
+    "A: Can you help me with this heavy box?\nB: Sure, I can hold it for a moment.",
+    "A: 이 무거운 상자를 좀 도와줄 수 있나요?\nB: 물론이죠, 잠시 동안 들고 있을 수 있어요."
+   ],
+   [
+    "A: Are you busy right now?\nB: I am working, but I can talk for a moment.",
+    "A: 지금 바쁘신가요?\nB: 일하는 중이지만 잠시 동안은 이야기할 수 있어요."
+   ]
+  ],
+  "w|1147|briefly": [
+   [
+    "A: Can you explain the plan?\nB: I will briefly outline the strategy for the project.",
+    "A: 계획을 설명해 줄 수 있나요?\nB: 프로젝트 전략을 잠시 설명해 드리겠습니다."
+   ],
+   [
+    "A: Did the boss say anything about the changes?\nB: He briefly mentioned that there might be some shifts in schedule.",
+    "A: 상사가 변경 사항에 대해 말했나요?\nB: 그는 일정에 약간의 변동이 있을 수 있다고 잠시 언급했습니다."
+   ]
+  ],
+  "w|1148|for a bit": [
+   [
+    "A: Can you stay here with me?\nB: I can stay for a bit, but then I have to go.",
+    "A: 여기 저랑 같이 있을 수 있나요?\nB: 잠시 동안은 있을 수 있지만, 그 후에는 가봐야 해요."
+   ],
+   [
+    "A: Do you have time to chat?\nB: Let's sit down for a bit and grab some coffee.",
+    "A: 이야기할 시간 있나요?\nB: 잠시 동안 앉아서 커피나 한잔해요."
+   ],
+   [
+    "A: Will the rain stop soon?\nB: It looks like it will only rain for a bit.",
+    "A: 비가 곧 그칠까요?\nB: 잠시 동안만 비가 올 것 같네요."
+   ]
+  ],
+  "w|1125|journey": [
+   [
+    "A: Did you enjoy your journey across Europe?\nB: Yes, the journey was an unforgettable experience filled with beautiful scenery.",
+    "A: 유럽을 가로지르는 여행은 즐거웠니?\nB: 응, 그 여행은 아름다운 풍경으로 가득 찬 잊지 못할 경험이었어."
+   ],
+   [
+    "A: How long did your journey take to get here?\nB: The journey took about six hours because of the heavy traffic.",
+    "A: 여기까지 오는 데 여행 시간이 얼마나 걸렸니?\nB: 교통 체증 때문에 여행 시간이 6시간 정도 걸렸어."
+   ]
+  ],
+  "w|1126|property": [
+   [
+    "A: Have you considered investing in real estate property?\nB: Yes, I am looking for a rental property to increase my assets.",
+    "A: 부동산 재산에 투자하는 것을 고려해 본 적 있니?\nB: 응, 내 자산을 늘리기 위해 임대용 재산을 찾고 있어."
+   ],
+   [
+    "A: Is this valuable item your personal property?\nB: Actually, this watch is my family's property passed down from my grandfather.",
+    "A: 이 귀중한 물건이 너의 개인 소유물이니?\nB: 사실, 이 시계는 할아버지로부터 물려받은 우리 가족의 소유물이야."
+   ]
+  ],
+  "w|1127|stable": [
+   [
+    "A: Do you think the economy will remain stable this year?\nB: It is hard to say, but experts hope the market stays stable.",
+    "A: 올해 경제가 안정적일 것이라고 생각하니?\nB: 말하기 어렵지만, 전문가들은 시장이 안정적으로 유지되기를 바라고 있어."
+   ],
+   [
+    "A: Is your internet connection stable enough for the video call?\nB: Yes, my connection is very stable today, so we should be fine.",
+    "A: 영상 통화를 하기에 인터넷 연결이 충분히 안정적이니?\nB: 응, 오늘은 연결 상태가 매우 안정적이라서 괜찮을 거야."
+   ]
+  ],
+  "w|1128|messy": [
+   [
+    "A: Why is your desk so messy today?\nB: I have been working on a big project and everything ended up messy.",
+    "A: 오늘 왜 네 책상이 이렇게 지저분하니?\nB: 큰 프로젝트를 진행 중이라 모든 게 엉망이 되어버렸어."
+   ],
+   [
+    "A: Does your cat make the living room messy?\nB: Yes, she loves to play with toys and keeps the place messy all day.",
+    "A: 고양이가 거실을 지저분하게 만드니?\nB: 응, 걔는 장난감 가지고 노는 걸 좋아해서 하루 종일 거실을 엉망으로 만들어."
+   ],
+   [
+    "A: Is it okay if I leave the kitchen messy for a while?\nB: Please don't, because I don't like it when the house is messy.",
+    "A: 부엌을 잠시 지저분한 상태로 둬도 될까?\nB: 제발 그러지 마, 난 집이 지저분한 걸 좋아하지 않거든."
+   ]
+  ],
+  "w|1129|overwhelming": [
+   [
+    "A: Is the workload at your new school overwhelming?\nB: It is quite overwhelming because I have many assignments to submit.",
+    "A: 새 학교의 업무량이 압도적으로 많니?\nB: 제출해야 할 과제가 많아서 꽤 압도적이야."
+   ]
+  ],
+  "w|1130|complex": [
+   [
+    "A: Do you find the new tax law to be complex?\nB: Yes, it is very complex and I need a professional to explain it.",
+    "A: 새로운 세법이 복잡하다고 생각하니?\nB: 응, 너무 복잡해서 전문가가 설명해 줘야 할 것 같아."
+   ],
+   [
+    "A: Why is this game's storyline so complex?\nB: The developers made it complex to keep the players interested.",
+    "A: 이 게임의 줄거리는 왜 이렇게 복잡하니?\nB: 개발자들이 플레이어들의 흥미를 유지하려고 복잡하게 만들었대."
+   ]
+  ],
+  "w|1131|sharp": [
+   [
+    "A: Could you sharpen this pencil for me because it is not sharp?\nB: Sure, I will use this sharpener to make the tip sharp again.",
+    "A: 이 연필이 날카롭지 않으니 깎아줄 수 있니?\nB: 물론이지, 연필깎이를 사용해서 끝을 다시 날카롭게 만들어 줄게."
+   ],
+   [
+    "A: Did you see that sharp turn on the road?\nB: Yes, it was a very sharp curve and I had to slow down.",
+    "A: 길에서 그 급커브를 봤니?\nB: 응, 아주 날카로운 커브길이라 속도를 줄여야 했어."
+   ],
+   [
+    "A: Is this tool sharp enough to cut the rope?\nB: No, it is not sharp at all, so please find another one.",
+    "A: 이 도구가 밧줄을 자를 만큼 날카롭니?\nB: 아니, 전혀 날카롭지 않으니 다른 걸 찾아봐."
+   ]
+  ],
+  "w|1132|discussion": [
+   [
+    "A: Can we have a discussion about the budget?\nB: I am free now, so let's start the discussion immediately.",
+    "A: 예산에 대해 논의할 수 있을까?\nB: 지금 한가하니까 바로 논의를 시작하자."
+   ],
+   [
+    "A: Was the group discussion helpful for your project?\nB: Yes, the discussion gave me many new ideas.",
+    "A: 그룹 논의가 프로젝트에 도움이 되었니?\nB: 응, 그 논의 덕분에 새로운 아이디어를 많이 얻었어."
+   ],
+   [
+    "A: Are you ready for the board discussion tomorrow?\nB: I am preparing my notes for the discussion right now.",
+    "A: 내일 이사회 논의 준비는 됐니?\nB: 지금 논의를 위한 메모를 준비하고 있어."
+   ]
+  ],
+  "w|1133|past midnight": [
+   [
+    "A: Why are you still awake when it is past midnight?\nB: I have a deadline tomorrow, so I have been working past midnight.",
+    "A: 자정이 지났는데 왜 아직 안 자니?\nB: 내일 마감이라 자정이 넘어서까지 일하고 있었어."
+   ],
+   [
+    "A: Is it common for you to stay up past midnight?\nB: No, I usually go to bed long before it is past midnight.",
+    "A: 자정이 넘어서까지 깨어 있는 게 흔한 일이니?\nB: 아니, 보통은 자정이 되기 훨씬 전에 잠자리에 들어."
+   ]
+  ],
+  "w|1134|collect A into B": [
+   [
+    "A: What should I do with these loose papers?\nB: Please collect them into a binder so they don't get lost.",
+    "A: 이 낱장 종이들은 어떻게 할까?\nB: 잃어버리지 않게 바인더에 모아서 정리해 줘."
+   ],
+   [
+    "A: Can you collect these notes into a report for me?\nB: Sure, I will collect them into a single file by this evening.",
+    "A: 이 메모들을 모아서 보고서로 만들어 줄 수 있니?\nB: 그럼, 오늘 저녁까지 하나로 모아서 파일로 만들게."
+   ],
+   [
+    "A: Should I collect these photos into an album?\nB: That is a great idea to collect them into a beautiful memory book.",
+    "A: 이 사진들을 앨범에 모아둘까?\nB: 그것들을 아름다운 추억의 책으로 모으는 건 좋은 생각이야."
+   ]
+  ],
+  "w|1135|assemble A at B": [
+   [
+    "A: Where should the team assemble at tomorrow morning?\nB: We should assemble at the main lobby at 8 AM.",
+    "A: 내일 아침 팀은 어디에 모여야 하니?\nB: 오전 8시에 중앙 로비에 모여야 해."
+   ],
+   [
+    "A: Did you tell the staff to assemble at the park?\nB: Yes, I told them to assemble at the north gate.",
+    "A: 직원들에게 공원에 모이라고 말했니?\nB: 응, 북문으로 모이라고 전달했어."
+   ]
+  ],
+  "w|1136|bring A to B": [
+   [
+    "A: Should I bring my umbrella to the office?\nB: Yes, please bring it to the office because it might rain later.",
+    "A: 사무실에 우산을 가져갈까?\nB: 응, 나중에 비가 올지도 모르니 사무실로 가져와."
+   ],
+   [
+    "A: Can you bring your guitar to the party?\nB: I would love to bring it to the party if you want.",
+    "A: 파티에 기타를 가져올 수 있니?\nB: 네가 원한다면 기꺼이 파티에 가져갈게."
+   ]
+  ],
+  "w|1101|served": [
+   [
+    "A: Was the dessert served at the banquet last night?\nB: Yes, the chocolate cake was served right after the main course.",
+    "A: 어젯밤 연회에서 디저트가 제공되었나요?\nB: 네, 초콜릿 케이크가 메인 요리 직후에 제공되었습니다."
+   ],
+   [
+    "A: Is the complimentary breakfast served in the lobby?\nB: No, it is served in the main dining hall on the second floor.",
+    "A: 무료 조식이 로비에서 제공되나요?\nB: 아니요, 2층 메인 다이닝 홀에서 제공됩니다."
+   ]
+  ],
+  "w|1102|tough": [
+   [
+    "A: How was your first week at the new company?\nB: It was quite tough because I had to learn so many new systems at once.",
+    "A: 새 회사에서의 첫 주는 어땠나요?\nB: 한꺼번에 너무 많은 새로운 시스템을 배워야 해서 꽤 힘들었어요."
+   ],
+   [
+    "A: Do you think the marathon will be tough for a beginner?\nB: Yes, it is definitely a tough challenge, so you should train properly.",
+    "A: 초보자에게 마라톤이 힘들까요?\nB: 네, 분명히 힘든 도전이니 제대로 훈련해야 해요."
+   ],
+   [
+    "A: Why is the boss acting so strict today?\nB: He is going through a tough time with the budget cuts, so he is stressed.",
+    "A: 오늘 상사가 왜 이렇게 엄격하게 구나요?\nB: 예산 삭감 때문에 힘든 시간을 보내고 있어서 스트레스를 받는 중이에요."
+   ]
+  ],
+  "w|1103|regarding ~": [
+   [
+    "A: Do you have any questions regarding the new office policy?\nB: Yes, I am confused regarding the rules about remote work.",
+    "A: 새로운 사무실 규정에 관해 질문 있나요?\nB: 네, 원격 근무 규칙에 관해서 좀 헷갈리는 부분이 있습니다."
+   ],
+   [
+    "A: Did the manager say anything regarding our promotion criteria?\nB: He sent an email regarding the changes this morning.",
+    "A: 매니저가 승진 기준에 관해 뭐라 말했나요?\nB: 오늘 아침에 변경 사항에 관한 이메일을 보냈어요."
+   ]
+  ],
+  "w|1104|finalize": [
+   [
+    "A: Have you managed to finalize the monthly budget?\nB: I hope to finalize it by tomorrow afternoon.",
+    "A: 월간 예산을 마무리하셨나요?\nB: 내일 오후까지는 마무리하고 싶어요."
+   ],
+   [
+    "A: Are you ready to finalize the contract with the client?\nB: We are close, but we still need to finalize the payment terms.",
+    "A: 고객과의 계약을 마무리할 준비가 되셨나요?\nB: 거의 다 됐지만, 결제 조건을 마무리해야 합니다."
+   ]
+  ],
+  "w|1105|make a decision": [
+   [
+    "A: Have you been able to make a decision about your career path?\nB: It is hard to make a decision until I get the job offers.",
+    "A: 진로에 관해 결정을 내리셨나요?\nB: 채용 제안을 받기 전까지는 결정을 내리기가 어렵네요."
+   ],
+   [
+    "A: When will the committee make a decision on the proposal?\nB: They will make a decision after reviewing all the documents next week.",
+    "A: 위원회가 제안서에 대해 언제 결정을 내릴까요?\nB: 다음 주에 모든 서류를 검토한 후에 결정을 내릴 것입니다."
+   ]
+  ],
+  "w|1106|by the end of": [
+   [
+    "A: Can you complete the presentation by the end of this week?\nB: Yes, I will have it ready by the end of Friday.",
+    "A: 이번 주 말까지 발표 자료를 완성할 수 있나요?\nB: 네, 금요일 말까지 준비해 놓겠습니다."
+   ],
+   [
+    "A: When is the deadline for the registration?\nB: You need to submit everything by the end of the month.",
+    "A: 등록 마감일이 언제인가요?\nB: 이번 달 말까지 모든 것을 제출해야 합니다."
+   ]
+  ],
+  "w|1107|warranty": [
+   [
+    "A: Does this camera come with a standard warranty?\nB: Yes, the warranty lasts for two years from the purchase date.",
+    "A: 이 카메라에 기본 품질 보증이 포함되나요?\nB: 네, 품질 보증은 구매일로부터 2년간 지속됩니다."
+   ],
+   [
+    "A: Should I check if the repair is covered by the warranty?\nB: Definitely, you should check the warranty card before paying for the repair.",
+    "A: 수리가 품질 보증으로 커버되는지 확인해 볼까요?\nB: 당연하죠, 수리비를 내기 전에 품질 보증서를 확인해 보세요."
+   ],
+   [
+    "A: Is the warranty still valid for my old tablet?\nB: I'm afraid the warranty expired last month.",
+    "A: 제 구형 태블릿의 품질 보증이 아직 유효한가요?\nB: 유감스럽게도 품질 보증이 지난달에 만료되었습니다."
+   ]
+  ],
+  "w|1108|cost": [
+   [
+    "A: Do you know how much the repair cost?\nB: The total cost was fifty dollars, which was quite reasonable.",
+    "A: 수리비가 얼마였는지 아시나요?\nB: 총비용은 50달러였는데, 꽤 합리적이었어요."
+   ],
+   [
+    "A: Why does this brand cost so much more than others?\nB: It costs more because they use higher quality materials.",
+    "A: 왜 이 브랜드가 다른 것들보다 훨씬 비싼가요?\nB: 더 높은 품질의 재료를 사용하기 때문에 더 비싼 거예요."
+   ]
+  ],
+  "w|1109|burdensome": [
+   [
+    "A: Do you find the current administrative tasks burdensome?\nB: Yes, the paperwork is becoming quite burdensome for me.",
+    "A: 현재 행정 업무가 부담스럽나요?\nB: 네, 서류 작업이 저에게 꽤 부담스러워지고 있어요."
+   ],
+   [
+    "A: Is the new tax regulation too burdensome for small businesses?\nB: Many owners feel that the new rules are indeed burdensome.",
+    "A: 새로운 세금 규정이 소상공인들에게 너무 부담스러운가요?\nB: 많은 사장님들이 새 규칙이 정말로 부담스럽다고 느낍니다."
+   ]
+  ],
+  "w|1110|Are you finding": [
+   [
+    "A: Are you finding the new apartment neighborhood quiet?\nB: Yes, I am finding it much quieter than my old place.",
+    "A: 새 아파트 동네가 조용하다고 느끼시나요?\nB: 네, 예전 살던 곳보다 훨씬 조용하다고 느끼고 있어요."
+   ],
+   [
+    "A: Are you finding any errors in the report I sent?\nB: I am finding a few typos, but nothing major.",
+    "A: 제가 보낸 보고서에서 오류를 찾고 계신가요?\nB: 몇 개의 오타를 찾고 있는데, 큰 문제는 없네요."
+   ]
+  ],
+  "w|1111|gain": [
+   [
+    "A: What do you hope to gain from this internship?\nB: I hope to gain practical experience in the marketing field.",
+    "A: 이번 인턴십을 통해 무엇을 얻길 원하시나요?\nB: 마케팅 분야에서의 실무 경험을 얻길 원합니다."
+   ],
+   [
+    "A: Did you gain any useful information from the seminar?\nB: Yes, I managed to gain some great insights on leadership.",
+    "A: 세미나에서 유용한 정보를 얻었나요?\nB: 네, 리더십에 관한 훌륭한 통찰력을 얻을 수 있었어요."
+   ]
+  ],
+  "w|1112|apply for": [
+   [
+    "A: Are you planning to apply for the overseas position?\nB: Yes, I want to apply for it as soon as the application opens.",
+    "A: 해외 근무직에 지원할 계획인가요?\nB: 네, 지원이 시작되는 대로 바로 지원하고 싶어요."
+   ],
+   [
+    "A: Should I apply for the scholarship this semester?\nB: You should definitely apply for it if you meet the requirements.",
+    "A: 이번 학기에 장학금을 신청해야 할까요?\nB: 자격 요건을 충족한다면 반드시 신청해야 합니다."
+   ]
+  ],
+  "w|1149|forever": [
+   [
+    "A: Do you think we can stay in this house forever?\nB: I don't think we can stay here forever, but we can stay for a long time.",
+    "A: 우리가 이 집에서 영원히 살 수 있다고 생각해?\nB: 영원히 살 수는 없겠지만, 꽤 오래 살 수는 있을 거야."
+   ],
+   [
+    "A: Is this friendship going to last forever?\nB: I believe our friendship will last forever regardless of the distance.",
+    "A: 이 우정이 영원히 지속될까?\nB: 거리가 멀어져도 우리 우정은 영원히 지속될 거라고 믿어."
+   ]
+  ],
+  "w|1150|permanently": [
+   [
+    "A: Are you planning to work here permanently?\nB: No, I am only here permanently for the next six months as a contractor.",
+    "A: 여기서 영구적으로 일할 계획인가요?\nB: 아니요, 계약직이라서 앞으로 6개월 동안만 영구적으로 이곳에 머뭅니다."
+   ],
+   [
+    "A: Did you delete the file permanently?\nB: Yes, I emptied the trash bin so it is gone permanently.",
+    "A: 그 파일을 영구적으로 삭제했나요?\nB: 네, 휴지통을 비워서 영구적으로 사라졌어요."
+   ]
+  ],
+  "w|1151|pile of": [
+   [
+    "A: What should I do with that pile of old magazines?\nB: You should throw away that pile of magazines if you don't read them anymore.",
+    "A: 저 한 무더기의 잡지들은 어떻게 할까요?\nB: 더 이상 읽지 않는다면 저 잡지 무더기는 버리는 게 좋겠어요."
+   ],
+   [
+    "A: Why is there a pile of mail on the floor?\nB: I haven't had a chance to sort through that pile of letters yet.",
+    "A: 왜 바닥에 우편물이 한 무더기 쌓여 있죠?\nB: 아직 저 편지 무더기를 정리할 시간이 없었어요."
+   ]
+  ],
+  "w|1152|heap of": [
+   [
+    "A: Can you move that heap of boxes in the hallway?\nB: Sure, I will move that heap of boxes to the storage room right now.",
+    "A: 복도에 있는 저 상자 무더기를 옮겨줄 수 있어요?\nB: 네, 지금 당장 저 상자 무더기를 창고로 옮길게요."
+   ],
+   [
+    "A: Did you see a heap of snow in front of the house?\nB: Yes, I need to clear that heap of snow before I leave for work.",
+    "A: 집 앞에 쌓인 눈 무더기를 봤나요?\nB: 네, 출근하기 전에 저 눈 무더기를 치워야겠어요."
+   ]
+  ],
+  "w|1153|mass of": [
+   [
+    "A: Why is there such a mass of cables under your desk?\nB: I need to organize this mass of cables because they are all tangled up.",
+    "A: 왜 책상 아래에 케이블이 저렇게 많이 엉켜 있죠?\nB: 이 케이블 무더기가 다 엉켜 있어서 정리를 좀 해야 해요."
+   ],
+   [
+    "A: Is there a mass of people waiting for the bus?\nB: Yes, there is a mass of people standing at the station due to the subway strike.",
+    "A: 버스 정류장에 사람들이 많이 기다리고 있나요?\nB: 네, 지하철 파업 때문에 역에 엄청난 인파가 몰려 있어요."
+   ],
+   [
+    "A: Why are you looking at a mass of data on the screen?\nB: I have to analyze this mass of data for my research project.",
+    "A: 왜 화면에 있는 방대한 데이터를 보고 있는 거죠?\nB: 연구 프로젝트를 위해 이 엄청난 양의 데이터를 분석해야 하거든요."
+   ]
+  ],
+  "w|1154|a stack of 복수명사": [
+   [
+    "A: What is in those boxes?\nB: I have a stack of old books that I want to donate.",
+    "A: 저 상자들 안에는 뭐가 있죠?\nB: 기부하고 싶은 헌책들이 한 무더기 있어요."
+   ],
+   [
+    "A: Why are you still in the office?\nB: I have a stack of emails to reply to before I go home.",
+    "A: 왜 아직 사무실에 있어요?\nB: 집에 가기 전에 답장해야 할 이메일이 한 무더기 남았어요."
+   ]
+  ],
+  "w|1155|take time": [
+   [
+    "A: How long will it take to repair my car?\nB: It will take time to order the parts, so please be patient.",
+    "A: 제 차를 수리하는 데 얼마나 걸릴까요?\nB: 부품을 주문하는 데 시간이 걸릴 테니 조금만 기다려 주세요."
+   ],
+   [
+    "A: Do you think we can finish the garden today?\nB: It will take time to plant all these flowers properly.",
+    "A: 오늘 정원 일을 끝낼 수 있을까요?\nB: 이 꽃들을 제대로 다 심으려면 시간이 꽤 걸릴 거예요."
+   ]
+  ],
+  "w|1156|be time-consuming": [
+   [
+    "A: Is it really necessary to fill out these forms by hand?\nB: Yes, unfortunately, the process is very time-consuming.",
+    "A: 이 양식들을 정말 손으로 직접 작성해야 하나요?\nB: 네, 안타깝게도 그 과정이 매우 시간이 많이 걸리는 작업이에요."
+   ],
+   [
+    "A: Why don't you travel by bus instead of walking?\nB: Walking is quite time-consuming, but I enjoy the fresh air.",
+    "A: 걷는 대신 버스를 타고 이동하는 게 어때요?\nB: 걷는 건 시간이 많이 걸리지만, 상쾌한 공기를 마시는 게 좋아요."
+   ],
+   [
+    "A: How was your experience with the visa application?\nB: It was extremely time-consuming because of all the required documents.",
+    "A: 비자 신청 과정은 어땠나요?\nB: 필요한 서류가 너무 많아서 굉장히 시간이 많이 걸렸어요."
+   ]
+  ],
+  "w|1157|wrap up": [
+   [
+    "A: Are you ready to wrap up the project?\nB: Almost, I just need to wrap up the final report.",
+    "A: 프로젝트를 마무리할 준비가 됐나요?\nB: 거의 다 됐어요, 최종 보고서만 마무리하면 돼요."
+   ],
+   [
+    "A: Can we wrap up our conversation now?\nB: Sure, let's wrap up and get back to work.",
+    "A: 이제 대화를 마무리할까요?\nB: 좋아요, 이제 마무리하고 다시 일하러 가죠."
+   ]
+  ],
+  "w|1158|finish": [
+   [
+    "A: Have you finished your lunch yet?\nB: I just finished my lunch, so I'm ready to start.",
+    "A: 점심 식사 다 마쳤나요?\nB: 방금 점심을 다 먹어서, 이제 시작할 준비가 됐어요."
+   ],
+   [
+    "A: When will you finish the laundry?\nB: I will finish the laundry as soon as the dryer stops.",
+    "A: 빨래는 언제 끝낼 거예요?\nB: 건조기가 멈추는 대로 빨래를 다 끝낼게요."
+   ]
+  ],
+  "w|1159|anymore": [
+   [
+    "A: Do you live in the dormitory anymore?\nB: No, I don't live there anymore because I moved to a studio apartment.",
+    "A: 더 이상 기숙사에 살지 않나요?\nB: 네, 원룸으로 이사해서 더 이상 거기 살지 않아요."
+   ],
+   [
+    "A: Do you still want to buy that expensive watch?\nB: No, I don't want to buy it anymore after seeing the price tag.",
+    "A: 아직도 그 비싼 시계를 사고 싶나요?\nB: 아니요, 가격표를 보고 나니 더 이상 사고 싶지 않아요."
+   ]
+  ],
+  "w|1160|no more": [
+   [
+    "A: Can you tolerate this noise any longer?\nB: I can take no more noise; I am going to complain to the manager.",
+    "A: 이 소음을 더 이상 참을 수 있나요?\nB: 더 이상은 소음을 참을 수 없어요. 매니저에게 항의할 거예요."
+   ],
+   [
+    "A: Do you have any more questions for me?\nB: I have no more questions, thank you for your time.",
+    "A: 저에게 더 질문할 게 있나요?\nB: 더 이상 질문은 없습니다, 시간 내주셔서 감사합니다."
+   ]
+  ],
+  "w|1161|still": [
+   [
+    "A: Do you still live in the same apartment?\nB: Yes, I still live there because the rent is very reasonable.",
+    "A: 너 아직도 같은 아파트에 사니?\nB: 응, 월세가 매우 합리적이라서 여전히 거기 살아."
+   ],
+   [
+    "A: Are you still feeling tired after your long trip?\nB: I'm still exhausted, so I think I'll go to bed early tonight.",
+    "A: 긴 여행 후에 여전히 피곤하니?\nB: 아직도 기운이 없어서 오늘 밤엔 일찍 자려고 해."
+   ]
+  ],
+  "w|1162|remain outside": [
+   [
+    "A: Why don't we go inside the cafe?\nB: The weather is so nice, let's remain outside and enjoy the breeze.",
+    "A: 카페 안으로 들어가지 않을래?\nB: 날씨가 너무 좋으니까 밖에서 머무르면서 산들바람을 즐기자."
+   ],
+   [
+    "A: Should we move to the lobby to wait for the bus?\nB: It's too crowded there, so I'd prefer to remain outside for a bit.",
+    "A: 버스를 기다리러 로비로 이동할까?\nB: 거기는 너무 붐비니까 잠시 밖에서 머무르는 게 좋겠어."
+   ],
+   [
+    "A: Is everyone going into the meeting room now?\nB: Most people are, but I'm going to remain outside to take this call.",
+    "A: 이제 다들 회의실로 들어가니?\nB: 대부분 들어가지만, 나는 이 전화를 받으려고 밖에서 머무를 거야."
+   ]
+  ],
+  "w|1163|steer clear": [
+   [
+    "A: Why are you avoiding that group of people?\nB: They are always arguing, so I try to steer clear of them.",
+    "A: 왜 저 사람들 무리를 피하는 거야?\nB: 그들은 항상 싸우고 있어서, 나는 그들을 피하려고 해."
+   ],
+   [
+    "A: Is the road ahead safe to drive on?\nB: There is a massive pothole, so you should steer clear of that lane.",
+    "A: 앞에 있는 도로는 운전하기에 안전하니?\nB: 큰 구덩이가 있으니까 그 차선은 피하는 게 좋을 거야."
+   ]
+  ],
+  "w|1164|stay in": [
+   [
+    "A: Do you want to go out for dinner tonight?\nB: I'm quite tired, so I think I'll just stay in and order some pizza.",
+    "A: 오늘 밤 외식하러 나갈래?\nB: 꽤 피곤해서 그냥 집에 머무르면서 피자나 시켜 먹으려고."
+   ],
+   [
+    "A: Are you planning to travel this weekend?\nB: No, I'm going to stay in and catch up on some reading.",
+    "A: 이번 주말에 여행 갈 계획이니?\nB: 아니, 집에 머무르면서 읽지 못한 책들을 좀 읽을 거야."
+   ]
+  ],
+  "w|1165|get involved": [
+   [
+    "A: Are you going to join the school's music club?\nB: Yes, I really want to get involved in the upcoming performance.",
+    "A: 학교 음악 동아리에 가입할 거니?\nB: 응, 다가오는 공연에 정말로 참여하고 싶어."
+   ],
+   [
+    "A: Why are you looking at the list of volunteer projects?\nB: I'm trying to find a meaningful way to get involved in the community.",
+    "A: 왜 봉사활동 목록을 보고 있어?\nB: 지역 사회에 참여할 수 있는 의미 있는 방법을 찾고 있거든."
+   ]
+  ],
+  "w|1166|stay out of something": [
+   [
+    "A: What do you think about the conflict between your coworkers?\nB: It's personal, so I'm going to stay out of it completely.",
+    "A: 동료들 사이의 갈등에 대해 어떻게 생각해?\nB: 개인적인 문제라 나는 그 일에 관여하지 않을 생각이야."
+   ],
+   [
+    "A: Are you going to give your opinion on their decision?\nB: I don't know the full story, so I'll stay out of it.",
+    "A: 그들의 결정에 대해 네 의견을 말할 거니?\nB: 전체 상황을 잘 몰라서 관여하지 않으려고 해."
+   ]
+  ],
+  "w|1167|occur on": [
+   [
+    "A: When does the monthly team meeting occur on the calendar?\nB: It will occur on the first Monday of every month.",
+    "A: 매달 있는 팀 회의는 달력상 언제 일어나니?\nB: 매달 첫 번째 월요일에 일어날 거야."
+   ],
+   [
+    "A: Did you know that the eclipse will occur on Friday?\nB: Yes, it will occur on a clear evening, so we should be able to see it.",
+    "A: 금요일에 일식이 일어난다는 거 알고 있었니?\nB: 응, 맑은 저녁에 일어날 거라 우리는 볼 수 있을 거야."
+   ]
+  ],
+  "w|1168|rest with": [
+   [
+    "A: Who is responsible for the final approval?\nB: The responsibility for that decision rests with the manager.",
+    "A: 최종 승인에 대한 책임은 누가 지니?\nB: 그 결정에 대한 책임은 매니저에게 달려 있어."
+   ],
+   [
+    "A: Do we have any say in where the office moves?\nB: Actually, the final choice rests with the headquarters.",
+    "A: 사무실을 어디로 옮길지 우리가 결정할 수 있니?\nB: 사실, 최종 선택은 본사에 달려 있어."
+   ]
+  ],
+  "w|1169|land on": [
+   [
+    "A: When will the flight land on the runway?\nB: It is scheduled to land on the runway at 3 PM sharp.",
+    "A: 비행기가 언제 활주로에 착륙하니?\nB: 오후 3시 정각에 활주로에 착륙할 예정이야."
+   ],
+   [
+    "A: Did you see the bird land on the branch?\nB: Yes, it managed to land on the thin branch very gracefully.",
+    "A: 새가 나뭇가지에 착륙하는 거 봤니?\nB: 응, 아주 우아하게 얇은 나뭇가지 위로 착륙하더라."
+   ]
+  ],
+  "w|1170|The choice falls on you": [
+   [
+    "A: Which color should we paint the living room walls?\nB: The choice falls on you, as you spend the most time here.",
+    "A: 거실 벽을 무슨 색으로 칠할까?\nB: 네가 여기에서 가장 많은 시간을 보내니까, 결정은 너에게 달려 있어."
+   ],
+   [
+    "A: Should we order Italian or Chinese food?\nB: Since it's your birthday, the choice falls on you.",
+    "A: 이탈리아 음식을 시킬까, 중국 음식을 시킬까?\nB: 네 생일이니까, 결정은 너에게 달려 있어."
+   ]
+  ],
+  "w|1171|in such": [
+   [
+    "A: Why are you wearing such a heavy coat?\nB: I haven't felt cold in such a long time, but today is freezing.",
+    "A: 왜 그렇게 두꺼운 코트를 입고 있어?\nB: 이렇게 오랫동안 추위를 느낀 적이 없었는데, 오늘은 정말 추워."
+   ],
+   [
+    "A: Have you ever seen such a beautiful sunset?\nB: No, I don't think I've seen such a view in my life.",
+    "A: 이렇게 아름다운 노을을 본 적 있니?\nB: 아니, 내 평생 그런 경치는 본 적이 없는 것 같아."
+   ]
+  ],
+  "w|1172|in such a state": [
+   [
+    "A: Why is the garage in such a state?\nB: I left it in such a state after working on my car all weekend.",
+    "A: 왜 차고가 그런 상태야?\nB: 주말 내내 차를 수리하느라 그런 상태로 내버려 뒀어."
+   ],
+   [
+    "A: How did you find your room in such a state?\nB: I was in a rush this morning, so I left it in such a state.",
+    "A: 방이 왜 그런 상태인 걸 알게 됐니?\nB: 오늘 아침에 너무 서두르느라 그런 상태로 두고 나왔어."
+   ]
+  ],
+  "w|1197|What was the duration of": [
+   [
+    "A: What was the duration of your internship at the marketing firm?\nB: The duration of the program was exactly six months.",
+    "A: 그 마케팅 회사에서의 인턴십 기간은 얼마나 되었나요?\nB: 그 프로그램의 기간은 정확히 6개월이었습니다."
+   ],
+   [
+    "A: What was the duration of the power outage in your neighborhood last night?\nB: It lasted for about two hours, which was quite inconvenient.",
+    "A: 어젯밤 당신 동네의 정전 기간은 얼마나 되었나요?\nB: 약 2시간 동안 지속되었는데, 꽤 불편했어요."
+   ]
+  ],
+  "w|1198|How much time did you spend": [
+   [
+    "A: How much time did you spend practicing the piano this morning?\nB: I spent about forty minutes practicing before heading to school.",
+    "A: 오늘 아침에 피아노 연습을 하는 데 얼마나 많은 시간을 보냈니?\nB: 학교에 가기 전에 연습하는 데 40분 정도 시간을 보냈어."
+   ],
+   [
+    "A: How much time did you spend searching for your lost keys?\nB: I spent nearly an hour looking for them all over the house.",
+    "A: 잃어버린 열쇠를 찾는 데 얼마나 많은 시간을 보냈니?\nB: 집안 곳곳을 뒤지며 그것들을 찾는 데 거의 한 시간을 보냈어."
+   ]
+  ],
+  "w|1199|mural": [
+   [
+    "A: Did you notice the giant mural painted on the side of the library?\nB: Yes, I think that mural adds a lot of character to the building.",
+    "A: 도서관 옆면에 그려진 거대한 벽화를 봤니?\nB: 응, 그 벽화가 건물에 독특한 분위기를 더해주는 것 같아."
+   ],
+   [
+    "A: Are you planning to visit the local art festival to see the new mural?\nB: Definitely, I heard the artist who created the mural is very talented.",
+    "A: 새로운 벽화를 보러 지역 예술 축제에 갈 계획이니?\nB: 당연하지, 그 벽화를 만든 예술가가 매우 재능 있다고 들었거든."
+   ]
+  ],
+  "w|1173|thus": [
+   [
+    "A: Did the team miss the deadline?\nB: Yes, they were understaffed; thus, they couldn't finish it on time.",
+    "A: 팀이 마감 기한을 놓쳤나요?\nB: 네, 인력이 부족했어요. 따라서 제시간에 끝낼 수 없었죠."
+   ],
+   [
+    "A: Why did the store close early today?\nB: There were no customers, thus we decided to close early.",
+    "A: 왜 오늘 가게 문을 일찍 닫았나요?\nB: 손님이 없어서, 따라서 일찍 닫기로 결정했어요."
+   ],
+   [
+    "A: Is the road blocked due to the accident?\nB: Yes, the police are investigating, thus traffic is being diverted.",
+    "A: 사고 때문에 도로가 막혔나요?\nB: 네, 경찰이 조사 중이라서 따라서 교통이 우회되고 있어요."
+   ]
+  ],
+  "w|1174|in that context": [
+   [
+    "A: Do you think we should increase the marketing budget?\nB: In that context, it seems like a necessary step to boost our sales.",
+    "A: 마케팅 예산을 늘려야 한다고 생각하세요?\nB: 그런 맥락에서, 매출을 올리기 위해 필요한 조치인 것 같네요."
+   ],
+   [
+    "A: Why is the manager so upset about the report?\nB: In that context, he expects everyone to be more detail-oriented.",
+    "A: 왜 매니저가 보고서 때문에 저렇게 화가 났나요?\nB: 그런 맥락에서, 그는 모두가 좀 더 꼼꼼하게 일하기를 바라는 거예요."
+   ],
+   [
+    "A: Should we cancel the outdoor event?\nB: In that context, safety must be our top priority given the weather.",
+    "A: 야외 행사를 취소해야 할까요?\nB: 그런 맥락에서, 날씨를 고려하면 안전이 최우선이 되어야 합니다."
+   ]
+  ],
+  "w|1175|expose": [
+   [
+    "A: Why do you wear gloves while working?\nB: These chemicals can expose my skin to irritation.",
+    "A: 작업할 때 왜 장갑을 끼나요?\nB: 이 화학물질들이 제 피부를 자극에 노출시킬 수 있거든요."
+   ],
+   [
+    "A: Did the documentary reveal the truth?\nB: Yes, it helped expose the corruption within the organization.",
+    "A: 그 다큐멘터리가 진실을 밝혔나요?\nB: 네, 조직 내의 부패를 드러내는 데 도움이 되었어요."
+   ],
+   [
+    "A: Is it safe to leave the wire out?\nB: No, it might expose children to electrical shocks.",
+    "A: 전선을 밖에 두어도 안전할까요?\nB: 아니요, 아이들을 감전 위험에 노출시킬 수 있어요."
+   ]
+  ],
+  "w|1176|be hard to": [
+   [
+    "A: Can you explain this math problem to me?\nB: I'm sorry, it's hard to understand even for me.",
+    "A: 이 수학 문제 좀 설명해 줄 수 있나요?\nB: 미안해요, 저한테도 이해하기 어렵네요."
+   ],
+   [
+    "A: Is it okay if I call you late at night?\nB: It would be hard to answer as I usually go to bed early.",
+    "A: 밤늦게 전화해도 괜찮을까요?\nB: 제가 보통 일찍 자서 받기 어려울 거예요."
+   ]
+  ],
+  "w|1177|be difiicult to": [
+   [
+    "A: Can we move the meeting to Monday?\nB: It will be difficult to reschedule everyone on such short notice.",
+    "A: 회의를 월요일로 옮길 수 있을까요?\nB: 그렇게 급하게 다들 일정을 다시 잡기는 어려울 거예요."
+   ],
+   [
+    "A: Is the hotel room available for next week?\nB: It's difficult to find a vacancy during the peak season.",
+    "A: 다음 주에 호텔 방이 있을까요?\nB: 성수기에는 빈방을 찾기가 어려워요."
+   ],
+   [
+    "A: Do you like living in the city?\nB: It is difficult to enjoy quiet moments with all this noise.",
+    "A: 도시 생활이 마음에 드나요?\nB: 이 모든 소음 속에서 조용한 시간을 보내기는 어려워요."
+   ]
+  ],
+  "w|1178|be challenging to": [
+   [
+    "A: How is your new language class?\nB: It's fun, but it can be challenging to memorize all the vocabulary.",
+    "A: 새 언어 수업은 어떤가요?\nB: 재미있지만, 모든 단어를 외우는 건 어려울 수 있어요."
+   ],
+   [
+    "A: Why are you taking a break?\nB: It's challenging to focus when the office is this busy.",
+    "A: 왜 쉬고 있어요?\nB: 사무실이 이렇게 바쁠 때는 집중하기가 어렵거든요."
+   ]
+  ],
+  "w|1179|have trouble -ing": [
+   [
+    "A: How is your new computer?\nB: I'm having trouble setting up the wireless connection.",
+    "A: 새 컴퓨터는 어때요?\nB: 무선 연결을 설정하는 데 어려움을 겪고 있어요."
+   ],
+   [
+    "A: Are you enjoying your stay?\nB: I'm having trouble sleeping because of the city noise.",
+    "A: 머무는 동안 즐거운가요?\nB: 도시 소음 때문에 잠드는 데 어려움을 겪고 있어요."
+   ],
+   [
+    "A: Is the new software working well?\nB: I'm having trouble logging in with my new password.",
+    "A: 새 소프트웨어는 잘 작동하나요?\nB: 새 비밀번호로 로그인하는 데 어려움을 겪고 있어요."
+   ]
+  ],
+  "w|1180|be easy to": [
+   [
+    "A: Is this app helpful for learning?\nB: Yes, it is easy to navigate through the lessons.",
+    "A: 이 앱이 학습에 도움이 되나요?\nB: 네, 수업을 탐색하기가 쉽거든요."
+   ],
+   [
+    "A: How do I get to the station?\nB: It is easy to find if you follow this main road.",
+    "A: 역에 어떻게 가나요?\nB: 이 큰길을 따라가면 찾기가 쉬워요."
+   ]
+  ],
+  "w|1181|be simple to": [
+   [
+    "A: Is the assembly of this shelf complicated?\nB: No, it's simple to put together with these tools.",
+    "A: 이 선반 조립이 복잡한가요?\nB: 아니요, 이 도구들로 조립하기가 간단해요."
+   ],
+   [
+    "A: How do I update my profile picture?\nB: It's simple to change in the settings menu.",
+    "A: 프로필 사진은 어떻게 바꾸나요?\nB: 설정 메뉴에서 바꾸기가 간단해요."
+   ]
+  ],
+  "w|1182|to the wound": [
+   [
+    "A: What should I do after cleaning the cut?\nB: You should apply the bandage to the wound carefully.",
+    "A: 상처를 소독한 다음에 뭘 해야 하나요?\nB: 상처 부위에 붕대를 조심스럽게 감아야 해요."
+   ],
+   [
+    "A: Is the medication working?\nB: I still feel a bit of pain when I touch to the wound.",
+    "A: 약이 효과가 있나요?\nB: 상처 부위를 만지면 여전히 약간 통증이 느껴져요."
+   ]
+  ],
+  "w|1183|on the injury": [
+   [
+    "A: Why is the star player absent?\nB: He is currently sidelined on the injury list.",
+    "A: 왜 주전 선수가 빠졌나요?\nB: 그는 현재 부상으로 인해 명단에서 제외되었어요."
+   ],
+   [
+    "A: Can you join us for the hike?\nB: I'm afraid I can't go on the injury I sustained yesterday.",
+    "A: 등산 같이 갈 수 있나요?\nB: 어제 입은 부상으로 인해 갈 수 없을 것 같아요."
+   ]
+  ],
+  "w|1184|to the lesion": [
+   [
+    "A: How often should I use this medication?\nB: Apply a thin layer to the lesion twice a day.",
+    "A: 이 약을 얼마나 자주 발라야 하나요?\nB: 하루에 두 번 병변 부위에 얇게 펴 바르세요."
+   ],
+   [
+    "A: Does this cream sting?\nB: It might feel cool when you apply it to the lesion.",
+    "A: 이 크림이 따갑나요?\nB: 병변 부위에 바를 때 시원하게 느껴질 수 있어요."
+   ]
+  ],
+  "w|1185|ointment": [
+   [
+    "A: Do you have any ointment for this bug bite?\nB: Yes, I have some medicated ointment in the medicine cabinet.",
+    "A: 이 벌레 물린 데 바를 연고 있나요?\nB: 네, 약장에 약용 연고가 좀 있어요."
+   ],
+   [
+    "A: Should I keep using this ointment on my rash?\nB: Yes, please apply the ointment twice a day until it clears up.",
+    "A: 발진 부위에 이 연고를 계속 발라야 할까요?\nB: 네, 다 나을 때까지 하루에 두 번 연고를 발라주세요."
+   ],
+   [
+    "A: Where can I buy a soothing ointment for dry skin?\nB: You can find a good ointment at any local pharmacy.",
+    "A: 건조한 피부를 위한 진정 연고는 어디서 살 수 있나요?\nB: 동네 약국 어디서든 좋은 연고를 찾을 수 있어요."
+   ]
+  ],
+  "w|1186|directly": [
+   [
+    "A: Do you want me to send the package to the office?\nB: No, please send it directly to my home address.",
+    "A: 소포를 사무실로 보낼까요?\nB: 아니요, 제 집 주소로 직접 보내주세요."
+   ],
+   [
+    "A: Are you going to talk to the professor about your grade?\nB: Yes, I plan to speak with him directly after the class.",
+    "A: 학점에 대해 교수님께 말씀드릴 건가요?\nB: 네, 수업이 끝난 후에 직접 교수님과 이야기할 생각이에요."
+   ]
+  ],
+  "w|1187|make sure": [
+   [
+    "A: Did you finish packing your suitcase for the trip?\nB: I'm almost done, but I want to make sure I didn't forget my passport.",
+    "A: 여행 가방 쌌니?\nB: 거의 다 했는데, 여권을 안 챙겼는지 확실히 확인하고 싶어."
+   ],
+   [
+    "A: Why are you double-checking the oven?\nB: I want to make sure the stove is completely turned off before we leave.",
+    "A: 왜 오븐을 다시 확인하는 거야?\nB: 우리가 나가기 전에 가스레인지가 확실히 꺼졌는지 확인하고 싶어서 그래."
+   ]
+  ],
+  "w|1188|gently": [
+   [
+    "A: How should I wash this delicate silk scarf?\nB: You should wash it gently by hand in cold water.",
+    "A: 이 섬세한 실크 스카프는 어떻게 세탁해야 하니?\nB: 찬물에 부드럽게 손세탁해야 해."
+   ],
+   [
+    "A: Are you going to move the plant to the window?\nB: Yes, but I need to handle it gently because the leaves are fragile.",
+    "A: 식물을 창가로 옮길 거니?\nB: 응, 그런데 잎이 약해서 부드럽게 다뤄야 해."
+   ]
+  ],
+  "w|1189|a small amount": [
+   [
+    "A: How much salt should I put in the soup?\nB: Just add a small amount, as you can always add more later.",
+    "A: 국에 소금을 얼마나 넣을까?\nB: 나중에 더 넣을 수 있으니까 소량만 넣어."
+   ],
+   [
+    "A: Is it okay to give the puppy a treat?\nB: Yes, but only a small amount since he is still very young.",
+    "A: 강아지한테 간식을 줘도 될까?\nB: 응, 하지만 아직 너무 어려서 소량만 줘야 해."
+   ],
+   [
+    "A: Do you need a lot of glue for this project?\nB: No, just a small amount is enough to stick these pieces together.",
+    "A: 이 프로젝트에 풀이 많이 필요하니?\nB: 아니, 조각들을 붙이는 데는 소량이면 충분해."
+   ]
+  ],
+  "w|1190|rub": [
+   [
+    "A: My legs feel so stiff after the marathon.\nB: You should rub your muscles to help with the soreness.",
+    "A: 마라톤을 뛰고 나서 다리가 너무 뻐근해.\nB: 근육통을 완화하기 위해 다리 근육을 문질러 주는 게 좋아."
+   ],
+   [
+    "A: The stain on the carpet won't come off.\nB: Try to rub it with a damp cloth and some soap.",
+    "A: 카펫의 얼룩이 안 지워져.\nB: 젖은 천과 비누로 그 부분을 문질러 봐."
+   ],
+   [
+    "A: Does your back still hurt?\nB: It's better now that I rub some oil on it every night.",
+    "A: 허리는 아직도 아프니?\nB: 매일 밤 오일을 문질러 바르니까 이제 좀 나아졌어."
+   ]
+  ],
+  "w|1191|apply": [
+   [
+    "A: Have you decided on the university you want to attend?\nB: I'm going to apply for three different schools this week.",
+    "A: 다니고 싶은 대학교 결정했니?\nB: 이번 주에 세 곳의 학교에 지원할 예정이야."
+   ],
+   [
+    "A: Why are you looking at the scholarship website?\nB: I want to apply for the grant to cover my tuition fees.",
+    "A: 왜 장학금 사이트를 보고 있어?\nB: 등록금을 충당할 수 있는 보조금을 신청하고 싶어서 그래."
+   ]
+  ],
+  "w|1192|bandage": [
+   [
+    "A: I scraped my knee while playing soccer.\nB: Sit down, and I'll put a bandage on it for you.",
+    "A: 축구하다가 무릎을 긁혔어.\nB: 앉아 봐, 붕대를 감아줄게."
+   ],
+   [
+    "A: Is the wound still bleeding?\nB: No, I replaced the bandage this morning, so it's clean now.",
+    "A: 상처에서 아직 피가 나니?\nB: 아니, 오늘 아침에 붕대를 갈았더니 이제 깨끗해."
+   ],
+   [
+    "A: Can you help me cover this blister?\nB: Sure, let me find a waterproof bandage in the bag.",
+    "A: 이 물집 좀 가려줄 수 있어?\nB: 물론이지, 가방에서 방수 밴드를 찾아볼게."
+   ]
+  ],
+  "w|1193|That's what ~": [
+   [
+    "A: Why are you so upset with me?\nB: That's what I've been asking myself all day.",
+    "A: 왜 나한테 그렇게 화가 났어?\nB: 그게 바로 내가 하루 종일 스스로에게 묻고 있던 거야."
+   ],
+   [
+    "A: The project failed because of the lack of communication.\nB: That's what I warned the team about last month.",
+    "A: 소통 부족 때문에 프로젝트가 실패했어.\nB: 그게 바로 내가 지난달에 팀에게 경고했던 거야."
+   ],
+   [
+    "A: I want to learn how to play the guitar.\nB: That's what I've always wanted to do as well.",
+    "A: 기타 치는 법을 배우고 싶어.\nB: 그건 나도 항상 하고 싶었던 거야."
+   ]
+  ],
+  "w|1194|That's the result of": [
+   [
+    "A: Why are your eyes so red today?\nB: That's the result of staring at the computer screen all night.",
+    "A: 오늘 왜 그렇게 눈이 충혈됐니?\nB: 밤새 컴퓨터 화면을 쳐다본 결과야."
+   ],
+   [
+    "A: Is this prize money for winning the contest?\nB: Yes, that's the result of my hard work for the past year.",
+    "A: 이 상금이 대회에서 우승해서 받은 거니?\nB: 응, 지난 1년 동안 열심히 노력한 결과야."
+   ]
+  ],
+  "w|1195|That's to be expected when": [
+   [
+    "A: The store is so crowded on a Saturday afternoon.\nB: That's to be expected when there's a big sale.",
+    "A: 토요일 오후라 가게에 사람이 너무 많네.\nB: 대규모 세일을 할 때는 당연히 사람이 많지."
+   ],
+   [
+    "A: My throat hurts after yelling at the concert.\nB: That's to be expected when you scream for two hours.",
+    "A: 콘서트에서 소리를 질렀더니 목이 아파.\nB: 두 시간 동안 소리를 질렀으니 당연히 그럴 거야."
+   ],
+   [
+    "A: The hotel room is quite expensive during the peak season.\nB: That's to be expected when everyone is traveling at the same time.",
+    "A: 성수기라 호텔 방값이 꽤 비싸네.\nB: 모두가 같은 시기에 여행할 때는 당연히 비싼 법이야."
+   ]
+  ],
+  "w|1196|How long did it take to": [
+   [
+    "A: How long did it take to bake these cookies?\nB: It took about twenty minutes to bake them perfectly.",
+    "A: 이 쿠키들을 굽는 데 얼마나 걸렸니?\nB: 완벽하게 굽는 데 20분 정도 걸렸어."
+   ],
+   [
+    "A: How long did it take to paint the whole house?\nB: It took us two days to finish the painting job.",
+    "A: 집 전체를 칠하는 데 얼마나 걸렸어?\nB: 페인트칠을 끝내는 데 이틀이 걸렸어."
+   ]
   ]
  }
 }

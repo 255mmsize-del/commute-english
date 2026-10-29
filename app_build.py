@@ -47,8 +47,8 @@ MANIFEST = {
     "start_url": "./",
     "scope": "./",
     "display": "standalone",
-    "background_color": "#F4F5F8",
-    "theme_color": "#14213D",
+    "background_color": "#F5F0E6",
+    "theme_color": "#F5F0E6",
     "icons": [
         {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
         {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
