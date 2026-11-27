@@ -1,4 +1,4 @@
-const CACHE = "vocab-note-8fb2d4f59e";
+const CACHE = "vocab-note-e35fb69ca9";
 const SHELL = ["./", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
